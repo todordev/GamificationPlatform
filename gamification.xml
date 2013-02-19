@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="2.5" method="upgrade">
+	<name>COM_GAMIFICATION</name>
+	<creationDate>February, 2013</creationDate>
+	<author>Todor Iliev</author>
+	<authorEmail>todor@itprism.com</authorEmail>
+	<authorUrl>http://itprism.com</authorUrl>
+	<copyright>Copyright (C) 2010 Todor Iliev ( ITPrism.com )</copyright>
+	<license>http://www.gnu.org/copyleft/gpl.html</license>
+	<version>1.0</version>
+	<description>COM_GAMIFICATION_DESCRIPTION</description>
+
+	<install>
+        <sql>
+            <file driver="mysql" charset="utf8">sql/install.sql</file>
+        </sql>
+    </install>
+
+    <uninstall>
+        <sql>
+            <file driver="mysql" charset="utf8">sql/uninstall.sql</file>
+        </sql>
+    </uninstall>
+	
+	<update> 
+		<schemas>
+				<schemapath type="mysql">sql/updates</schemapath>
+		</schemas>
+	</update>
+	
+	<media destination="com_gamification" folder="media">
+		<filename>index.html</filename>
+		<folder>css</folder>	
+		<folder>images</folder>
+		<folder>js</folder>		
+	</media>
+	
+	<!-- Site Main File Copy Section -->
+	<files folder="site">
+		<filename>controller.php</filename>
+		<filename>index.html</filename>
+		<filename>router.php</filename>
+		<filename>gamification.php</filename>
+		<folder>controllers</folder>
+		<folder>models</folder>
+		<folder>views</folder>
+	</files>
+
+	<languages folder="site">
+		<language tag="en-GB">language/en-GB/en-GB.com_gamification.ini</language>
+	</languages>
+	
+	<administration>
+		<menu img="../media/com_gamification/images/menu_gamification.png" link="option=com_gamification">COM_GAMIFICATION</menu>
+	
+		<files folder="admin">		    		
+			<folder>controllers</folder>
+			<folder>helpers</folder>
+			<folder>libraries</folder>
+			<folder>models</folder>
+			<folder>tables</folder>
+			<folder>sql</folder>
+			<folder>views</folder>		
+			<filename>controller.php</filename>
+			<filename>index.html</filename>
+			<filename>config.xml</filename>
+			<filename>access.xml</filename>  
+			<filename>gamification.php</filename>
+		</files>
+		
+		<languages folder="admin">
+			<language tag="en-GB">language/en-GB/en-GB.com_gamification.ini</language>
+			<language tag="en-GB">language/en-GB/en-GB.com_gamification.sys.ini</language>
+		</languages>
+			
+	</administration>
+</extension>

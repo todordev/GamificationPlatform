@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset>
+
+		<field name="data" type="file" class="inputbox" 
+			size="40"  
+			label="COM_GAMIFICATION_FILE" 
+			description="COM_GAMIFICATION_FILE_DESC"
+			required="true" />
+
+        <field name="reset_id" type="checkbox"
+            value="1" 
+            class="inputbox" 
+            label="COM_GAMIFICATION_RESET_ID"
+            description="COM_GAMIFICATION_RESET_ID_DESC"  
+            filter="int" 
+        />
+        
+	</fieldset>
+</form>

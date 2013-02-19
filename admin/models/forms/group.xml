@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset>
+
+		<field name="name" type="text" class="inputbox" 
+			size="40"  
+			label="COM_GAMIFICATION_NAME" 
+			description="COM_GAMIFICATION_GROUP_NAME_DESC"
+			filter="trim" 
+			required="true" />
+
+        <field name="note" type="textarea" class="inputbox" 
+            label="COM_GAMIFICATION_NOTE"
+            description="COM_GAMIFICATION_NOTE_DESC"  
+            filter="trim"
+            cols="30" 
+            rows="5"
+        />
+        
+		<field name="id" type="text" default="0" label="JGLOBAL_FIELD_ID_LABEL" 
+            readonly="true" class="readonly"
+            description="JGLOBAL_FIELD_ID_DESC" />
+            
+	</fieldset>
+</form>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<extension type="library" version="2.5" method="upgrade">
+	<name>Gamification Library</name>
+	<libraryname>gamification</libraryname>
+	<author>Todor Iliev</author>
+	<authorEmail>todor@itprism.com</authorEmail>
+    <authorUrl>http://itprism.com</authorUrl>
+	<copyright>Copyright (C) 2010 Todor Iliev ( ITPrism.com ). All rights reserved.</copyright>
+	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+	<packager>ITPrism</packager>
+	<packagerurl>http://itprism.com</packagerurl>
+	<version>1.0</version>
+	<creationDate>February, 2013</creationDate>
+	<description>Gamification Library</description>
+	<files folder="files">
+		<file>index.html</file>
+		<file>errors.php</file>
+		<file>init.php</file>
+		<file>version.php</file>
+		<folder>controller</folder>
+		<folder>file</folder>
+	</files>
+</extension>

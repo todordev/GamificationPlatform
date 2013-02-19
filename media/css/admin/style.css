@@ -1,0 +1,39 @@
+@CHARSET "UTF-8";
+
+.icon-48-itp-groups 	    { background-image: url(../../images/groups_48.png); }
+.icon-48-itp-new-group 	{ background-image: url(../../images/group_new_48.png); }
+.icon-48-itp-edit-group 	{ background-image: url(../../images/group_edit_48.png); }
+
+.icon-48-itp-points 	    { background-image: url(../../images/points_48.png); }
+.icon-48-itp-new-points 	{ background-image: url(../../images/points_new_48.png); }
+.icon-48-itp-edit-points	{ background-image: url(../../images/points_edit_48.png); }
+.icon-48-itp-ranks 	    { background-image: url(../../images/ranks_48.png); }
+.icon-48-itp-new-rank 	{ background-image: url(../../images/rank_new_48.png); }
+.icon-48-itp-edit-rank 	{ background-image: url(../../images/rank_edit_48.png); }
+.icon-48-itp-levels 	    { background-image: url(../../images/levels_48.png); }
+.icon-48-itp-new-level 	{ background-image: url(../../images/level_new_48.png); }
+.icon-48-itp-edit-level	{ background-image: url(../../images/level_edit_48.png); }
+.icon-48-itp-badges 	    { background-image: url(../../images/badges_48.png); }
+.icon-48-itp-new-badge 	 { background-image: url(../../images/badge_new_48.png); }
+.icon-48-itp-edit-badge	 { background-image: url(../../images/badge_edit_48.png); }
+.icon-48-itp-tools 	    { background-image: url(../../images/tools_48.png); }
+.icon-48-itp-dashboard 	{ background-image: url(../../images/dashboard_48.png); }
+
+.icon-48-itp-import 	{ background-image: url(../../images/import_48.png); }
+
+.icon-32-itp-dashboard-back { background-image: url(../../images/dashboard_back_32.png); }
+.icon-32-itp-approve 	    { background-image: url(../../images/approve_32.png); }
+.icon-32-itp-disapprove	 { background-image: url(../../images/disapprove_32.png); }
+
+
+.crowdf-tools-form label {
+	display: block;
+}
+
+.jgrid span.approve {
+    background-image: url("../../images/approve_16.png");
+}
+
+.jgrid span.disapprove {
+    background-image: url("../../images/disapprove_16.png");
+}
