@@ -82,8 +82,8 @@ class GamificationModelBadge extends JModelAdmin {
     /**
      * Save data into the DB
      * 
-     * @param $data   The data about item
-     * @return     Item ID
+     * @param array   $data   The data about item
+     * @return     	  Item ID
      */
     public function save($data){
         

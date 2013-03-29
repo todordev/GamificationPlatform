@@ -32,6 +32,7 @@ class GamificationModelLevels extends JModelList {
                 'id', 'a.id',
                 'title', 'a.title',
                 'points', 'a.points',
+                'value', 'a.value',
                 'group_id', 'a.group_id'
             );
         }
@@ -53,12 +54,17 @@ class GamificationModelLevels extends JModelList {
         $params = JComponentHelper::getParams($this->option);
         $this->setState('params', $params);
         
-        // Load the filter state.
+        $value = $this->getUserStateFromRequest($this->context.'.filter.group_id', 'filter_group_id');
+        $this->setState('filter.group_id', $value);
+        
+        $value = $this->getUserStateFromRequest($this->context.'.filter.rank_id', 'filter_rank_id');
+        $this->setState('filter.rank_id', $value);
+        
         $value = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
         $this->setState('filter.search', $value);
 
         // List state information.
-        parent::populateState('a.title', 'asc');
+        parent::populateState('a.points', 'asc');
     }
 
     /**
@@ -98,14 +104,16 @@ class GamificationModelLevels extends JModelList {
         $query->select(
             $this->getState(
                 'list.select',
-                'a.id, a.title, a.points, a.value, a.group_id, '.
+                'a.id, a.title, a.points, a.value, a.group_id, a.rank_id, '.
                 'b.name AS group_name, ' .
-                'c.abbr AS points_type, c.title AS points_name'
+                'c.abbr AS points_type, c.title AS points_name, ' .
+                'd.title AS rank_title'
             )
         );
         $query->from($db->quoteName('#__gfy_levels').' AS a');
         $query->innerJoin($db->quoteName('#__gfy_groups').' AS b ON a.group_id = b.id');
         $query->innerJoin($db->quoteName('#__gfy_points').' AS c ON a.points_type = c.id');
+        $query->leftJoin($db->quoteName('#__gfy_ranks').' AS d ON a.rank_id = d.id');
 
         // Filter by search in title
         $search = $this->getState('filter.search');
@@ -119,6 +127,18 @@ class GamificationModelLevels extends JModelList {
             }
         }
 
+        // Filter by group id
+        $groupId = $this->getState('filter.group_id');
+        if (!empty($groupId)) {
+            $query->where('a.group_id = '.(int) $groupId);
+        }
+        
+        // Filter by rank id
+        $rankId = $this->getState('filter.rank_id');
+        if (!empty($rankId)) {
+            $query->where('a.rank_id = '.(int) $rankId);
+        }
+        
         // Add the list ordering clause.
         $orderString = $this->getOrderString();
         $query->order($db->escape($orderString));
@@ -130,6 +150,10 @@ class GamificationModelLevels extends JModelList {
         
         $orderCol   = $this->getState('list.ordering');
         $orderDirn  = $this->getState('list.direction');
+        
+        if ($orderCol == 'a.value') {
+            $orderCol = 'd.title '.$orderDirn.', a.value';
+        }
         
         return $orderCol.' '.$orderDirn;
     }

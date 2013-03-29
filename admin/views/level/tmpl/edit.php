@@ -32,6 +32,9 @@ defined('_JEXEC') or die;
                 <li><?php echo $this->form->getLabel('value'); ?>
                 <?php echo $this->form->getInput('value'); ?></li>
                 
+                <li><?php echo $this->form->getLabel('rank_id'); ?>
+                <?php echo $this->form->getInput('rank_id'); ?></li>
+                
                 <li><?php echo $this->form->getLabel('group_id'); ?>
                 <?php echo $this->form->getInput('group_id'); ?></li>
                 

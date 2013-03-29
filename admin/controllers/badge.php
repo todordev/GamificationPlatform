@@ -14,7 +14,7 @@
 // No direct access
 defined('_JEXEC') or die;
 
-jimport('gamification.controller.form');
+jimport('itprism.controller.form');
 
 /**
  * Gamification badge controller class.
@@ -24,7 +24,7 @@ jimport('gamification.controller.form');
  * @since		1.6
  */
 
-class GamificationControllerBadge extends GamificationControllerForm {
+class GamificationControllerBadge extends ITPrismControllerForm {
     
 	/**
      * Proxy for getModel.
@@ -88,8 +88,8 @@ class GamificationControllerBadge extends GamificationControllerForm {
             
             // Upload picture
             if(!empty($file['name'])) {
-                jimport("gamification.file.upload");
-                $upload   = new GamificationFileUpload($file);
+                jimport("itprism.file.upload");
+                $upload   = new ITPrismFileUpload($file);
                 $upload->validate();
             
                 $dest     = $model->imagesFolder . DIRECTORY_SEPARATOR . substr(JApplication::getHash(time()), 0, 16)."_badge.png";

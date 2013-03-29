@@ -14,7 +14,7 @@
 // No direct access
 defined('_JEXEC') or die;
 
-jimport('gamification.controller.admin');
+jimport('itprism.controller.admin');
 
 /**
  * Gamification ranks controller class.
@@ -23,7 +23,7 @@ jimport('gamification.controller.admin');
  * @subpackage	Gamification
  * @since		1.6
  */
-class GamificationControllerRanks extends GamificationControllerAdmin {
+class GamificationControllerRanks extends ITPrismControllerAdmin {
     
     /**
      * Proxy for getModel.

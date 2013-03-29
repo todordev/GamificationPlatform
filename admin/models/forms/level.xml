@@ -4,21 +4,21 @@
 
 		<field name="title" type="text" class="inputbox" 
 			label="COM_GAMIFICATION_TITLE"
-			description="COM_GAMIFICATION_RANK_TITLE_DESC"
+			description="COM_GAMIFICATION_LEVEL_TITLE_DESC"
 			size="40"   
 			filter="trim" 
 			required="true" />
 
         <field name="points" type="text" class="inputbox" 
             label="COM_GAMIFICATION_POINTS"
-            description="COM_GAMIFICATION_RANK_POINTS_DESC"
+            description="COM_GAMIFICATION_LEVEL_POINTS_DESC"
             filter="int" 
             required="true"
         />
         
         <field name="points_type" type="gfypoints" class="inputbox" 
             label="COM_GAMIFICATION_POINTS_TYPE"
-            description="COM_GAMIFICATION_RANK_POINTS_TYPE_DESC"
+            description="COM_GAMIFICATION_LEVEL_POINTS_TYPE_DESC"
             filter="int" 
             required="true"
         />
@@ -30,9 +30,15 @@
             required="true"
         />
             
+        <field name="rank_id" type="gfyranks" class="inputbox" 
+            label="COM_GAMIFICATION_RANK"
+            description="COM_GAMIFICATION_LEVEL_RANK_DESC"
+            filter="int" 
+        />
+        
         <field name="group_id" type="gfygroups" class="inputbox" 
             label="COM_GAMIFICATION_GROUP" 
-            description="COM_GAMIFICATION_RANK_GROUP_DESC" 
+            description="COM_GAMIFICATION_LEVEL_GROUP_DESC" 
             size="1" 
             filter="intval" 
             default="1"

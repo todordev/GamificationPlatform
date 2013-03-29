@@ -30,72 +30,83 @@ class GamificationHelper {
 	    
 	    JSubMenuHelper::addEntry(
 			JText::_('COM_GAMIFICATION_DASHBOARD'),
-			'index.php?option=com_gamification&view=dashboard',
+			'index.php?option='.self::$extension.'&view=dashboard',
 			$vName == 'dashboard'
 		);
 		
 		JSubMenuHelper::addEntry(
 			JText::_('COM_GAMIFICATION_GROUPS'),
-			'index.php?option=com_gamification&view=groups',
+			'index.php?option='.self::$extension.'&view=groups',
 			$vName == 'groups'
 		);
 		
 		JSubMenuHelper::addEntry(
 			JText::_('COM_GAMIFICATION_POINTS'),
-			'index.php?option=com_gamification&view=points',
+			'index.php?option='.self::$extension.'&view=points',
 			$vName == 'points'
 		);
 		
 		JSubMenuHelper::addEntry(
 			JText::_('COM_GAMIFICATION_BADGES'),
-			'index.php?option=com_gamification&view=badges',
+			'index.php?option='.self::$extension.'&view=badges',
 			$vName == 'badges'
 		);
 		
 		JSubMenuHelper::addEntry(
 			JText::_('COM_GAMIFICATION_RANKS'),
-			'index.php?option=com_gamification&view=ranks',
+			'index.php?option='.self::$extension.'&view=ranks',
 			$vName == 'ranks'
 		);
 		
 		JSubMenuHelper::addEntry(
 			JText::_('COM_GAMIFICATION_LEVELS'),
-			'index.php?option=com_gamification&view=levels',
+			'index.php?option='.self::$extension.'&view=levels',
 			$vName == 'levels'
+		);
+		
+		JSubMenuHelper::addEntry(
+			JText::_('COM_GAMIFICATION_PROFILES'),
+			'index.php?option='.self::$extension.'&view=profiles',
+			$vName == 'profiles'
 		);
 	}
     
-	/**
-	 * 
-	 * Load jQuery library and execute noConflict method.
-	 * @param object $params
-	 */
-	public static function loadJQuery($params) {
+	public static function getGroupsOptions() {
 	    
-	    if($params->get('load_jquery', 0)) {
+	    $db = JFactory::getDbo();
+	    $query = $db->getQuery(true);
+	    
+	    $query
+	        ->select("a.id AS value, a.name AS text")
+	        ->from($db->quoteName("#__gfy_groups") . " AS a");
 	        
-	        $doc = JFactory::getDocument();
+        $db->setQuery($query);
+        $results = $db->loadAssocList();
+        
+        if(!$results) {
+            $results = array();
+        }
+        
+        return $results;
+	}
+	
+	public static function getRanksOptions() {
+	    
+	    $db = JFactory::getDbo();
+	    $query = $db->getQuery(true);
+	    
+	    $query
+	        ->select("a.id AS value, a.title AS text")
+	        ->from($db->quoteName("#__gfy_ranks") . " AS a");
 	        
-	        switch($params->get('load_jquery', 0)) {
-	            
-	            case 1: // Localhost
-	                $doc->addScript('media/'.self::$extension.'/js/jquery-latest.min.js');
-	                break;
-	                
-	            case 2: // Google CDN
-//	                $doc->addScript('//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js');
-	                $doc->addScript('//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js');
-	                break;
-	                
-	            default: // Do not load the library
-	                break;
-	        }
-	        
-	        if( $params->get('jquery_noconflict', 0)) {
-                $doc->addScript('media/'.self::$extension.'/js/jquery-noconflict.js');
-	        }
-	        
-	    }
+        $db->setQuery($query);
+        $results = $db->loadAssocList();
+        
+        if(!$results) {
+            $results = array();
+        }
+        
+        return $results;
 	}
 	
 }

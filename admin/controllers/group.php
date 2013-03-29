@@ -14,7 +14,7 @@
 // No direct access
 defined('_JEXEC') or die;
 
-jimport('gamification.controller.form');
+jimport('itprism.controller.form');
 
 /**
  * Gamification group controller class.
@@ -23,11 +23,10 @@ jimport('gamification.controller.form');
  * @subpackage	Gamification
  * @since		1.6
  */
-class GamificationControllerGroup extends GamificationControllerForm {
+class GamificationControllerGroup extends ITPrismControllerForm {
     
     /**
      * Save an item
-     *
      */
     public function save(){
         
@@ -81,30 +80,5 @@ class GamificationControllerGroup extends GamificationControllerForm {
     
     }
     
-    protected function prepareRedirectLink($itemId = 0) {
-        
-        $task = $this->getTask();
-        $link = $this->defaultLink;
-        
-        // Prepare redirection
-        switch($task) {
-            case "apply":
-                $link .= "&view=".$this->view_item."&layout=edit";
-                if(!empty($itemId)) {
-                    $link .= "&id=" . (int)$itemId; 
-                }
-                break;
-                
-            case "save2new":
-                $link .= "&view=".$this->view_item."&layout=edit";
-                break;
-                
-            default:
-                $link .= "&view=".$this->view_list;
-                break;
-        }
-        
-        return $link;
-    }
     
 }

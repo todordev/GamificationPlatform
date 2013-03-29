@@ -19,7 +19,7 @@ defined('_JEXEC') or die;
         <form action="<?php echo JRoute::_('index.php?option=com_gamification'); ?>" method="post" name="adminForm" id="adminForm" class="form-validate" enctype="multipart/form-data">
             <div class="width-100 fltlft">
                 <fieldset class="adminform">
-                    <legend><?php echo JText::_("COM_GAMIFICATION_RANK_DATA_LEGEND"); ?></legend>
+                    <legend><?php echo JText::_("COM_GAMIFICATION_BADGE_DATA_LEGEND"); ?></legend>
                     
                     <ul class="adminformlist">
                         <li><?php echo $this->form->getLabel('title'); ?>

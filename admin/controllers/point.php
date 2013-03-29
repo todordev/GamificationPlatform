@@ -14,7 +14,7 @@
 // No direct access
 defined('_JEXEC') or die;
 
-jimport('gamification.controller.form');
+jimport('itprism.controller.form');
 
 /**
  * Gamification point controller class.
@@ -23,7 +23,7 @@ jimport('gamification.controller.form');
  * @subpackage	Gamification
  * @since		1.6
  */
-class GamificationControllerPoint extends GamificationControllerForm {
+class GamificationControllerPoint extends ITPrismControllerForm {
     
     /**
      * Save an item

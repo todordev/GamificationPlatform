@@ -25,18 +25,6 @@ class GamificationModelGroup extends JModelAdmin {
     protected $text_prefix = 'COM_GAMIFICATION';
     
     /**
-     * Constructor.
-     *
-     * @param   array   $config An optional associative array of configuration settings.
-     *
-     * @see     JController
-     * @since   1.6
-     */
-    public function __construct($config = array()){
-        parent::__construct($config);
-    }
-    
-    /**
      * Returns a reference to the a Table object, always creating it.
      *
      * @param   type    The table type to instantiate

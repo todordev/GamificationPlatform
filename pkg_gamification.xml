@@ -2,7 +2,7 @@
 <extension type="package" version="2.5" method="upgrade">
 	<name>Gamification Platform Package</name>
 	<packagename>gamification</packagename>
-	<creationDate>February, 2013</creationDate>
+	<creationDate>31 March, 2013</creationDate>
 	<author>Todor Iliev</author>
 	<authorEmail>todor@itprism.com</authorEmail>
 	<authorUrl>http://itprism.com</authorUrl>
@@ -13,10 +13,10 @@
 	<packager>Todor Iliev</packager>
 	<packagerurl>http://itprism.com</packagerurl>
 	<description><![CDATA[
-	<p><a href="#" target="_blank">Gamification Platform</a> is an extension that provides ability to gemify many Joomla! extensions and your website.</p>
+	<p><a href="http://itprism.com/free-joomla-extensions/ecommerce-gamification/game-mechanics-platform" target="_blank">Gamification Platform</a> is an extension that provides ability to gemify many Joomla! extensions and your website.</p>
 	<p>Invest in the extension and help for its improvement. You can <a href="http://itprism.com/sponsorship" title="Sponsoring" target="_blank">sponsor the extension via SMS, PayPal or Bitcoin</a>.</p>
 	<p><a href="http://itprism.com/" target="_blank">Subscribe for the newsletter</a> to receive <strong>gifts</strong>, <strong>discount codes</strong>, information about <strong>updates</strong> and information about <strong>new ITPrism extensions</strong>.</p>
-	<p>Please, <a href="" target="_blank">vote for the extension</a> on Joomla! Extensions Directory</p>
+	<p>Please, <a href="#" target="_blank">vote for the extension</a> on Joomla! Extensions Directory</p>
 	]]></description>
 	<files folder="packages">
 		<file type="component" 	id="com_gamification" >com_gamification.zip</file>

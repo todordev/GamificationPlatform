@@ -14,7 +14,7 @@
 // No direct access
 defined('_JEXEC') or die;
 
-jimport('gamification.controller.admin');
+jimport('itprism.controller.admin');
 
 /**
  * Gamification projects controller
@@ -22,7 +22,7 @@ jimport('gamification.controller.admin');
  * @package     ITPrism Components
  * @subpackage  Gamification
   */
-class GamificationControllerPoints extends GamificationControllerAdmin {
+class GamificationControllerPoints extends ITPrismControllerAdmin {
     
     /**
      * Proxy for getModel.

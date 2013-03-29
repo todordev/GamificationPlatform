@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="plugin" group="crowdfunding" method="upgrade">
+    <name>PLG_CROWDFUNDING_GAMIFICATION</name>
+    <author>Todor Iliev</author>
+    <copyright>Copyright (C) 2010 Todor Iliev ( ITPrism.com ). All rights reserved.</copyright>
+    <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+    <authorEmail>todor@itprism.com</authorEmail>
+    <authorUrl>http://itprism.com</authorUrl>
+    <version>1.0</version>
+    <creationDate>31 March, 2013</creationDate>
+    <description>PLG_CROWDFUNDING_GAMIFICATION_DESC</description>
+    
+    <languages  folder="language">
+        <language tag="en-GB">en-GB/en-GB.plg_crowdfunding_gamification.ini</language>
+        <language tag="en-GB">en-GB/en-GB.plg_crowdfunding_gamification.sys.ini</language>
+    </languages> 
+    
+    <files>
+        <filename plugin="gamification">gamification.php</filename>
+        <filename>index.html</filename>
+    </files>
+    
+    <help url="PLG_CROWDFUNDING_GAMIFICATION_HELP_URL"/>
+    
+    <config>
+        <fields name="params">
+            <fieldset name="basic" addfieldpath="/administrator/components/com_gamification/models/fields" >
+                <field name="points_id" type="gfypoints" default="" label="PLG_CROWDFUNDING_GAMIFICATION_POINTS" description="PLG_CROWDFUNDING_GAMIFICATION_POINTS_DESC" />
+                
+                <field name="activy_provider" type="list" default="gamification_platform" label="PLG_CROWDFUNDING_GAMIFICATION_ACTIVITY_PROVIDER" description="PLG_CROWDFUNDING_GAMIFICATION_ACTIVITY_PROVIDER_DESC">
+                    <option value="none">PLG_CROWDFUNDING_GAMIFICATION_NONE</option>
+	                <option value="social_community">Social Community</option>
+	                <option value="gamification_platform">Gamification Platform</option>
+	            </field>
+	            <field name="notification_provider" type="list" default="gamification_platform" label="PLG_CROWDFUNDING_GAMIFICATION_NOTIFICATION_PROVIDER" description="PLG_CROWDFUNDING_GAMIFICATION_NOTIFICATION_PROVIDER_DESC">
+	                <option value="none">PLG_CROWDFUNDING_GAMIFICATION_NONE</option>
+	                <option value="social_community">Social Community</option>
+	                <option value="gamification_platform">Gamification Platform</option>
+	            </field>
+	            
+            </fieldset>
+        </fields>
+    </config>
+		
+</extension>

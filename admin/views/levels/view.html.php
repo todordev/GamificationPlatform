@@ -44,6 +44,9 @@ class GamificationViewLevels extends JView {
         $this->listDirn   = $listDirn;
         $this->saveOrder  = $saveOrder;
         
+        $this->groups     = GamificationHelper::getGroupsOptions();
+        $this->ranks      = GamificationHelper::getRanksOptions();
+        
         // Add submenu
         GamificationHelper::addSubmenu($this->getName());
         

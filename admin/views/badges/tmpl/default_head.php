@@ -21,7 +21,9 @@ defined('_JEXEC') or die;
 	<th class="title">
 	     <?php echo JHtml::_('grid.sort',  'COM_GAMIFICATION_TITLE', 'a.title', $this->listDirn, $this->listOrder); ?>
 	</th>
-	<th width="20%" class="center"><?php echo JText::_('COM_GAMIFICATION_POINTS'); ?></th>
+	<th width="20%" class="center">
+	    <?php echo JHtml::_('grid.sort',  'COM_GAMIFICATION_POINTS', 'a.points', $this->listDirn, $this->listOrder); ?>
+    </th>
 	<th width="20%"><?php echo JText::_('COM_GAMIFICATION_GROUP'); ?></th>
     <th width="10%"><?php echo JHtml::_('grid.sort',  'JSTATUS', 'a.published', $this->listDirn, $this->listOrder); ?></th>
     <th width="3%" class="nowrap"><?php echo JHtml::_('grid.sort',  'JGRID_HEADING_ID', 'a.id', $this->listDirn, $this->listOrder); ?></th>

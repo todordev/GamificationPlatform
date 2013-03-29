@@ -22,6 +22,19 @@ defined('_JEXEC') or die;
             <button type="submit"><?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
             <button type="button" onclick="document.id('filter_search').value='';this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
         </div>
+        
+        <div class="filter-select fltrt">
+			<select name="filter_group_id" class="inputbox" onchange="this.form.submit()">
+				<option value=""> - <?php echo JText::_('COM_GAMIFICATION_SELECT_GROUP');?> - </option>
+				<?php echo JHtml::_('select.options', $this->groups, 'value', 'text', $this->state->get('filter.group_id'));?>
+			</select>
+			
+			<select name="filter_rank_id" class="inputbox" onchange="this.form.submit()">
+				<option value=""> - <?php echo JText::_('COM_GAMIFICATION_SELECT_RANK');?> - </option>
+				<?php echo JHtml::_('select.options', $this->ranks, 'value', 'text', $this->state->get('filter.rank_id'));?>
+			</select>
+        </div>
+        
     </fieldset>
     
     <table class="adminlist">

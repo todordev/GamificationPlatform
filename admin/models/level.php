@@ -63,10 +63,21 @@ class GamificationModelLevel extends JModelAdmin {
      * @since   1.6
      */
     protected function loadFormData(){
+        
+        $app = JFactory::getApplication();
+        /** @var $app JAdministrator **/
+        
         // Check the session for previously entered form data.
-        $data = JFactory::getApplication()->getUserState($this->option.'.edit.level.data', array());
+        $data = $app->getUserState($this->option.'.edit.level.data', array());
+        
         if(empty($data)){
             $data = $this->getItem();
+            
+            // Prime some default values.
+			if ($this->getState($this->getName().'.id') == 0) {
+				$data->set('group_id', $app->input->getInt('group_id', $app->getUserState($this->option.'.levels.filter.group_id')));
+				$data->set('rank_id', $app->input->getInt('rank_id', $app->getUserState($this->option.'.levels.filter.rank_id')));
+			}
         }
         
         return $data;
@@ -85,6 +96,7 @@ class GamificationModelLevel extends JModelAdmin {
         $points       = JArrayHelper::getValue($data, "points");
         $pointsType   = JArrayHelper::getValue($data, "points_type");
         $value        = JArrayHelper::getValue($data, "value");
+        $rankId       = JArrayHelper::getValue($data, "rank_id");
         $groupId      = JArrayHelper::getValue($data, "group_id");
         
         // Load a record from the database
@@ -95,6 +107,7 @@ class GamificationModelLevel extends JModelAdmin {
         $row->set("points",      $points);
         $row->set("points_type", $pointsType);
         $row->set("value",       $value);
+        $row->set("rank_id",     $rankId);
         $row->set("group_id",    $groupId);
         
         $row->store();

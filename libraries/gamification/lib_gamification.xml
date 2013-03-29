@@ -10,14 +10,16 @@
 	<packager>ITPrism</packager>
 	<packagerurl>http://itprism.com</packagerurl>
 	<version>1.0</version>
-	<creationDate>February, 2013</creationDate>
+	<creationDate>31 March, 2013</creationDate>
 	<description>Gamification Library</description>
 	<files folder="files">
+	    <folder>interface</folder>
+	    <file>activity.php</file>
 		<file>index.html</file>
-		<file>errors.php</file>
 		<file>init.php</file>
+		<file>notification.php</file>
+		<file>points.php</file>
+		<file>profile.php</file>
 		<file>version.php</file>
-		<folder>controller</folder>
-		<folder>file</folder>
 	</files>
 </extension>
