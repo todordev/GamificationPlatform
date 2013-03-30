@@ -1,11 +1,11 @@
 <?php
 /**
  * @package      ITPrism Components
- * @subpackage   SocialCommunity
+ * @subpackage   Gamification Platform
  * @author       Todor Iliev
  * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * SocialCommunity is free software. This version may have been modified pursuant
+ * Gamification Platform is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
@@ -22,13 +22,13 @@ jimport('joomla.application.component.modeladmin');
  * @author Todor Iliev
  * @todo gets the destination dir from parameters
  */
-class SocialCommunityModelProfile extends JModelAdmin {
+class GamificationModelProfile extends JModelAdmin {
     
     /**
      * @var     string  The prefix to use with controller messages.
      * @since   1.6
      */
-    protected $text_prefix = 'COM_SOCIALCOMMUNITY';
+    protected $text_prefix = 'COM_GAMIFICATION';
     
     /**
      * Returns a reference to the a Table object, always creating it.
@@ -39,7 +39,7 @@ class SocialCommunityModelProfile extends JModelAdmin {
      * @return  JTable  A database object
      * @since   1.6
      */
-    public function getTable($type = 'Profile', $prefix = 'SocialCommunityTable', $config = array()){
+    public function getTable($type = 'Profile', $prefix = 'GamificationTable', $config = array()){
         return JTable::getInstance($type, $prefix, $config);
     }
     
@@ -176,7 +176,7 @@ class SocialCommunityModelProfile extends JModelAdmin {
         // Remove IDs what allready exists in the table of profiles
         $query
             ->select("a.id")
-            ->from($db->quoteName("#__itpsc_profiles") . " AS a")
+            ->from($db->quoteName("#__gfy_profiles") . " AS a")
             ->where("a.id IN (".implode(",", $pks).")");
             
         $db->setQuery($query);

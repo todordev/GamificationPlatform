@@ -4,9 +4,9 @@
 
 		<field name="name" type="text" class="inputbox" 
 			size="40"  
-			label="COM_SOCIALCOMMUNITY_NAME" 
+			label="COM_GAMIFICATION_NAME" 
 			filter="trim" 
-			description="COM_SOCIALCOMMUNITY_NAME_DESC" 
+			description="COM_GAMIFICATION_NAME_DESC" 
 			required="true" />
 
 		
@@ -17,7 +17,7 @@
         <field name="bio" type="textarea" 
             class="inputbox"
             rows="10" 
-            label="COM_SOCIALCOMMUNITY_BIO" description="COM_SOCIALCOMMUNITY_BIO_DESC" 
+            label="COM_GAMIFICATION_BIO" description="COM_GAMIFICATION_BIO_DESC" 
             />
             
 	</fieldset>

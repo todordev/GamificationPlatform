@@ -64,8 +64,8 @@ class GamificationViewProfiles extends JView {
         
         // Set toolbar items for the page
         JToolBarHelper::title(JText::_('COM_GAMIFICATION_PROFILES'), 'itp-profiles');
-        JToolBarHelper::editList('profile.edit');
-        JToolBarHelper::divider();
+//        JToolBarHelper::editList('profile.edit');
+//        JToolBarHelper::divider();
         JToolBarHelper::custom('profiles.backToDashboard', "itp-dashboard-back", "", JText::_("COM_GAMIFICATION_DASHBOARD"), false);
         
     }

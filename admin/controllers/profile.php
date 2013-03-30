@@ -1,11 +1,11 @@
 <?php
 /**
  * @package      ITPrism Components
- * @subpackage   SocialCommunity
+ * @subpackage   Gamification Platform
  * @author       Todor Iliev
  * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * SocialCommunity is free software. This version may have been modified pursuant
+ * Gamification Platform is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
@@ -14,22 +14,22 @@
 // No direct access
 defined('_JEXEC') or die;
 
-jimport('socialcommunity.controller.form');
+jimport('itprism.controller.form');
 
 /**
- * Quote controller class.
+ * Gamification Platform Profile controller class.
  *
  * @package		ITPrism Components
- * @subpackage	SocialCommunity
+ * @subpackage	Gamification Platform
  * @since		1.6
  */
-class SocialCommunityControllerProfile extends SocialCommunityControllerForm {
+class GamificationControllerProfile extends ITPrismControllerForm {
     
 	/**
      * Proxy for getModel.
      * @since   1.6
      */
-    public function getModel($name = 'Profile', $prefix = 'SocialCommunityModel', $config = array('ignore_request' => true)) {
+    public function getModel($name = 'Profile', $prefix = 'GamificationModel', $config = array('ignore_request' => true)) {
         $model = parent::getModel($name, $prefix, $config);
         return $model;
     }
@@ -50,7 +50,7 @@ class SocialCommunityControllerProfile extends SocialCommunityControllerForm {
         // Get form data 
         $data    = $app->input->post->get('jform', array(), 'array');
         $model   = $this->getModel();
-        /** @var $model SocialCommunityModelProfile **/
+        /** @var $model GamificationModelProfile **/
         
         $form    = $model->getForm($data, false);
         /** @var $form JForm **/
@@ -82,10 +82,10 @@ class SocialCommunityControllerProfile extends SocialCommunityControllerForm {
             $itemId = $model->save($validData);
         }catch(Exception $e){
             JLog::add($e->getMessage());
-            throw new Exception(JText::_('COM_SOCIALCOMMUNITY_ERROR_SYSTEM'));
+            throw new Exception(JText::_('COM_GAMIFICATION_ERROR_SYSTEM'));
         }
         
-        $msg  = JText::_('COM_SOCIALCOMMUNITY_PROFILE_SAVED');
+        $msg  = JText::_('COM_GAMIFICATION_PROFILE_SAVED');
         $link = $this->prepareRedirectLink($itemId);
         
         $this->setRedirect(JRoute::_($link, false), $msg);

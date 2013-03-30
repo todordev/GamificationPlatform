@@ -19,9 +19,7 @@ defined('_JEXEC') or die;
 	?>
 	<tr class="row<?php echo $i % 2; ?>">
         <td><?php echo JHtml::_('grid.id', $i, $item->id); ?></td>
-		<td>
-			<a href="<?php echo JRoute::_("index.php?option=com_gamification&view=profile&layout=edit&id=".$item->id);?>"><?php echo $item->name; ?></a>
-		</td>
+		<td><?php echo $item->name; ?></td>
 		<td class="center"><?php echo $item->registerDate; ?></td>
         <td class="center"><?php echo JHtml::_('grid.boolean', $i, !$item->block); ?></td>
         <td class="center"><?php echo $item->id;?></td>
