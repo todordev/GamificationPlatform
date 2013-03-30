@@ -61,7 +61,7 @@ class GamificationVersion {
      * 
      * @var string
      */
-    public $releaseDate= '28-February-2013';
+    public $releaseDate= '31-March-2013';
     
     /**
      * License

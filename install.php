@@ -60,12 +60,12 @@ class pkg_gamificationInstallerScript {
         
         if(strcmp($type, "install") == 0) {
             
-            if(!defined("COM_GAMIFICATION_COMPONENT_ADMINISTRATOR")) {
-                define("COM_GAMIFICATION_COMPONENT_ADMINISTRATOR", JPATH_ADMINISTRATOR . DIRECTORY_SEPARATOR . "components" . DIRECTORY_SEPARATOR ."com_gamification");
+            if(!defined("COM_GAMIFICATION_PATH_COMPONENT_ADMINISTRATOR")) {
+                define("COM_GAMIFICATION_PATH_COMPONENT_ADMINISTRATOR", JPATH_ADMINISTRATOR . DIRECTORY_SEPARATOR . "components" . DIRECTORY_SEPARATOR ."com_gamification");
             }
             
             // Register Component helpers
-            JLoader::register("GamificationInstallHelper", ITPMETA_COMPONENT_ADMINISTRATOR.DIRECTORY_SEPARATOR."helpers".DIRECTORY_SEPARATOR."installer.php");
+            JLoader::register("GamificationInstallHelper", COM_GAMIFICATION_PATH_COMPONENT_ADMINISTRATOR.DIRECTORY_SEPARATOR."helpers".DIRECTORY_SEPARATOR."installer.php");
         
             jimport('joomla.filesystem.path');
             jimport('joomla.filesystem.folder');
@@ -74,7 +74,7 @@ class pkg_gamificationInstallerScript {
             $params             = JComponentHelper::getParams("com_gamification");
             $this->imagesFolder = JFolder::makeSafe($params->get("images_directory", "images/gamification"));
             $this->imagesPath   = JPath::clean( JPATH_SITE.DIRECTORY_SEPARATOR.$this->imagesFolder );
-            $this->bootstrap    = JPath::clean( JPATH_SITE.DIRECTORY_SEPARATOR."media".DIRECTORY_SEPARATOR."com_gamification".DIRECTORY_SEPARATOR."css".DIRECTORY_SEPARATOR."bootstrap.min.css" );
+            $this->bootstrap    = JPath::clean( JPATH_SITE.DIRECTORY_SEPARATOR."media".DIRECTORY_SEPARATOR."com_gamification".DIRECTORY_SEPARATOR."css".DIRECTORY_SEPARATOR. "admin".DIRECTORY_SEPARATOR."bootstrap.min.css" );
         
             $style = '<style>'.file_get_contents($this->bootstrap).'</style>';
             echo $style;
@@ -158,6 +158,11 @@ class pkg_gamificationInstallerScript {
             
         }
         
-        echo JText::sprintf("COM_GAMIFICATION_MESSAGE_REVIEW_SAVE_SETTINGS", JRoute::_("index.php?option=com_vipquotes"));
+        echo JText::sprintf("COM_GAMIFICATION_MESSAGE_REVIEW_SAVE_SETTINGS", JRoute::_("index.php?option=com_gamification"));
+        
+        jimport("itprism.version");
+        if(!class_exists("ITPrismVersion")) {
+            echo JText::_("COM_GAMIFICATION_MESSAGE_INSTALL_ITPRISM_LIBRARY");
+        }
     }
 }
