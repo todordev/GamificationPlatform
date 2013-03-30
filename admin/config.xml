@@ -1,18 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
-	<fieldset name="global" label="COM_GAMIFICATION_COMMON" description="COM_GAMIFICATION_COMMON_PARAMS">
-		<field name="load_jquery" type="list" default="0" label="COM_GAMIFICATION_LOAD_JQUERY" description="COM_GAMIFICATION_LOAD_JQUERY_DESC">
-            <option value="0">COM_GAMIFICATION_NONE</option>
-            <option value="1">COM_GAMIFICATION_JQUERY_LOCAL</option>
-            <option value="2">COM_GAMIFICATION_JQUERY_GOOGLE</option>
-        </field>
-        
-        <field name="jquery_noconflict" type="list" default="0" label="COM_GAMIFICATION_JQUERY_NOCONFLICT" description="COM_GAMIFICATION_JQUERY_NOCONFLICT_DESC">
-            <option value="0">JNO</option>
-            <option value="1">JYES</option>
-        </field>
-	</fieldset>
-
     <fieldset name="images" label="COM_GAMIFICATION_IMAGES_TITLE" description="COM_GAMIFICATION_IMAGES_PARAMS">
         <field name="images_directory" type="text" default="images/gamification" size="50" label="COM_GAMIFICATION_IMAGES_DIRECTORY" description="COM_GAMIFICATION_IMAGES_DIRECTORY_DESC" />
     </fieldset>
