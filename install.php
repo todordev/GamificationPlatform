@@ -153,13 +153,25 @@ class pkg_gamificationInstallerScript {
             }
             GamificationInstallHelper::addRow($title, $result, $info);
             
+            // Display result about verification of installed ITPrism Library
+            jimport("itprism.version");
+            $title  = JText::_("COM_GAMIFICATION_ITPRISM_LIBRARY");
+            $info   = "";
+            if( !class_exists("ITPrismVersion") ) {
+                $info   = JText::_("COM_GAMIFICATION_ITPRISM_LIBRARY_DOWNLOAD");
+                $result = array("type" => "important", "text" => JText::_("JNO"));
+            } else {
+                $result = array("type" => "success", "text" => JText::_("JYES"));
+            }
+            GamificationInstallHelper::addRow($title, $result, $info);
+            
             // Installed extensions
             
-            CrowdFundingInstallHelper::addRowHeading(JText::_("COM_GAMIFICATION_INSTALLED_EXTENSIONS"));
+            GamificationInstallHelper::addRowHeading(JText::_("COM_GAMIFICATION_INSTALLED_EXTENSIONS"));
             
             // CrowdFunding Library
             $result = array("type" => "success"  , "text" => JText::_("COM_GAMIFICATION_INSTALLED"));
-            CrowdFundingInstallHelper::addRow(JText::_("COM_GAMIFICATION_GAMIFICATION_LIBRARY"), $result, JText::_("COM_GAMIFICATION_LIBRARY"));
+            GamificationInstallHelper::addRow(JText::_("COM_GAMIFICATION_GAMIFICATION_LIBRARY"), $result, JText::_("COM_GAMIFICATION_LIBRARY"));
             
             // End table
             GamificationInstallHelper::endTable();
