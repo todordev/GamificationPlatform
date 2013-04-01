@@ -32,6 +32,10 @@ defined('_JEXEC') or die;
                     <td><?php echo $this->version->releaseDate?></td>
                 </tr>
                 <tr>
+                    <td><?php echo JText::_("COM_GAMIFICATION_ITPRISM_LIBRARY_VERSION");?></td>
+                    <td><?php echo $this->itprismVersion;?></td>
+                </tr>
+                <tr>
                     <td><?php echo JText::_("COM_GAMIFICATION_COPYRIGHT");?></td>
                     <td><?php echo $this->version->copyright;?></td>
                 </tr>

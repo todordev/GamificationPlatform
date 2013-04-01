@@ -29,6 +29,15 @@ class GamificationViewDashboard extends JView {
         
         $this->version = new GamificationVersion();
         
+        // Load ITPrism library version
+        jimport("itprism.version");
+        if(!class_exists("ITPrismVersion")) {
+            $this->itprismVersion = JText::_("COM_GAMIFICATION_ITPRISM_LIBRARY_DOWNLOAD");
+        } else {
+            $itprismVersion       = new ITPrismVersion();
+            $this->itprismVersion = $itprismVersion->getShortVersion();
+        }
+        
         // Add submenu
         GamificationHelper::addSubmenu($this->getName());
         

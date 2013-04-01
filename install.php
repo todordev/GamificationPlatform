@@ -81,7 +81,7 @@ class pkg_gamificationInstallerScript {
             
             // Create images folder
             if(!is_dir($this->imagesPath)){
-                GamificationInstallHelper::createImagesFolder($this->imagesPath);
+                GamificationInstallHelper::createFolder($this->imagesPath);
             }
             
             // Start table with the information
@@ -152,6 +152,14 @@ class pkg_gamificationInstallerScript {
                 $result = array("type" => "success", "text" => JText::_("JON"));
             }
             GamificationInstallHelper::addRow($title, $result, $info);
+            
+            // Installed extensions
+            
+            CrowdFundingInstallHelper::addRowHeading(JText::_("COM_GAMIFICATION_INSTALLED_EXTENSIONS"));
+            
+            // CrowdFunding Library
+            $result = array("type" => "success"  , "text" => JText::_("COM_GAMIFICATION_INSTALLED"));
+            CrowdFundingInstallHelper::addRow(JText::_("COM_GAMIFICATION_GAMIFICATION_LIBRARY"), $result, JText::_("COM_GAMIFICATION_LIBRARY"));
             
             // End table
             GamificationInstallHelper::endTable();
