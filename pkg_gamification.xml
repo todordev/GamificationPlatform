@@ -21,6 +21,7 @@
 	<files folder="packages">
 		<file type="component" 	id="com_gamification" >com_gamification.zip</file>
 		<file type="library" 	id="lib_gamification" >lib_gamification.zip</file>
+		<file type="library"    id="lib_itprism" >lib_itprism.zip</file>
 	</files>
 
 	<scriptfile>install.php</scriptfile>

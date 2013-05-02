@@ -11,6 +11,9 @@
  * other free or open source software licenses.
  */
 
+// no direct access
+defined('_JEXEC') or die;
+
 /**
  * These class contains methods using for upgrading the extension
  */

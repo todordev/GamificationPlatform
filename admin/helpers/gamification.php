@@ -11,6 +11,9 @@
  * other free or open source software licenses.
  */
 
+// no direct access
+defined('_JEXEC') or die;
+
 /**
  * It is Gamification helper class
  *
