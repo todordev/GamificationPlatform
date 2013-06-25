@@ -1,0 +1,54 @@
+@CHARSET "UTF-8";
+
+.gfy-ntfy {
+	display: block;
+	background-image: url(../../images/icon_bell.png);
+	background-position: left;
+	background-repeat: no-repeat;
+	width:34px;
+	height: 34px;
+	position: relative;
+}
+
+#gfy-ntfy-number {
+	font-size: xx-small;
+	border-radius: 9px;
+   padding: 0 5px;
+   position: absolute;
+   bottom: 0px;
+   right:0px;
+   
+}
+
+#gfy-ntfy-content {
+  position: absolute;
+	bottom: 0px;
+	left: 50%;
+}
+
+.gfy-note-tiny {
+	border-bottom: thin solid #eaeaea;
+}
+
+.gfy-note-tiny a {
+	display: block !important;
+	font-size: x-small !important;
+	text-decoration: none !important;
+}
+
+.gfy-note-tiny:hover {
+	background-color: #f5f5f5;
+}
+
+.gfy-notification {
+	border-bottom: thin solid #eaeaea;
+}
+
+.gfy-notification-view .gfy-notification, .gfy-notifications .gfy-notification  {
+	padding: 10px;
+	font-size: medium;
+}
+
+.gfy-note-notread {
+	background: #fffaf0;
+}

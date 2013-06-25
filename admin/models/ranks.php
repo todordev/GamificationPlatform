@@ -1,7 +1,7 @@
 <?php
 /**
- * @package      ITPrism Components
- * @subpackage   Gamification
+ * @package      Gamification Platform
+ * @subpackage   Components
  * @author       Todor Iliev
  * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
@@ -111,7 +111,7 @@ class GamificationModelRanks extends JModelList {
         );
         $query->from($db->quoteName('#__gfy_ranks').' AS a');
         $query->innerJoin($db->quoteName('#__gfy_groups').' AS b ON a.group_id = b.id');
-        $query->innerJoin($db->quoteName('#__gfy_points').' AS c ON a.points_type = c.id');
+        $query->innerJoin($db->quoteName('#__gfy_points').' AS c ON a.points_id = c.id');
 
         // Filter by state
         $state = $this->getState('filter.state');

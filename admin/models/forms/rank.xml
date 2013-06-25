@@ -13,14 +13,12 @@
             label="COM_GAMIFICATION_POINTS"
             description="COM_GAMIFICATION_RANK_POINTS_DESC"
             filter="int" 
-            required="true"
         />
         
-        <field name="points_type" type="gfypoints" class="inputbox" 
+        <field name="points_id" type="gfypoints" class="inputbox" 
             label="COM_GAMIFICATION_POINTS_TYPE"
             description="COM_GAMIFICATION_RANK_POINTS_TYPE_DESC"
             filter="int" 
-            required="true"
         />
         
         <field name="image" type="file" class="inputbox" 
@@ -33,7 +31,7 @@
             description="COM_GAMIFICATION_RANK_GROUP_DESC" 
             size="1" 
             filter="intval" 
-            default="1"
+            required="true"
         />
         
 		<field name="published" type="list" class="inputbox" 

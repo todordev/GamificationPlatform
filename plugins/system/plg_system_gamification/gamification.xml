@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="plugin" group="system" method="upgrade">
+    <name>PLG_SYSTEM_GAMIFICATION</name>
+    <author>Todor Iliev</author>
+    <copyright>Copyright (C) 2010 Todor Iliev ( ITPrism.com ). All rights reserved.</copyright>
+    <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+    <authorEmail>todor@itprism.com</authorEmail>
+    <authorUrl>http://itprism.com</authorUrl>
+    <version>1.1</version>
+    <creationDate>23 June, 2013</creationDate>
+	<description>PLG_SYSTEM_GAMIFICATION_DESC</description>
+	
+	<languages folder="language">
+        <language tag="en-GB">en-GB/en-GB.plg_system_gamification.ini</language>
+        <language tag="en-GB">en-GB/en-GB.plg_system_gamification.sys.ini</language>
+    </languages> 
+	
+	<files>
+		<filename plugin="gamification">gamification.php</filename>
+		<filename>index.html</filename>
+	</files>
+	
+	<help url="PLG_SYSTEM_GAMIFICATION_HELP_URL" />
+		
+	<config>
+        <fields name="params">
+            <fieldset name="basic" addfieldpath="/administrator/components/com_gamification/models/fields">
+                <field name="points" type="gfypoints" label="PLG_SYSTEM_GAMIFICATION_POINTS" description="PLG_SYSTEM_GAMIFICATION_POINTS_DESC" />
+                
+                <field name="enable_leveling" type="radio" default="0" label="PLG_SYSTEM_GAMIFICATION_LEVEL_ENABLE_LEVELING" description="PLG_SYSTEM_GAMIFICATION_LEVEL_ENABLE_LEVELING_DESC" >
+                   <option value="0">JNO</option>
+                   <option value="1">JYES</option>
+                </field>
+                
+            </fieldset>
+        </fields>
+    </config>
+    
+</extension>

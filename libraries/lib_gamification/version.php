@@ -40,7 +40,7 @@ class GamificationVersion {
      * 
      * @var integer
      */
-    public $devLevel  = '0';
+    public $devLevel  = '1';
     
     /**
      * Release Type
@@ -61,7 +61,7 @@ class GamificationVersion {
      * 
      * @var string
      */
-    public $releaseDate= '31-March-2013';
+    public $releaseDate= '23-June-2013';
     
     /**
      * License

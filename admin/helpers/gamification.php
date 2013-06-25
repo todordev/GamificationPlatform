@@ -1,7 +1,7 @@
 <?php
 /**
- * @package      ITPrism Components
- * @subpackage   Gamification
+ * @package      Gamification Platform
+ * @subpackage   Components
  * @author       Todor Iliev
  * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
@@ -72,6 +72,12 @@ class GamificationHelper {
 			'index.php?option='.self::$extension.'&view=profiles',
 			$vName == 'profiles'
 		);
+		
+		JSubMenuHelper::addEntry(
+        	JText::_('COM_GAMIFICATION_PLUGINS'),
+        	'index.php?option=com_plugins&view=plugins&filter_search=gamification',
+        	$vName == 'plugins'
+        );
 	}
     
 	public static function getGroupsOptions() {

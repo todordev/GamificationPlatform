@@ -1,7 +1,7 @@
 <?php
 /**
  * @package      Gamification Platform
- * @subpackage   Gamification Component
+ * @subpackage   Components Component
  * @author       Todor Iliev
  * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL

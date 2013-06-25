@@ -13,14 +13,12 @@
             label="COM_GAMIFICATION_POINTS"
             description="COM_GAMIFICATION_BADGE_POINTS_DESC"
             filter="int" 
-            required="true"
         />
         
-        <field name="points_type" type="gfypoints" class="inputbox" 
+        <field name="points_id" type="gfypoints" class="inputbox" 
             label="COM_GAMIFICATION_POINTS_TYPE"
             description="COM_GAMIFICATION_BADGE_POINTS_TYPE_DESC"
             filter="int" 
-            required="true"
         />
         
         <field name="image" type="file" class="inputbox" 
@@ -28,12 +26,19 @@
             description="COM_GAMIFICATION_BADGE_IMAGE_DESC"
         />
             
+        <field name="title" type="text" class="inputbox" 
+            label="COM_GAMIFICATION_NOTE"
+            description="COM_GAMIFICATION_NOTE_DESC"
+            size="40"   
+            filter="trim" 
+         />
+            
         <field name="group_id" type="gfygroups" class="inputbox" 
             label="COM_GAMIFICATION_GROUP" 
             description="COM_GAMIFICATION_BADGE_GROUP_DESC" 
             size="1" 
             filter="intval" 
-            default="1"
+            required="true"
         />
         
 		<field name="published" type="list" class="inputbox" 

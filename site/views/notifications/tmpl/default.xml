@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+    <layout title="COM_GAMIFICATION_VIEW_NOTIFICATIONS">
+        <message>
+            <![CDATA[COM_GAMIFICATION_VIEW_NOTIFICATIONS_DESC]]>
+        </message>
+    </layout>
+</metadata>

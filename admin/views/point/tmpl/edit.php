@@ -1,7 +1,7 @@
 <?php
 /**
- * @package      ITPrism Components
- * @subpackage   Gamification
+ * @package      Gamification Platform
+ * @subpackage   Components
  * @author       Todor Iliev
  * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
@@ -23,11 +23,11 @@ defined('_JEXEC') or die;
                 <li><?php echo $this->form->getLabel('title'); ?>
                 <?php echo $this->form->getInput('title'); ?></li>
                 
-                <li><?php echo $this->form->getLabel('abbr'); ?>
-                <?php echo $this->form->getInput('abbr'); ?></li>
-                
                 <li><?php echo $this->form->getLabel('group_id'); ?>
                 <?php echo $this->form->getInput('group_id'); ?></li>
+                
+                <li><?php echo $this->form->getLabel('abbr'); ?>
+                <?php echo $this->form->getInput('abbr'); ?></li>
                 
                 <li><?php echo $this->form->getLabel('published'); ?>
                 <?php echo $this->form->getInput('published'); ?></li>

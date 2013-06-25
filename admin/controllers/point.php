@@ -1,7 +1,7 @@
 <?php
 /**
- * @package      ITPrism Components
- * @subpackage   Gamification
+ * @package      Gamification Platform
+ * @subpackage   Components
  * @author       Todor Iliev
  * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
@@ -14,16 +14,16 @@
 // No direct access
 defined('_JEXEC') or die;
 
-jimport('itprism.controller.form');
+jimport('itprism.controller.form.backend');
 
 /**
  * Gamification point controller class.
  *
- * @package		ITPrism Components
- * @subpackage	Gamification
+ * @package      Gamification Platform
+ * @subpackage   Components
  * @since		1.6
  */
-class GamificationControllerPoint extends ITPrismControllerForm {
+class GamificationControllerPoint extends ITPrismControllerFormBackend {
     
     /**
      * Save an item
@@ -36,10 +36,13 @@ class GamificationControllerPoint extends ITPrismControllerForm {
         $app = JFactory::getApplication();
         /** @var $app JAdministrator **/
         
-        $msg     = "";
-        $link    = "";
         $data    = $app->input->post->get('jform', array(), 'array');
         $itemId  = JArrayHelper::getValue($data, "id");
+        
+        $redirectData = array(
+            "task" => $this->getTask(),
+            "id"   => $itemId
+        );
         
         $model   = $this->getModel();
         /** @var $model GamificationModelPoint **/
@@ -56,56 +59,21 @@ class GamificationControllerPoint extends ITPrismControllerForm {
         
         // Check for errors.
         if($validData === false){
-            $this->defaultLink .= "&view=".$this->view_item."&layout=edit";
-            if($itemId) {
-                $this->defaultLink .= "&id=" . $itemId;
-            } 
-            
-            $this->setMessage($model->getError(), "notice");
-            $this->setRedirect(JRoute::_($this->defaultLink, false));
+            $this->displayNotice($form->getErrors(), $redirectData);
             return;
         }
             
-        try{
+        try {
             $itemId = $model->save($validData);
-        } catch ( Exception $e ){
+        } catch (Exception $e) {
             
             JLog::add($e->getMessage());
             throw new Exception(JText::_('COM_GAMIFICATION_ERROR_SYSTEM'));
         
         }
         
-        $msg  = JText::_('COM_GAMIFICATION_POINTS_SAVED');
-        $link = $this->prepareRedirectLink($itemId);
-        
-        $this->setRedirect(JRoute::_($link, false), $msg);
+        $this->displayMessage(JText::_('COM_GAMIFICATION_POINTS_SAVED'), $redirectData);
     
-    }
-    
-    protected function prepareRedirectLink($itemId = 0) {
-        
-        $task = $this->getTask();
-        $link = $this->defaultLink;
-        
-        // Prepare redirection
-        switch($task) {
-            case "apply":
-                $link .= "&view=".$this->view_item."&layout=edit";
-                if(!empty($itemId)) {
-                    $link .= "&id=" . (int)$itemId; 
-                }
-                break;
-                
-            case "save2new":
-                $link .= "&view=".$this->view_item."&layout=edit";
-                break;
-                
-            default:
-                $link .= "&view=".$this->view_list;
-                break;
-        }
-        
-        return $link;
     }
     
     

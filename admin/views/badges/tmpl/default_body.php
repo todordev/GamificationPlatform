@@ -1,7 +1,7 @@
 <?php
 /**
- * @package      ITPrism Components
- * @subpackage   Gamification
+ * @package      Gamification Platform
+ * @subpackage   Components
  * @author       Todor Iliev
  * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
@@ -20,8 +20,17 @@ defined('_JEXEC') or die;
 	<tr class="row<?php echo $i % 2; ?>">
         <td><?php echo JHtml::_('grid.id', $i, $item->id); ?></td>
 		<td><a href="<?php echo JRoute::_("index.php?option=com_gamification&view=badge&layout=edit&id=".$item->id);?>" ><?php echo $item->title; ?></a></td>
-		<td class="center hasTip" title="<?php echo $item->points_name;?>"><?php echo $item->points; ?> [ <span><?php echo $item->points_type;?></span> ]</td>
-		<td class="center"><a href="<?php echo JRoute::_("index.php?option=com_gamification&view=group&layout=edit&id=".$item->group_id);?>" ><?php echo $item->group_name;?></a></td>
+		<?php if($item->points_type) {?>
+		<td class="center hasTip" title="<?php echo $item->points_name;?>">
+		    <?php echo $item->points; ?> [ <span><?php echo $item->points_type;?></span> ]
+	    </td>
+	    <?php } else { ?>
+	    <td class="center">---</td>
+	    <?php }?>
+	    
+		<td class="center">
+		    <a href="<?php echo JRoute::_("index.php?option=com_gamification&view=group&layout=edit&id=".$item->group_id);?>" ><?php echo $item->group_name;?></a>
+	    </td>
         <td class="center"><?php echo JHtml::_('jgrid.published', $item->published, $i, "badges."); ?></td>
         <td class="center"><?php echo $item->id;?></td>
 	</tr>

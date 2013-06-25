@@ -1,7 +1,7 @@
 <?php
 /**
- * @package      ITPrism Components
- * @subpackage   Gamification
+ * @package      Gamification Platform
+ * @subpackage   Components
  * @author       Todor Iliev
  * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
@@ -94,7 +94,7 @@ class GamificationModelLevel extends JModelAdmin {
         $id           = JArrayHelper::getValue($data, "id");
         $title        = JArrayHelper::getValue($data, "title");
         $points       = JArrayHelper::getValue($data, "points");
-        $pointsType   = JArrayHelper::getValue($data, "points_type");
+        $pointsId     = JArrayHelper::getValue($data, "points_id");
         $value        = JArrayHelper::getValue($data, "value");
         $rankId       = JArrayHelper::getValue($data, "rank_id");
         $groupId      = JArrayHelper::getValue($data, "group_id");
@@ -105,7 +105,7 @@ class GamificationModelLevel extends JModelAdmin {
         
         $row->set("title",       $title);
         $row->set("points",      $points);
-        $row->set("points_type", $pointsType);
+        $row->set("points_id",   $pointsId);
         $row->set("value",       $value);
         $row->set("rank_id",     $rankId);
         $row->set("group_id",    $groupId);

@@ -13,30 +13,45 @@
 
 defined('JPATH_PLATFORM') or die;
 
+/**
+ * This class contains methods used for gamifying users. 
+ * 
+ * @todo It is not completed. Complete it!
+ */
 class GamificationProfile {
 
-    protected $db    = null;
-    protected $id    = null;
+    public $id            = null;
+    public $name          = null;
+    public $username      = null;
+    
+    protected $db         = null;
 
-    public function __construct($db){
-        $this->db = $db;
+    /**
+     * Initialize user profile and his gamification units.
+     * 
+     * @param integer $id
+     * @param array $options     This options are used for specifying some things for loading.
+     */
+    public function __construct($id = 0, $options = array()){
+        $this->db = JFactory::getDbo();
+        
+        if(!empty($id)) {
+            $this->load($id, $options);
+        }
     }
     
-    public function load($id = null) {
-        
-        $db     = JFactory::getDbo();
-        /** @var $db JDatabaseMySQLi **/
+    public function load($id = null, $options = array()) {
         
         // Create a new query object.
-        $query  = $db->getQuery(true);
+        $query  = $this->db->getQuery(true);
         
         $query
-            ->select("id")
-            ->from($db->quoteName("#__gfy_profiles"))
-            ->where("id = ".(int)$id);
+            ->select("a.id, a.name, a.username")
+            ->from($this->db->quoteName("#__users"))
+            ->where("a.id = ".(int)$id);
             
-        $db->setQuery($query);
-        $result = $db->loadAssoc();
+        $this->db->setQuery($query);
+        $result = $this->db->loadAssoc();
         
         if(!empty($result)) {
             $this->bind($result);
@@ -46,22 +61,10 @@ class GamificationProfile {
     
     public function bind($data) {
         
-        $this->id   = JArrayHelper::getValue($data, "id");
+        foreach($data as $key => $value) {
+            $this->$key = $value;
+        }
         
     }
     
-    public function save() {
-        
-        $db     = JFactory::getDbo();
-        /** @var $db JDatabaseMySQLi **/
-        
-        // Create a new query object.
-        $query  = $db->getQuery(true);
-        $query
-            ->insert($db->quoteName("#__gfy_profiles"))
-            ->set($db->quoteName("id")  ." = " . (int)$this->id);
-            
-        $db->setQuery($query);
-        $db->query();
-    }
 }

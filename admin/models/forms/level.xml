@@ -13,21 +13,18 @@
             label="COM_GAMIFICATION_POINTS"
             description="COM_GAMIFICATION_LEVEL_POINTS_DESC"
             filter="int" 
-            required="true"
         />
         
-        <field name="points_type" type="gfypoints" class="inputbox" 
+        <field name="points_id" type="gfypoints" class="inputbox" 
             label="COM_GAMIFICATION_POINTS_TYPE"
             description="COM_GAMIFICATION_LEVEL_POINTS_TYPE_DESC"
             filter="int" 
-            required="true"
         />
         
         <field name="value" type="text" class="inputbox" 
             label="COM_GAMIFICATION_VALUE"
             description="COM_GAMIFICATION_LEVEL_VALUE_DESC"
             filter="int" 
-            required="true"
         />
             
         <field name="rank_id" type="gfyranks" class="inputbox" 
@@ -41,7 +38,7 @@
             description="COM_GAMIFICATION_LEVEL_GROUP_DESC" 
             size="1" 
             filter="intval" 
-            default="1"
+            required="true"
         />
         
 		<field name="id" type="text" class="readonly"

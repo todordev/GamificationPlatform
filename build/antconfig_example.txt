@@ -1,0 +1,5 @@
+cfg.name=userideas
+cfg.versionDir=v1.0
+cfg.buildDir=packages
+cfg.sourceDir=/path/...
+cfg.pkgDir=/path/.../pkg_userideas

@@ -1,7 +1,7 @@
 <?php
 /**
- * @package      ITPrism Components
- * @subpackage   Gamification
+ * @package      Gamification Platform
+ * @subpackage   Components
  * @author       Todor Iliev
  * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
@@ -14,17 +14,17 @@
 // No direct access
 defined('_JEXEC') or die;
 
-jimport('itprism.controller.form');
+jimport('itprism.controller.form.backend');
 
 /**
  * Gamification rank controller class.
  *
- * @package		ITPrism Components
- * @subpackage	Gamification
+ * @package      Gamification Platform
+ * @subpackage   Components
  * @since		1.6
  */
 
-class GamificationControllerRank extends ITPrismControllerForm {
+class GamificationControllerRank extends ITPrismControllerFormBackend {
     
 	/**
      * Proxy for getModel.
@@ -56,10 +56,12 @@ class GamificationControllerRank extends ITPrismControllerForm {
         /** @var $app JAdministrator **/
         
         $data    = $app->input->post->get('jform', array(), 'array');
-        $file    = $app->input->files->get('jform', array(), 'array');
-        $file     = JArrayHelper::getValue($file, "image");
-        
         $itemId  = JArrayHelper::getValue($data, "id");
+        
+        $redirectData = array(
+            "task" => $this->getTask(),
+            "id"   => $itemId
+        );
         
         $model   = $this->getModel();
         /** @var $model GamificationModelRank **/
@@ -76,18 +78,18 @@ class GamificationControllerRank extends ITPrismControllerForm {
         
         // Check for errors
         if($validData === false){
-            
-            $this->defaultLink .= "&view=".$this->view_item.$this->getRedirectToItemAppend($itemId);
-            
-            $this->setMessage($model->getError(), "notice");
-            $this->setRedirect(JRoute::_($this->defaultLink, false));
+            $this->displayNotice($form->getErrors(), $redirectData);
             return ;
         }
             
         try{
             
+            $file    = $app->input->files->get('jform', array(), 'array');
+            $file    = JArrayHelper::getValue($file, "image");
+            
             // Upload picture
             if(!empty($file['name'])) {
+                
                 jimport("itprism.file.upload");
                 $upload   = new ITPrismFileUpload($file);
                 $upload->validate();
@@ -102,16 +104,17 @@ class GamificationControllerRank extends ITPrismControllerForm {
             }
             
             $itemId = $model->save($validData);
-                
-        } catch (Exception $e){
+            
+            $redirectData["id"] = $itemId;
+            
+        } catch (Exception $e) {
             
             JLog::add($e->getMessage());
             throw new Exception(JText::_('COM_GAMIFICATION_ERROR_SYSTEM'));
         
         }
         
-        $link = $this->prepareRedirectLink($itemId);
-        $this->setRedirect(JRoute::_($link, false), JText::_('COM_GAMIFICATION_RANK_SAVED'));
+        $this->displayMessage(JText::_('COM_GAMIFICATION_RANK_SAVED'), $redirectData);
     
     }
     
@@ -124,32 +127,33 @@ class GamificationControllerRank extends ITPrismControllerForm {
         
         $itemId  = $app->input->get->get('id', 0, 'int');
         
+        $redirectData = array(
+            "view"   => "rank",
+            "layout" => "edit",
+            "id"     => $itemId
+        );
+        
         $model   = $this->getModel();
         /** @var $model GamificationModelRank **/
         
         // Check for errors
         if(!$itemId){
-            
-            $this->defaultLink .= "&view=".$this->view_item.$this->getRedirectToItemAppend($itemId);
-            
-            $this->setMessage(JText::_("COM_GAMIFICATION_INVALID_ITEM"), "notice");
-            $this->setRedirect(JRoute::_($this->defaultLink, false));
+            $this->displayNotice(JText::_("COM_GAMIFICATION_INVALID_ITEM"), $redirectData);
             return ;
         }
             
-        try{
+        try {
             
             $model->removeImage($itemId);
                 
-        } catch (Exception $e){
+        } catch (Exception $e) {
             
             JLog::add($e->getMessage());
             throw new Exception(JText::_('COM_GAMIFICATION_ERROR_SYSTEM'));
         
         }
         
-        $link = $this->prepareRedirectLink($itemId, "id", "rank");
-        $this->setRedirect(JRoute::_($link, false), JText::_('COM_GAMIFICATION_IMAGE_DELETED'));
+        $this->displayMessage(JText::_('COM_GAMIFICATION_RANK_SAVED'), $redirectData);
         
     }
     

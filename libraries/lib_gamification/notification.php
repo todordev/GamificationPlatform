@@ -29,13 +29,19 @@ class GamificationNotification {
     public $user_id;
     
     /**
-     * Driver of the database
+     * Database driver
      * @var JDatabaseMySQLi
      */
     protected $db;
     
-	public function __construct($db) {
-        $this->db = $db;
+	public function __construct($id = 0) {
+        $this->db = JFactory::getDbo();
+        
+        if(!empty($id)) {
+            $this->load($id);
+        } else {
+            $this->init();
+        }
     }
     
     /**
@@ -43,10 +49,6 @@ class GamificationNotification {
      * @param integer $id
      */
     public function load($id) {
-        
-        if(!is_array($id))  {
-            return;
-        }
         
         // Create a new query object.
         $query  = $this->db->getQuery(true);
@@ -147,13 +149,33 @@ class GamificationNotification {
         }
     }
     
+    
+    public function remove() {
+        
+        if(!$this->id) {
+            throw new Exception(JText::_("Invalid notification."), ITPrismErrors::CODE_WARNING);
+        }
+        
+        // Create a new query object.
+        $query  = $this->db->getQuery(true);
+        $query
+            ->delete($this->db->quoteName("#__gfy_notifications"))
+            ->where($this->db->quoteName("id") ." = " . (int)$this->id);
+        
+        $this->db->setQuery($query);
+        $this->db->query();
+        
+        $this->init();
+        
+    }
+    
     /**
      * 
      * Initialize main variables, create a new notification 
      * and send it to user.
      * 
      * @param string $note
-     * @param integer $userId
+     * @param integer $userId    This is the receiver of the message.
      */
     public function send($note = null, $userId = null) {
         
@@ -164,10 +186,14 @@ class GamificationNotification {
             $this->user_id = (int)$userId;
         }
         
-        // Initialize read, id, create properties
+        // Initialize the properties read, id, created. 
         $this->init();
         
         $this->store();
+    }
+    
+    public function setUserId($userId) {
+        $this->user_id = $userId;
     }
     
 }

@@ -13,185 +13,46 @@
 
 defined('JPATH_PLATFORM') or die;
 
-jimport('gamification.interface.table');
+JLoader::register("GamificationTablePoint", JPATH_ADMINISTRATOR .DIRECTORY_SEPARATOR."components".DIRECTORY_SEPARATOR."com_gamification".DIRECTORY_SEPARATOR."tables".DIRECTORY_SEPARATOR."point.php");
 
-class GamificationPoints implements GamificationTable {
+class GamificationPoints extends GamificationTablePoint {
 
-    /**
-     * Users points ID
-     * @var integer
-     */
-    public $id;
+    protected static $instances = array();
     
-    public $title;
-    public $abbr;
-    public $user_id;
-    public $points_id;
-    public $points  = 0;
-    
-    /**
-     * Driver of the database
-     * @var JDatabaseMySQLi
-     */
-    protected $db;
-    
-    public function __construct($db) {
-        $this->db = $db;
+    public function __construct($id = 0) {
+        
+        // Set database driver
+        $db = JFactory::getDbo();
+        parent::__construct($db);
+        
+        if(!empty($id)) {
+            $this->load($id);
+        }
     }
     
-    /**
-     * 
-     * Load user points using some indexs - user_id, abbr or points_id.
-     * @param array $keys
-     */
-    public function load($keys) {
+    public static function getInstance($id = 0)  {
         
-        if(!is_array($keys))  {
-            return;
-        }
-        
-        $userId   = JArrayHelper::getValue($keys, "user_id");
-        $pointsId = JArrayHelper::getValue($keys, "points_id");
-        $abbr     = JArrayHelper::getValue($keys, "abbr");
-        
-        if(!empty($pointsId)) {
-            $result = $this->loadByPointsId($userId, $pointsId);
-        } else if(!empty($abbr)) {
-            $result = $this->loadByAbbrId($userId, $abbr);
-        } else {
-            return;
-        }
-        
-        if(!empty($result)) { // Set values to variables
-            $this->bind($result);
-        } 
-        
-    }
-    
-    /**
-     * 
-     * Laod user points by userId and pointsId
-     * @param integer $userId
-     * @param integer $pointsId
-     */
-    protected function loadByPointsId($userId, $pointsId) {
-
-        // Create a new query object.
-        $query  = $this->db->getQuery(true);
-        $query
-            ->select("a.id AS points_id, a.title, a.abbr")
-            ->from($this->db->quoteName("#__gfy_points") . ' AS a')
-            ->where("a.id   = ". (int)$pointsId);
-        
-        $this->db->setQuery($query);
-        $result = $this->db->loadAssoc();
-        
-        $resultUserPoints = $this->getUserPoints($userId, $pointsId);
-        
-        if(!empty($resultUserPoints)) {
-            $result = array_merge($result, $resultUserPoints);
-        } else {
-            $result["user_id"] = (int)$userId;
-        }
-        
-        return $result;
-    }
-    
-	/**
-     * 
-     * Laod user points by user ID and abbreviation
-     * @param integer $userId
-     * @param string  $abbr
-     */
-    protected function loadByAbbrId($userId, $abbr) {
-
-        // Create a new query object.
-        $query  = $this->db->getQuery(true);
-        $query
-            ->select("a.id AS points_id, a.title, a.abbr")
-            ->from($this->db->quoteName("#__gfy_points") . ' AS a')
-            ->where("a.abbr   = ". $this->db->quote($abbr));
-        
-        $this->db->setQuery($query);
-        $result = $this->db->loadAssoc();
-        
-        // Get points ID
-        $pointsId = JArrayHelper::getValue($result, "points_id");
-        $resultUserPoints = $this->getUserPoints($userId, $pointsId);
-        
-        if(!empty($resultUserPoints)) {
-            $result = array_merge($result, $resultUserPoints);
-        } else {
-            $result["user_id"] = (int)$userId;
-        }
-        
-        return $result;
-    }
-    
-    protected function getUserPoints($userId, $pointsId) {
-        
-        $query  = $this->db->getQuery(true);
-        $query
-            ->select("a.id, a.points, a.user_id")
-            ->from($this->db->quoteName("#__gfy_userpoints") . ' AS a')
-            ->where("a.user_id=" .(int)$userId . " AND a.points_id = ". (int)$pointsId);
+        // If it is array with user id and currency id, 
+        // I will generate a new array index.
+        if(!is_numeric($id)) {
+            $keys = array(
+                "abbr" => $id
+            );
             
-        $this->db->setQuery($query);
-        return $this->db->loadAssoc();
-        
-    }
-    
-    public function bind($data) {
-        
-        foreach($data as $key => $value) {
-            $this->$key = $value;
-        }
-        
-    }
-    
-    public function increase($points) {
-        $this->points += abs($points);
-    }
-    
-    protected function updateObject() {
-        
-        // Create a new query object.
-        $query  = $this->db->getQuery(true);
-        
-        $query
-            ->update("#__gfy_userpoints")
-            ->set("points = " . (int)$this->points)
-            ->where("id   = " .(int)$this->id);
-            
-        $this->db->setQuery($query);
-        $this->db->query();
-    }
-    
-    protected function insertObject() {
-        
-        // Create a new query object.
-        $query  = $this->db->getQuery(true);
-        
-        $query
-            ->insert("#__gfy_userpoints")
-            ->set("points    = " .(int)$this->points)
-            ->set("user_id   = " .(int)$this->user_id)
-            ->set("points_id = " .(int)$this->points_id);
-            
-        $this->db->setQuery($query);
-        $this->db->query();
-        
-        return $this->db->insertid();
-        
-    }
-    
-    public function store() {
-        
-        if(!$this->id) {
-            $this->id = $this->insertObject();
+            $index = JApplication::stringURLSafe($id);
         } else {
-            $this->updateObject();
+            $keys  = $id;
+            $index = $id;
         }
+        
+        if (empty(self::$instances[$index])){
+            $item = new GamificationPoints($keys);
+            self::$instances[$index] = $item;
+        }
+    
+        return self::$instances[$index];
     }
+    
+    
 }
 

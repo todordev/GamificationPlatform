@@ -4,7 +4,7 @@
 
 		<field name="title" type="text" class="inputbox" 
 			label="COM_GAMIFICATION_TITLE"
-			description="COM_GAMIFICATION_POINTS_TITLE_DESC"
+			description="COM_GAMIFICATION_TITLE_DESC"
 			size="40"   
 			filter="trim" 
 			required="true" />
@@ -20,7 +20,7 @@
             description="COM_GAMIFICATION_GROUP_DESC" 
             size="1" 
             filter="intval" 
-            default="1"
+            required="true"
         />
         
 		<field name="published" type="list" class="inputbox" 

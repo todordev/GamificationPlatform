@@ -1,7 +1,7 @@
 <?php
 /**
- * @package      ITPrism Components
- * @subpackage   Gamification
+ * @package      Gamification Platform
+ * @subpackage   Components
  * @author       Todor Iliev
  * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
@@ -14,17 +14,17 @@
 // No direct access
 defined('_JEXEC') or die;
 
-jimport('itprism.controller.form');
+jimport('itprism.controller.form.backend');
 
 /**
  * Gamification rank controller class.
  *
- * @package		ITPrism Components
- * @subpackage	Gamification
+ * @package      Gamification Platform
+ * @subpackage   Components
  * @since		1.6
  */
 
-class GamificationControllerLevel extends ITPrismControllerForm {
+class GamificationControllerLevel extends ITPrismControllerFormBackend {
     
 	/**
      * Proxy for getModel.
@@ -42,11 +42,16 @@ class GamificationControllerLevel extends ITPrismControllerForm {
         
         JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
         
-        $app = JFactory::getApplication();
+        $app     = JFactory::getApplication();
         /** @var $app JAdministrator **/
         
         $data    = $app->input->post->get('jform', array(), 'array');
         $itemId  = JArrayHelper::getValue($data, "id");
+        
+        $redirectData = array(
+            "task" => $this->getTask(),
+            "id"   => $itemId
+        );
         
         $model   = $this->getModel();
         /** @var $model GamificationModelRank **/
@@ -63,27 +68,24 @@ class GamificationControllerLevel extends ITPrismControllerForm {
         
         // Check for errors
         if($validData === false){
-            
-            $this->defaultLink .= "&view=".$this->view_item.$this->getRedirectToItemAppend($itemId);
-            
-            $this->setMessage($model->getError(), "notice");
-            $this->setRedirect(JRoute::_($this->defaultLink, false));
+            $this->displayNotice($form->getErrors(), $redirectData);
             return ;
         }
             
-        try{
+        try {
             
             $itemId = $model->save($validData);
+            
+            $redirectData["id"] = $itemId;
                 
-        } catch (Exception $e){
+        } catch (Exception $e) {
             
             JLog::add($e->getMessage());
             throw new Exception(JText::_('COM_GAMIFICATION_ERROR_SYSTEM'));
         
         }
         
-        $link = $this->prepareRedirectLink($itemId);
-        $this->setRedirect(JRoute::_($link, false), JText::_('COM_GAMIFICATION_LEVEL_SAVED'));
+        $this->displayMessage(JText::_('COM_GAMIFICATION_LEVEL_SAVED'), $redirectData);
     
     }
     

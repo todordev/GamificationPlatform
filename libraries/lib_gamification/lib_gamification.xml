@@ -9,8 +9,8 @@
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
 	<packager>ITPrism</packager>
 	<packagerurl>http://itprism.com</packagerurl>
-	<version>1.0</version>
-	<creationDate>31 March, 2013</creationDate>
+	<version>1.1</version>
+	<creationDate>30 June, 2013</creationDate>
 	<description>Gamification Library</description>
 	<files folder="files">
 	    <folder>interface</folder>

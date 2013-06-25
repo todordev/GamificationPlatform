@@ -1,7 +1,7 @@
 /**
  * JavaScript Helper
  */
-var CrowdFundingHelper = {
+var GamificationHelper = {
 		
 	displayMessageSuccess: function(title, text) {
 		

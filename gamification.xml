@@ -6,8 +6,8 @@
 	<authorUrl>http://itprism.com</authorUrl>
 	<copyright>Copyright (C) 2010 Todor Iliev ( ITPrism.com )</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html</license>
-	<version>1.0</version>
-	<creationDate>31 March, 2013</creationDate>
+	<version>1.1</version>
+	<creationDate>30 June, 2013</creationDate>
 	<description>COM_GAMIFICATION_DESCRIPTION</description>
 
 	<install>
