@@ -9,10 +9,14 @@ Changelog
 ---------
 
 ###v1.1
+
 * Added Notifications
+* Added Activities
 * Added modules
     * Gamification Bar
     * Gamification Profile
+    * Gamification Leaderboard
+    * Gamification Activities
 * Added plugins
     * System - Gamification
     * User - Gamification

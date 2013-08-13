@@ -21,7 +21,7 @@ class GamificationActivity {
      */
     public $id;
     
-    public $info     = "";
+    public $info;
     public $image;
     public $url;
     public $created;
@@ -33,8 +33,14 @@ class GamificationActivity {
      */
     protected $db;
     
-	public function __construct($db) {
-        $this->db = $db;
+	public function __construct($id = 0) {
+        $this->db = JFactory::getDbo();
+        
+        if(!empty($id)) {
+            $this->load($id);
+        } else {
+            $this->init();
+        }
     }
     
     /**
@@ -42,10 +48,6 @@ class GamificationActivity {
      * @param integer $id
      */
     public function load($id) {
-        
-        if(!is_array($id))  {
-            return;
-        }
         
         // Create a new query object.
         $query  = $this->db->getQuery(true);

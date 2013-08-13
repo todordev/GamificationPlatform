@@ -56,7 +56,11 @@ class JFormFieldGfyPoints extends JFormFieldList {
         $db->setQuery($query);
         $options = $db->loadObjectList();
         
-//         array_unshift($options, JHTML::_('select.option', '', '-- '.JText::_('COM_GAMIFICATION_SELECT_POINTS').' --', 'value', 'text'));
+        
+        $displayRoot = (!empty($this->element["display_root"])) ? true : false;
+        if($displayRoot) {
+            array_unshift($options, JHtml::_('select.option', '', JText::_('COM_GAMIFICATION_SELECT_POINTS'), 'value', 'text'));
+        }
         
         // Merge any additional options in the XML definition.
         $options = array_merge(parent::getOptions(), $options);

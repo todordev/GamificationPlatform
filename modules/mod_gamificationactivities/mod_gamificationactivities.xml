@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="3.1" client="site" method="upgrade">
+	<name>MOD_GAMIFICATIONACTIVITIES</name>
+	<author>Todor Iliev</author>
+	<copyright>Copyright (C) 2010 Todor Iliev ( ITPrism.com )</copyright>
+	<license>http://www.gnu.org/copyleft/gpl.html</license>
+	<authorEmail>todor@itprism.com</authorEmail>
+	<authorUrl>http://itprism.com</authorUrl>
+	<version>1.1</version>
+	<creationDate>14 August, 2013</creationDate>
+	<description>MOD_GAMIFICATIONACTIVITIES_DESCRIPTION</description>
+
+	<languages folder="language">
+		<language tag="en-GB">en-GB/en-GB.mod_gamificationactivities.ini</language>
+		<language tag="en-GB">en-GB/en-GB.mod_gamificationactivities.sys.ini</language>
+	</languages>
+
+	<help url="MOD_CROWDFUNDINGINFO_HELP_URL" />
+
+	<files>
+		<filename module="mod_gamificationactivities">mod_gamificationactivities.php</filename>
+		<folder>tmpl</folder>
+		<filename>index.html</filename>
+	</files>
+
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+
+                <field name="name_linkable" type="radio"
+                    label="MOD_GAMIFICATIONACTIVITIES_NAME_LINKABLE" 
+                    description="MOD_GAMIFICATIONACTIVITIES_NAME_LINKABLE_DESC"
+                    default="1">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                
+                <field name="results_number" type="text"
+                    label="MOD_GAMIFICATIONACTIVITIES_RESULTS_NUMBER" 
+                    description="MOD_GAMIFICATIONACTIVITIES_RESULTS_NUMBER_DESC"
+                    default="10" />
+                    
+			</fieldset>
+
+            <fieldset name="integration" label="MOD_GAMIFICATIONACTIVITIES_INTEGRATION_OPTIONS" >
+                <field name="integrate" type="list"
+                    label="MOD_GAMIFICATIONACTIVITIES_INTEGRATE" 
+                    description="MOD_GAMIFICATIONACTIVITIES_INTEGRATE_DESC"
+                    default="none">
+                    <option value="none">MOD_GAMIFICATIONACTIVITIES_NONE</option>
+                    <option value="social_community">MOD_GAMIFICATIONACTIVITIES_SOCIAL_COMMUNITY</option>
+                    <option value="kunena">MOD_GAMIFICATIONACTIVITIES_KUNENA</option>
+                    <option value="gravatar">MOD_GAMIFICATIONACTIVITIES_GRAVATAR</option>
+                    <option value="jomsocial">MOD_GAMIFICATIONACTIVITIES_JOMSOCIAL</option>
+                    <option value="community_builder">MOD_GAMIFICATIONACTIVITIES_COMMUNITY_BUILDER</option>
+                </field>
+                
+                <field name="avatar_size" type="text"
+                    label="MOD_GAMIFICATIONACTIVITIES_AVATAR_SIZE" 
+                    description="MOD_GAMIFICATIONACTIVITIES_AVATAR_SIZE_DESC"
+                    default="50" />
+            </fieldset>
+
+            <fieldset name="advanced">
+                <field name="moduleclass_sfx" type="text"
+                    label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL" description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+
+                <field name="cache" type="list" default="1"
+                    label="COM_MODULES_FIELD_CACHING_LABEL" description="COM_MODULES_FIELD_CACHING_DESC">
+                    <option value="1">JGLOBAL_USE_GLOBAL</option>
+                    <option value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
+                </field>
+                <field name="cache_time" type="text" default="900"
+                    label="COM_MODULES_FIELD_CACHE_TIME_LABEL" description="COM_MODULES_FIELD_CACHE_TIME_DESC" />
+
+                <field name="cachemode" type="hidden" default="static">
+                    <option value="static"></option>
+                </field>
+            </fieldset>
+		</fields>
+	</config>
+</extension>

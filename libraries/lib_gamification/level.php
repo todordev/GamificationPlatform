@@ -17,6 +17,7 @@ JLoader::register("GamificationTableLevel", JPATH_ADMINISTRATOR .DIRECTORY_SEPAR
 
 class GamificationLevel extends GamificationTableLevel {
 
+    protected $rank;
     protected static $instances = array();
     
     public function __construct($id = 0) {
@@ -40,6 +41,25 @@ class GamificationLevel extends GamificationTableLevel {
         return self::$instances[$id];
     }
     
+    /**
+     *
+     * Get the rank where the level is positioned.
+     *
+     * @return mixed NULL or GamificationRank
+     */
+    public function getRank() {
+    
+        if(!$this->rank_id) {
+            return null;
+        }
+    
+        if(!$this->rank) {
+            jimport("gamification.rank");
+            $this->rank = GamificationRank::getInstance($this->rank_id);
+        }
+    
+        return $this->rank;
+    }
     
 }
 

@@ -13,6 +13,9 @@
 
 defined('JPATH_PLATFORM') or die;
 
+/**
+ * This class contains methods that are used for managing user levels.
+ */
 class GamificationUserLevels {
 
     /**
@@ -29,60 +32,94 @@ class GamificationUserLevels {
      */
     protected $db;
     
-    public function __construct($id) {
+    protected static $instances = array();
+    
+    public function __construct($keys = array()) {
         
         $this->db = JFactory::getDbo();
-        if(!empty($id)) {
-            $this->load($id);
+        if(!empty($keys)) {
+            $this->load($keys);
         }
         
     }
     
     /**
+     * Initialize user levels
+     *
+     * @param  array $keys
+     * @return mixed NULL or GamificationUserLevels
+     */
+    public static function getInstance(array $keys)  {
+    
+        $userId   = JArrayHelper::getValue($keys, "user_id");
+        $groupId  = JArrayHelper::getValue($keys, "group_id");
+    
+        $index    = md5($userId.":".$groupId);
+    
+        if (empty(self::$instances[$index])){
+            $item = new GamificationUserLevels($keys);
+            self::$instances[$index] = $item;
+        }
+    
+        return self::$instances[$index];
+    }
+    
+    
+    /**
      * Load all user levels and set them to group index.
      * Every user can have only one level for a group.
      * 
-     * @param array $id  User Id
+     * @param array $keys  
      */
-    public function load($id) {
+    public function load($keys) {
         
-        if(!$id)  {
-            return null;
-        }
+        $userId   = JArrayHelper::getValue($keys, "user_id");
+        $groupId  = JArrayHelper::getValue($keys, "group_id");
         
         // Create a new query object.
         $query  = $this->db->getQuery(true);
         $query
             ->select("a.level_id, a.user_id, a.group_id")
             ->select("b.title, b.points, b.value, b.published, b.points_id, b.rank_id, b.group_id")
-            ->from($this->db->quoteName("#__gfy_userlevels") . ' AS a')
+            ->from($this->db->quoteName("#__gfy_userlevels")  . ' AS a')
             ->innerJoin($this->db->quoteName("#__gfy_levels") . ' AS b ON a.level_id = b.id')
-            ->where("a.user_id  = ". (int)$id);
+            ->where("a.user_id  = ". (int)$userId);
+        
+        if(!empty($groupId)) {
+            $query->where("a.group_id = ". (int)$groupId);
+        }
         
         $this->db->setQuery($query);
-        $results = $this->db->loadAssoc();
+        $results = $this->db->loadAssocList();
         
         if(!empty($results)) {
             
-            $this->userId = $id;
+            $this->userId = $userId;
             
             foreach($results as $result) {
                 $level = new GamificationUserLevel();
                 $level->bind($result);
                 
-                $this->levels[$result["group_id"]] = $level;
+                $this->levels[$result["group_id"]][$level->level_id] = $level;
             }
             
         } 
         
     }
 
+    /**
+     * Return all levels.
+     * 
+     * @return array
+     */
     public function getLevels() {
         return $this->levels;
     }
     
     /**
-     * Get level by group ID
+     * Get a level by group ID. 
+     * Users can have only one level in a group.
+     * 
      * @param integer $groupId
      * 
      * @return mixed

@@ -6,8 +6,8 @@
     <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
     <authorEmail>todor@itprism.com</authorEmail>
     <authorUrl>http://itprism.com</authorUrl>
-    <version>1.1</version>
-    <creationDate>23 June, 2013</creationDate>
+    <version>1.4</version>
+    <creationDate>14 August, 2013</creationDate>
     <description>PLG_USER_GAMIFICATION_DESC</description>
     
     <languages folder="language">
@@ -28,7 +28,12 @@
                     <option value="1">JYES</option>
                 </field>
                 <field name="points_types" type="gfypointstypes" label="PLG_USER_GAMIFICATION_TYPES" description="PLG_USER_GAMIFICATION_TYPES_DESC" />
-                <field name="integration" type="list" default="" label="PLG_USER_GAMIFICATION_INTEGRATION" description="PLG_USER_GAMIFICATION_INTEGRATION_DESC">
+                <field name="notification_integration" type="list" default="" label="PLG_USER_GAMIFICATION_NOTIFICATION_INTEGRATION" description="PLG_USER_GAMIFICATION_NOTIFICATION_INTEGRATION_DESC">
+                    <option value="">PLG_USER_GAMIFICATION_NONE</option>
+                    <option value="gamification">PLG_USER_GAMIFICATION_GAMIFICATION_PLATFORM</option>
+                    <option value="socialcommunity">PLG_USER_GAMIFICATION_SOCIAL_COMMUNITY</option>
+                </field>
+                <field name="activity_integration" type="list" default="" label="PLG_USER_GAMIFICATION_ACTIVITY_INTEGRATION" description="PLG_USER_GAMIFICATION_ACTIVITY_INTEGRATION_DESC">
                     <option value="">PLG_USER_GAMIFICATION_NONE</option>
                     <option value="gamification">PLG_USER_GAMIFICATION_GAMIFICATION_PLATFORM</option>
                     <option value="socialcommunity">PLG_USER_GAMIFICATION_SOCIAL_COMMUNITY</option>

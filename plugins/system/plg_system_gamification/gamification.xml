@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="2.5" type="plugin" group="system" method="upgrade">
+<extension version="3.1" type="plugin" group="system" method="upgrade">
     <name>PLG_SYSTEM_GAMIFICATION</name>
     <author>Todor Iliev</author>
     <copyright>Copyright (C) 2010 Todor Iliev ( ITPrism.com ). All rights reserved.</copyright>
@@ -7,7 +7,7 @@
     <authorEmail>todor@itprism.com</authorEmail>
     <authorUrl>http://itprism.com</authorUrl>
     <version>1.1</version>
-    <creationDate>23 June, 2013</creationDate>
+    <creationDate>14 August, 2013</creationDate>
 	<description>PLG_SYSTEM_GAMIFICATION_DESC</description>
 	
 	<languages folder="language">
@@ -25,9 +25,22 @@
 	<config>
         <fields name="params">
             <fieldset name="basic" addfieldpath="/administrator/components/com_gamification/models/fields">
-                <field name="points" type="gfypoints" label="PLG_SYSTEM_GAMIFICATION_POINTS" description="PLG_SYSTEM_GAMIFICATION_POINTS_DESC" />
+                <field name="points" type="gfypoints" 
+                    label="PLG_SYSTEM_GAMIFICATION_POINTS" 
+                    description="PLG_SYSTEM_GAMIFICATION_POINTS_DESC" 
+                    display_root="0" />
                 
-                <field name="enable_leveling" type="radio" default="0" label="PLG_SYSTEM_GAMIFICATION_LEVEL_ENABLE_LEVELING" description="PLG_SYSTEM_GAMIFICATION_LEVEL_ENABLE_LEVELING_DESC" >
+                <field name="enable_leveling" type="radio" default="0" label="PLG_SYSTEM_GAMIFICATION_ENABLE_LEVELING" description="PLG_SYSTEM_GAMIFICATION_ENABLE_LEVELING_DESC" >
+                   <option value="0">JNO</option>
+                   <option value="1">JYES</option>
+                </field>
+                
+                <field name="enable_ranking" type="radio" default="0" label="PLG_SYSTEM_GAMIFICATION_ENABLE_RANKING" description="PLG_SYSTEM_GAMIFICATION_ENABLE_RANKING_DESC" >
+                   <option value="0">JNO</option>
+                   <option value="1">JYES</option>
+                </field>
+                
+                <field name="enable_badging" type="radio" default="0" label="PLG_SYSTEM_GAMIFICATION_ENABLE_BADGING" description="PLG_SYSTEM_GAMIFICATION_ENABLE_BADGING_DESC" >
                    <option value="0">JNO</option>
                    <option value="1">JYES</option>
                 </field>

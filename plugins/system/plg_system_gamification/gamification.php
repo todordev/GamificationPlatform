@@ -18,14 +18,15 @@ jimport('joomla.application.component.helper');
 jimport('joomla.plugin.plugin');
 
 /**
- * This plugin initializes the job of the button
- * which is used for voting.
- *
+ * This plugin calculates and updates the game mechanics.
+ * This plugin use only points. 
+ * 
  * @package      Gamification Platform
  * @subpackage   Plugins
  */
 class plgSystemGamification extends JPlugin {
 	
+    protected $notification;
 
     /**
      * Update some gamifigation mechanics of the user - levels, badges, ranks,...
@@ -79,20 +80,31 @@ class plgSystemGamification extends JPlugin {
              
         }
         
+        // Update level value
         if($this->params->get("enable_leveling", 0)) {
             $this->updateLevel($userPoints, $this->params);
+        }
+        
+        // Update rank value
+        if($this->params->get("enable_ranking", 0)) {
+            $this->updateRank($userPoints, $this->params);
+        }
+        
+        // Update badge value
+        if($this->params->get("enable_badging", 0)) {
+            $this->updateBadge($userPoints, $this->params);
         }
         
     }
     
     protected function updateLevel($userPoints, $params) {
         
-        // Get all levels
+        // Get user level
         jimport("gamification.userlevel.points");
 
         $level = GamificationUserLevelPoints::getInstance($userPoints);
         
-        if(!$level->id) {
+        if(!$level->id) { // Create a level record
             
             $data = array(
                 "user_id"   => $userPoints->user_id,
@@ -101,13 +113,59 @@ class plgSystemGamification extends JPlugin {
             
             $level->startLeveling($data);
             
-        } else {
+        } else { // Level UP
+            
             if($level->levelUp()) {
                 $note = JText::sprintf("PLG_SYSTEM_GAMIFICATION_LEVEL_NOTIFICATION", $level->getLevel());
                 $this->notification->send($note);
             }
+            
         }
         
+    }
+    
+    protected function updateRank($userPoints, $params) {
+    
+        // Get user rank
+        jimport("gamification.userrank.points");
+    
+        $rank = GamificationUserRankPoints::getInstance($userPoints);
+    
+        if(!$rank->id) { // Create a rank record
+    
+            $data = array(
+                "user_id"   => $userPoints->user_id,
+                "group_id"  => $userPoints->group_id
+            );
+    
+            $rank->startRanking($data);
+    
+        } else { // Give a new rank
+            
+            if($rank->giveRank()) {
+                $note = JText::sprintf("PLG_SYSTEM_GAMIFICATION_RANK_NOTIFICATION", $rank->getTitle());
+                $this->notification->send($note);
+            }
+            
+        }
+    
+    }
+    
+    protected function updateBadge($userPoints, $params) {
+    
+        // Get user rank
+        jimport("gamification.userbadges.points");
+    
+        $badges = GamificationUserBadgesPoints::getInstance($userPoints);
+    
+        $badge  = $badges->giveBadge();
+        
+        // Send a notification to user about the new badge
+        if(!empty($badge->badge_id)) {
+            $note = JText::sprintf("PLG_SYSTEM_GAMIFICATION_BADGE_NOTIFICATION", $badge->getTitle());
+            $this->notification->send($note);
+        }
+    
     }
 	
 }

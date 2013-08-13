@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="gamification" default="build" basedir=".">
-	<description>User Ideas Ant Build File</description>
+	<description>Gamification Platform Ant Build File</description>
 
 	<!-- load variables from config file -->
 	<property name="cfg.configFile" location="antconfig.txt" />
@@ -61,6 +61,10 @@
         <mkdir dir="${cfg.pkgDir}/modules/mod_gamificationbar/language" />
         <mkdir dir="${cfg.pkgDir}/modules/mod_gamificationprofile" />
         <mkdir dir="${cfg.pkgDir}/modules/mod_gamificationprofile/language" />
+        <mkdir dir="${cfg.pkgDir}/modules/mod_gamificationactivities" />
+        <mkdir dir="${cfg.pkgDir}/modules/mod_gamificationactivities/language" />
+        <mkdir dir="${cfg.pkgDir}/modules/mod_gamificationleaderboard" />
+        <mkdir dir="${cfg.pkgDir}/modules/mod_gamificationleaderboard/language" />
 		
 	</target>
 
@@ -181,6 +185,36 @@
     <copy file="${cfg.siteLanguageSourceDir}/en-GB.mod_gamificationprofile.sys.ini" todir="${cfg.modulesDestDir}/mod_gamificationprofile/language/en-GB" />
     <copy file="${cfg.siteLanguageSourceDir}/index.html" todir="${cfg.modulesDestDir}/mod_gamificationprofile/language" />
     <copy file="${cfg.siteLanguageSourceDir}/index.html" todir="${cfg.modulesDestDir}/mod_gamificationprofile/language/en-GB/" />
+    
+    <!-- MOD_GAMIFICATIONACTIVITIES -->
+                
+    <!-- copy module files of mod_gamificationactivities -->
+    <copy todir="${cfg.modulesDestDir}/mod_gamificationactivities">
+        <fileset dir="${cfg.modulesSourceDir}/mod_gamificationactivities">
+            <include name="**/*" />
+        </fileset>
+    </copy>
+
+    <!-- copy module language files of mod_gamificationactivities -->
+    <copy file="${cfg.siteLanguageSourceDir}/en-GB.mod_gamificationactivities.ini" todir="${cfg.modulesDestDir}/mod_gamificationactivities/language/en-GB" />
+    <copy file="${cfg.siteLanguageSourceDir}/en-GB.mod_gamificationactivities.sys.ini" todir="${cfg.modulesDestDir}/mod_gamificationactivities/language/en-GB" />
+    <copy file="${cfg.siteLanguageSourceDir}/index.html" todir="${cfg.modulesDestDir}/mod_gamificationactivities/language" />
+    <copy file="${cfg.siteLanguageSourceDir}/index.html" todir="${cfg.modulesDestDir}/mod_gamificationactivities/language/en-GB/" />
+    
+    <!-- MOD_GAMIFICATIONLEADERBOARD -->
+                    
+    <!-- copy module files of mod_gamificationleaderboard -->
+    <copy todir="${cfg.modulesDestDir}/mod_gamificationleaderboard">
+        <fileset dir="${cfg.modulesSourceDir}/mod_gamificationleaderboard">
+            <include name="**/*" />
+        </fileset>
+    </copy>
+
+    <!-- copy module language files of mod_gamificationleaderboard -->
+    <copy file="${cfg.siteLanguageSourceDir}/en-GB.mod_gamificationleaderboard.ini" todir="${cfg.modulesDestDir}/mod_gamificationleaderboard/language/en-GB" />
+    <copy file="${cfg.siteLanguageSourceDir}/en-GB.mod_gamificationleaderboard.sys.ini" todir="${cfg.modulesDestDir}/mod_gamificationleaderboard/language/en-GB" />
+    <copy file="${cfg.siteLanguageSourceDir}/index.html" todir="${cfg.modulesDestDir}/mod_gamificationleaderboard/language" />
+    <copy file="${cfg.siteLanguageSourceDir}/index.html" todir="${cfg.modulesDestDir}/mod_gamificationleaderboard/language/en-GB/" />
 
 	<!-- END COPY MODULES -->
 	
@@ -200,6 +234,8 @@
 		<!-- build modules -->
         <zip destfile="${cfg.pkgDir}/packages/mod_gamificationbar.zip" basedir="${cfg.modulesDestDir}/mod_gamificationbar" />
         <zip destfile="${cfg.pkgDir}/packages/mod_gamificationprofile.zip" basedir="${cfg.modulesDestDir}/mod_gamificationprofile" />
+        <zip destfile="${cfg.pkgDir}/packages/mod_gamificationactivities.zip" basedir="${cfg.modulesDestDir}/mod_gamificationactivities" />
+        <zip destfile="${cfg.pkgDir}/packages/mod_gamificationleaderboard.zip" basedir="${cfg.modulesDestDir}/mod_gamificationleaderboard" />
 		
 		<!-- build package -->
 		<zip destfile="${cfg.pkgDir}/${cfg.pkgName}_${cfg.version}-${cfg.joomlaVersion}.zip" basedir="${cfg.pkgDir}" 

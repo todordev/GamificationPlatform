@@ -13,9 +13,12 @@
 
 defined('JPATH_PLATFORM') or die;
 
-jimport('gamification.interface.table');
+jimport('gamification.interface.usermechanic');
 
-class GamificationUserLevel implements GamificationTable {
+/**
+ * This is an object that represents user level.
+ */
+class GamificationUserLevel implements GamificationInterfaceUserMechanic {
 
     /**
      * The ID of the record that contains user level data.
@@ -39,12 +42,25 @@ class GamificationUserLevel implements GamificationTable {
     public $value;
     public $published;
     
+    /**
+     * This is the ID of the level record in table "#__gfy_levels".
+     *
+     * @var integer
+     */
+    public $level_id;
+    
+    public $group_id;
+    public $user_id;
+    
     public $points_id;
     public $rank_id;
     
-    public $level_id;
-    public $user_id;
-    public $group_id;
+   
+    /**
+     * User rank if the level is part of a rank.
+     * @var Object
+     */
+    protected $rank;
     
     /**
      * Database driver
@@ -54,7 +70,7 @@ class GamificationUserLevel implements GamificationTable {
     
     protected static $instances = array();
     
-    public function __construct($keys) {
+    public function __construct($keys = array()) {
         
         $this->db = JFactory::getDbo();
         if(!empty($keys)) {
@@ -74,7 +90,7 @@ class GamificationUserLevel implements GamificationTable {
         $userId   = JArrayHelper::getValue($keys, "user_id");
         $groupId  = JArrayHelper::getValue($keys, "group_id");
         
-        $index    = $userId.":".$groupId;
+        $index    = md5($userId.":".$groupId);
         
         if (empty(self::$instances[$index])){
             $item = new GamificationUserLevel($keys);
@@ -85,20 +101,15 @@ class GamificationUserLevel implements GamificationTable {
     }
     
     /**
-     * Load data of user level
-     * 
+     * Load user level data
+     *  
      * @param array $keys
      */
-    public function load($keys = array()) {
+    public function load($keys) {
         
         // Get keys
-        if(!empty($keys)) {
-            $userId   = JArrayHelper::getValue($keys, "user_id");
-            $groupId  = JArrayHelper::getValue($keys, "group_id");
-        } else {
-            $userId   = $this->user_id;
-            $groupId  = $this->group_id;
-        }
+        $userId   = JArrayHelper::getValue($keys, "user_id");
+        $groupId  = JArrayHelper::getValue($keys, "group_id");
         
         // Create a new query object.
         $query  = $this->db->getQuery(true);
@@ -185,6 +196,14 @@ class GamificationUserLevel implements GamificationTable {
         return (int)$this->value;
     }
     
+    /**
+     * Set the ID of the level.
+     * 
+     * @param integer $levelId
+     */
+    public function setLevelId($levelId) {
+        $this->level_id = (int)$levelId;
+    }
     
     /**
      * Create a record to the database, adding first level.
@@ -194,8 +213,8 @@ class GamificationUserLevel implements GamificationTable {
      * </code>
      * $data = array(
      *     "user_id"  => $userId,
-     *     "level_id" => $levelId,
-     *     "group_id" => $groupId
+     *     "group_id" => $groupId,
+     *     "level_id" => $levelId
      * );
      * <code>
      *
@@ -204,8 +223,35 @@ class GamificationUserLevel implements GamificationTable {
     
         $this->bind($data);
         $this->store();
-        $this->load($data);
+        
+        // Load data
+        $keys = array(
+            "user_id"  => $data["user_id"],
+            "group_id" => $data["group_id"]
+        );
+        
+        $this->load($keys);
     
+    }
+    
+    /**
+     * 
+     * Get the rank where the level is positioned.
+     * 
+     * @return mixed NULL or GamificationRank
+     */
+    public function getRank() {
+        
+        if(!$this->rank_id) {
+            return null;
+        }
+        
+        if(!$this->rank) {
+            jimport("gamification.rank");
+            $this->rank = GamificationRank::getInstance($this->rank_id);
+        }
+        
+        return $this->rank;
     }
     
 }

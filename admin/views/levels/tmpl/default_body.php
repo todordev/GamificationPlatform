@@ -21,7 +21,9 @@ defined('_JEXEC') or die;
         <td><?php echo JHtml::_('grid.id', $i, $item->id); ?></td>
 		<td class="title"><a href="<?php echo JRoute::_("index.php?option=com_gamification&view=level&layout=edit&id=".$item->id);?>" ><?php echo $item->title; ?></a></td>
 		<td class="center"><strong><?php echo $item->value; ?></strong></td>
-		<td class="center hasTip" title="<?php echo $item->points_name;?>"><?php echo $item->points; ?> [ <span><?php echo $item->points_type;?></span> ]</td>
+		<td class="center">
+		  <?php echo JHtml::_("gamification.points", $item->points, $item->points_name, $item->points_type);?>
+		</td>
 		<td class="center">
 		<?php if(!empty($item->rank_id)) {?>
     		<a href="<?php echo JRoute::_("index.php?option=com_gamification&view=rank&layout=edit&id=".$item->rank_id);?>" >

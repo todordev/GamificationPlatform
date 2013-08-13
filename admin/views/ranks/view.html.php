@@ -36,13 +36,12 @@ class GamificationViewRanks extends JView {
         $this->pagination = $this->get('Pagination');
         
         // Prepare filters
-        $listOrder        = $this->escape($this->state->get('list.ordering'));
-        $listDirn         = $this->escape($this->state->get('list.direction'));
-        $saveOrder        = (strcmp($listOrder, 'a.ordering') != 0 ) ? false : true;
+        $this->listOrder  = $this->escape($this->state->get('list.ordering'));
+        $this->listDirn   = $this->escape($this->state->get('list.direction'));
+        $this->saveOrder  = (strcmp($this->listOrder, 'a.ordering') != 0 ) ? false : true;
         
-        $this->listOrder  = $listOrder;
-        $this->listDirn   = $listDirn;
-        $this->saveOrder  = $saveOrder;
+        // Include HTML helper
+        JHtml::addIncludePath(JPATH_COMPONENT_SITE.'/helpers/html');
         
         // Add submenu
         GamificationHelper::addSubmenu($this->getName());

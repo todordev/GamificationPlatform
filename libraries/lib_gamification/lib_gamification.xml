@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<extension type="library" version="2.5" method="upgrade">
+<extension type="library" version="3.1" method="upgrade">
 	<name>Gamification Library</name>
 	<libraryname>gamification</libraryname>
 	<author>Todor Iliev</author>
@@ -10,16 +10,33 @@
 	<packager>ITPrism</packager>
 	<packagerurl>http://itprism.com</packagerurl>
 	<version>1.1</version>
-	<creationDate>30 June, 2013</creationDate>
+	<creationDate>11 August, 2013</creationDate>
 	<description>Gamification Library</description>
 	<files folder="files">
 	    <folder>interface</folder>
+	    <folder>leaderboard</folder>
+	    <folder>userbadges</folder>
+	    <folder>userlevel</folder>
+	    <folder>userrank</folder>
+	    <file>activities.php</file>
 	    <file>activity.php</file>
+	    <file>badge.php</file>
 		<file>index.html</file>
 		<file>init.php</file>
+		<file>leaderboard.php</file>
+		<file>level.php</file>
 		<file>notification.php</file>
 		<file>points.php</file>
 		<file>profile.php</file>
+		<file>rank.php</file>
+		<file>userbadge.php</file>
+		<file>userbadges.php</file>
+		<file>userlevel.php</file>
+		<file>userlevels.php</file>
+		<file>userpoints.php</file>
+		<file>userprogressbar.php</file>
+		<file>userrank.php</file>
+		<file>userranks.php</file>
 		<file>version.php</file>
 	</files>
 </extension>

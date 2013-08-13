@@ -16,35 +16,80 @@ defined( "_JEXEC" ) or die;
 
 jimport("gamification.init");
 
-// Load Twitter Bootstrap
+// Get component parameters
+$componentParams = JComponentHelper::getParams("com_gamification");
+
+// Load helpers
+JHtml::addIncludePath(GAMIFICATION_PATH_COMPONENT_SITE.'/helpers/html');
 JHtml::addIncludePath(ITPRISM_PATH_LIBRARY.'/ui/helpers');
-JHtml::_("itprism.ui.bootstrap");
+
+// Load Twitter Bootstrap
+if($componentParams->get("bootstrap_include", 1)) {
+    JHtml::_("itprism.ui.bootstrap");
+}
 
 $doc = JFactory::getDocument();
 
-$doc->addStyleSheet('modules/mod_gamificationprofile/style.css');
+$doc->addStyleSheet('media/com_gamification/css/modules/mod_gamificationprofile.css');
+// $doc->addScript('media/com_gamification/js/modules/mod_gamificationprofile.js');
 
 $userId  = JFactory::getUser()->id;
 $groupId = $params->get("group_id");
 
+$imagePath       = $componentParams->get("images_directory", "images/gamification");
+
+$keys = array(
+    "user_id"   => $userId,
+    "group_id"  => $groupId
+);
+
 if($params->get("display_points", 0)) {
     jimport('gamification.userpoints');
     
-    $pointsId = $params->get("points_id");
-    $keys     = array("user_id"=>$userId, "points_id" => $pointsId);
-    $points   = GamificationUserPoints::getInstance($keys);
+    $pointsKeys = array(
+        "user_id"   =>$userId,
+        "points_id" => $params->get("points_id")
+    );
     
+    $points   = GamificationUserPoints::getInstance($pointsKeys);
 }
 
 if($params->get("display_level", 0)) { 
-    jimport('gamification.level');
     
-    $keys     = array(
-        "user_id"   => $userId, 
-        "group_id"  => $groupId
-    );
+    jimport('gamification.userlevel');
     
     $level = GamificationUserLevel::getInstance($keys);
+}
+
+if($params->get("display_rank", 0)) {
+    
+    jimport('gamification.userrank');
+
+    $rank = GamificationUserRank::getInstance($keys);
+}
+
+if($params->get("display_badges", 0)) {
+
+    jimport('gamification.userbadges');
+
+    $badges = GamificationUserBadges::getInstance($keys);
+    
+    $badgeTooltip = $params->get("display_badges_note", 0);
+}
+
+if($params->get("display_progress_bar", 0)) {
+
+    jimport('gamification.userpoints');
+    $pointsKeys = array(
+        "user_id"   => $userId,
+        "points_id" => $params->get("points_id")
+    );
+    
+    $points   = GamificationUserPoints::getInstance($pointsKeys);
+    $based    = $params->get("display_progress_bar_based", "levels");
+    
+    jimport('gamification.userprogressbar');
+    $progress = new GamificationUserProgressBar($points, $based);
 }
 
 require JModuleHelper::getLayoutPath('mod_gamificationprofile', $params->get('layout', 'default'));

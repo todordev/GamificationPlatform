@@ -14,7 +14,6 @@
 defined('JPATH_PLATFORM') or die;
 
 jimport('gamification.interface.table');
-jimport('gamification.points');
 jimport('gamification.userpoints');
 jimport('gamification.userlevel');
 
@@ -29,6 +28,8 @@ class GamificationUserLevelPoints extends GamificationUserLevel {
      * @var GamificationUserPoints
      */
     protected $userPoints;
+    
+    public static $instances = array();
     
     /**
      * Initialize user level
@@ -46,7 +47,7 @@ class GamificationUserLevelPoints extends GamificationUserLevel {
                 "group_id" => $userPoints->group_id
             );
             
-            $index    = $userPoints->user_id.":".$userPoints->group_id;
+            $index    = md5($userPoints->user_id.":".$userPoints->group_id);
             
         } else {
             return null;
@@ -81,10 +82,18 @@ class GamificationUserLevelPoints extends GamificationUserLevel {
         $actualLevelId = $this->findActualLevelId();
         
         if($actualLevelId != $this->level_id) {
-            $this->level_id = $actualLevelId;
             
+            $this->setLevelId($actualLevelId);
             $this->store();
-            $this->load();
+            
+            // Load data
+            $keys = array (
+                "user_id"  => $this->userPoints->user_id,
+                "group_id" => $this->userPoints->group_id,
+            );
+            
+            $this->load($keys);
+            
             return true;
         }
         
@@ -119,27 +128,32 @@ class GamificationUserLevelPoints extends GamificationUserLevel {
             $n        = abs($i+1);
             $next     = (isset($results[$n])) ? $results[$n] : null;
             
-            // If there is no coincidence, get the id of the last ( current ) item.
-            if(!$next) {
-                $levelId = $current->id;
-                break;
-            }
+            if(!empty($next)) {
                 
-            // Check for coincidence for the next item
-            if ($next->points == $this->userPoints->points){
-                $levelId = $next->id;
-                break;
-            }
-            
-            // Check for coincidence for the current item
-            if (
-                ( $this->userPoints->points >= $current->points)
-                AND
-                ( $this->userPoints->points < $next->points )
-            ) {
+                // Check for coincidence with next item
+                if ($this->userPoints->points == $next->points){
+                    $levelId = $next->id;
+                    break;
+                }
                 
-                $levelId = $current->id;
-                break;
+                // Check for coincidence with current item
+                if (
+                    ( $this->userPoints->points >= $current->points)
+                    AND
+                    ( $this->userPoints->points < $next->points )
+                ) {
+                    
+                    $levelId = $current->id;
+                    break;
+                }
+                
+            } else { // If there is not next item, we compare with last (current).
+                
+                if ($this->userPoints->points >= $current->points) {
+                    $levelId = $current->id;
+                    break;
+                }
+                
             }
         
         }
@@ -169,7 +183,14 @@ class GamificationUserLevelPoints extends GamificationUserLevel {
         
         $this->bind($data);
         $this->store();
-        $this->load();
+        
+        // Load data
+        $keys = array(
+            "user_id"  => $data["user_id"],
+            "group_id" => $data["group_id"]
+        );
+        
+        $this->load($keys);
     }
     
 }

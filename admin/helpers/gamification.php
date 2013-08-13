@@ -74,6 +74,12 @@ class GamificationHelper {
 		);
 		
 		JSubMenuHelper::addEntry(
+    		JText::_('COM_GAMIFICATION_NOTIFICATIONS'),
+    		'index.php?option='.self::$extension.'&view=notifications',
+    		$vName == 'notifications'
+        );
+		
+		JSubMenuHelper::addEntry(
         	JText::_('COM_GAMIFICATION_PLUGINS'),
         	'index.php?option=com_plugins&view=plugins&filter_search=gamification',
         	$vName == 'plugins'

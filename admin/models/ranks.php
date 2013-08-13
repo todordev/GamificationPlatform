@@ -111,7 +111,7 @@ class GamificationModelRanks extends JModelList {
         );
         $query->from($db->quoteName('#__gfy_ranks').' AS a');
         $query->innerJoin($db->quoteName('#__gfy_groups').' AS b ON a.group_id = b.id');
-        $query->innerJoin($db->quoteName('#__gfy_points').' AS c ON a.points_id = c.id');
+        $query->leftJoin($db->quoteName('#__gfy_points').' AS c ON a.points_id = c.id');
 
         // Filter by state
         $state = $this->getState('filter.state');

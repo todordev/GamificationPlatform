@@ -16,16 +16,21 @@ defined( "_JEXEC" ) or die;
 
 jimport("gamification.init");
 
-// Load Twitter Bootstrap
+// Get component parameters
+$componentParams = JComponentHelper::getParams("com_gamification");
+
+// Load helpers
 JHtml::addIncludePath(ITPRISM_PATH_LIBRARY.'/ui/helpers');
-JHtml::_("itprism.ui.bootstrap");
+
+// Load Twitter Bootstrap
+if($componentParams->get("bootstrap_include", 1)) {
+    JHtml::_("itprism.ui.bootstrap");
+}
 
 $doc = JFactory::getDocument();
 
 $doc->addStyleSheet(JURI::root().'media/com_gamification/css/modules/gamificationbar.css');
-
 $doc->addScript(JURI::root()."media/com_gamification/js/modules/jquery.gamificationnotifications.js");
-
 $js = '
     jQuery(document).ready(function() {
         jQuery("#gfy-ntfy").GamificationNotifications({

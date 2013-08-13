@@ -13,7 +13,7 @@
 
 defined('JPATH_PLATFORM') or die;
 
-interface GamificationTable {
+interface GamificationInterfaceUserMechanic {
     
     public function load($keys);
     public function bind($data);

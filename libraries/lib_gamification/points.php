@@ -15,6 +15,9 @@ defined('JPATH_PLATFORM') or die;
 
 JLoader::register("GamificationTablePoint", JPATH_ADMINISTRATOR .DIRECTORY_SEPARATOR."components".DIRECTORY_SEPARATOR."com_gamification".DIRECTORY_SEPARATOR."tables".DIRECTORY_SEPARATOR."point.php");
 
+/**
+ * This class contains methods that are used for managing points.
+ */
 class GamificationPoints extends GamificationTablePoint {
 
     protected static $instances = array();

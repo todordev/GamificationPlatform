@@ -1,0 +1,44 @@
+@CHARSET "UTF-8";
+
+.gfy-modprofile-points p, .gfy-modprofile-level p, .gfy-modprofile-rank p{
+	overflow: visible !important;
+	text-align: center;
+	font-size: medium;
+	font-weight: bold;
+}
+
+p.gfy-modprofile-points-value, p.gfy-modprofile-level-value  {
+	font-size: 50pt !important;
+	font-weight: bold;
+}
+
+.gfy-modprofile-rank p{
+	font-size: 20pt !important;
+}
+
+.gfy-modprofile-rank img {
+	margin: 0 auto;
+	display: block;
+}
+
+
+.gfy-modprofile-badges img {
+	margin: 5px;
+}
+
+.gfy-progress-labels {
+	margin-top: 20px;
+}
+.gfy-modprofile-progress .progress {
+	margin: 5px 20px;
+}
+
+.gfy-prgss-lbl-current {
+	float: left;
+	font-weight: bold;
+}
+
+.gfy-prgss-lbl-next {
+	float:right;
+	font-weight: bold;
+}

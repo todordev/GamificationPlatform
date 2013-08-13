@@ -13,9 +13,15 @@
 
 defined('JPATH_PLATFORM') or die;
 
-jimport('gamification.interface.table');
+jimport('gamification.interface.usermechanic');
 
-class GamificationUserPoints implements GamificationTable {
+/**
+ * This class contains methods that are used for managing user points.
+ * The user points are collected units by users.
+ * 
+ * @todo Improve loading data
+ */
+class GamificationUserPoints implements GamificationInterfaceUserMechanic {
 
     /**
      * Users points ID
@@ -38,7 +44,7 @@ class GamificationUserPoints implements GamificationTable {
     
     protected static $instances = array();
     
-    public function __construct($keys) {
+    public function __construct($keys = array()) {
         
         $this->db = JFactory::getDbo();
         if(!empty($keys)) {
@@ -54,9 +60,9 @@ class GamificationUserPoints implements GamificationTable {
         $abbr     = JArrayHelper::getValue($keys, "abbr");
         
         if(!empty($pointsId)) {
-            $index = $userId .":".$pointsId;
+            $index = md5($userId .":".$pointsId);
         } else if(!empty($abbr)) {
-            $index = $userId .":".$abbr;
+            $index = md5($userId .":".$abbr);
         }
         
         if (empty(self::$instances[$index])){
@@ -73,10 +79,6 @@ class GamificationUserPoints implements GamificationTable {
      * @param array $keys
      */
     public function load($keys) {
-        
-        if(!is_array($keys))  {
-            return null;
-        }
         
         $userId   = JArrayHelper::getValue($keys, "user_id");
         $pointsId = JArrayHelper::getValue($keys, "points_id");
@@ -242,6 +244,24 @@ class GamificationUserPoints implements GamificationTable {
      */
     public function getPoints() {
         return (int)$this->points;
+    }
+    
+    /**
+     * Return abbreviation
+     *
+     * @return string
+     */
+    public function getAbbr() {
+        return $this->abbr;
+    }
+    
+    /**
+     * Return title
+     *
+     * @return string
+     */
+    public function getTitle() {
+        return $this->title;
     }
 }
 

@@ -19,8 +19,8 @@ jimport('itprism.controller.admin');
 /**
  * Gamification projects controller
  *
- * @package     ITPrism Components
- * @subpackage  Gamification
+ * @package     Gamification
+ * @package     Components
   */
 class GamificationControllerPoints extends ITPrismControllerAdmin {
     
