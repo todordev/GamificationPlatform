@@ -130,7 +130,7 @@
         </fileset>
     </copy>
 	
-	<!-- copy plugin language files of system/userideasvote -->
+	<!-- copy plugin language files of system/gamification -->
     <copy file="${cfg.adminLanguageSourceDir}/en-GB.plg_system_gamification.ini" todir="${cfg.pluginsDestDir}/system/plg_system_gamification/language/en-GB" />
     <copy file="${cfg.adminLanguageSourceDir}/en-GB.plg_system_gamification.sys.ini" todir="${cfg.pluginsDestDir}/system/plg_system_gamification/language/en-GB" />
     <copy file="${cfg.adminLanguageSourceDir}/index.html" todir="${cfg.pluginsDestDir}/system/plg_system_gamification/language" />
@@ -145,11 +145,11 @@
         </fileset>
     </copy>
     
-    <!-- copy plugin language files of system/userideasvote -->
-    <copy file="${cfg.adminLanguageSourceDir}/en-GB.plg_user_gamification.ini" todir="${cfg.pluginsDestDir}/userideas/plg_user_gamification/language/en-GB" />
-    <copy file="${cfg.adminLanguageSourceDir}/en-GB.plg_user_gamification.sys.ini" todir="${cfg.pluginsDestDir}/userideas/plg_user_gamification/language/en-GB" />
-    <copy file="${cfg.adminLanguageSourceDir}/index.html" todir="${cfg.pluginsDestDir}/userideas/plg_user_gamification/language" />
-    <copy file="${cfg.adminLanguageSourceDir}/index.html" todir="${cfg.pluginsDestDir}/userideas/plg_user_gamification/language/en-GB/" />
+    <!-- copy plugin language files of user/gamification -->
+    <copy file="${cfg.adminLanguageSourceDir}/en-GB.plg_user_gamification.ini" todir="${cfg.pluginsDestDir}/user/plg_user_gamification/language/en-GB" />
+    <copy file="${cfg.adminLanguageSourceDir}/en-GB.plg_user_gamification.sys.ini" todir="${cfg.pluginsDestDir}/user/plg_user_gamification/language/en-GB" />
+    <copy file="${cfg.adminLanguageSourceDir}/index.html" todir="${cfg.pluginsDestDir}/user/plg_user_gamification/language" />
+    <copy file="${cfg.adminLanguageSourceDir}/index.html" todir="${cfg.pluginsDestDir}/user/plg_user_gamification/language/en-GB/" />
 
 	<!-- END COPY PLUGINS -->
 	
@@ -229,7 +229,7 @@
 		
 		<!-- build plugins -->
 		<zip destfile="${cfg.pkgDir}/packages/plg_system_gamification.zip" basedir="${cfg.pluginsDestDir}/system/plg_system_gamification" />
-		<zip destfile="${cfg.pkgDir}/packages/plg_user_gamification.zip" basedir="${cfg.pluginsDestDir}/userideas/plg_user_gamification" />
+		<zip destfile="${cfg.pkgDir}/packages/plg_user_gamification.zip" basedir="${cfg.pluginsDestDir}/user/plg_user_gamification" />
 		
 		<!-- build modules -->
         <zip destfile="${cfg.pkgDir}/packages/mod_gamificationbar.zip" basedir="${cfg.modulesDestDir}/mod_gamificationbar" />

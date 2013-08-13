@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="2.5" type="plugin" group="user" method="upgrade">
+<extension version="3.1" type="plugin" group="user" method="upgrade">
     <name>PLG_USER_GAMIFICATION</name>
     <author>Todor Iliev</author>
     <copyright>Copyright (C) 2010 Todor Iliev ( ITPrism.com ). All rights reserved.</copyright>
     <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
     <authorEmail>todor@itprism.com</authorEmail>
     <authorUrl>http://itprism.com</authorUrl>
-    <version>1.4</version>
+    <version>1.1</version>
     <creationDate>14 August, 2013</creationDate>
     <description>PLG_USER_GAMIFICATION_DESC</description>
     

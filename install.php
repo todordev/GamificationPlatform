@@ -63,7 +63,7 @@ class pkg_gamificationInstallerScript {
         }
         
         // Register Component helpers
-        JLoader::register("GamificationInstallHelper", COM_GAMIFICATION_PATH_COMPONENT_ADMINISTRATOR.DIRECTORY_SEPARATOR."helpers".DIRECTORY_SEPARATOR."installer.php");
+        JLoader::register("GamificationInstallHelper", COM_GAMIFICATION_PATH_COMPONENT_ADMINISTRATOR.DIRECTORY_SEPARATOR."helpers".DIRECTORY_SEPARATOR."install.php");
     
         jimport('joomla.filesystem.path');
         jimport('joomla.filesystem.folder');
@@ -72,10 +72,6 @@ class pkg_gamificationInstallerScript {
         $params             = JComponentHelper::getParams("com_gamification");
         $this->imagesFolder = JFolder::makeSafe($params->get("images_directory", "images/gamification"));
         $this->imagesPath   = JPath::clean( JPATH_SITE.DIRECTORY_SEPARATOR.$this->imagesFolder );
-        $this->bootstrap    = JPath::clean( JPATH_SITE.DIRECTORY_SEPARATOR."media".DIRECTORY_SEPARATOR."com_gamification".DIRECTORY_SEPARATOR."css".DIRECTORY_SEPARATOR. "admin".DIRECTORY_SEPARATOR."bootstrap.min.css" );
-    
-        $style = '<style>'.file_get_contents($this->bootstrap).'</style>';
-        echo $style;
         
         // Create images folder
         if(!is_dir($this->imagesPath)){
