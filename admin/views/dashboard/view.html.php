@@ -16,7 +16,7 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.view');
 
-class GamificationViewDashboard extends JView {
+class GamificationViewDashboard extends JViewLegacy {
     
     protected $option;
     
@@ -42,9 +42,17 @@ class GamificationViewDashboard extends JView {
         GamificationHelper::addSubmenu($this->getName());
         
         $this->addToolbar();
+        $this->addSidebar();
         $this->setDocument();
         
         parent::display($tpl);
+    }
+    
+    /**
+     * Add a menu on the sidebar of page
+     */
+    protected function addSidebar() {
+        $this->sidebar = JHtmlSidebar::render();
     }
     
     /**
@@ -53,10 +61,10 @@ class GamificationViewDashboard extends JView {
      * @since   1.6
      */
     protected function addToolbar(){
-        JToolBarHelper::title(JText::_("COM_GAMIFICATION_DASHBOARD"), 'itp-dashboard');
+        JToolbarHelper::title(JText::_("COM_GAMIFICATION_DASHBOARD"));
         
-        JToolBarHelper::preferences('com_gamification');
-        JToolBarHelper::divider();
+        JToolbarHelper::preferences('com_gamification');
+        JToolbarHelper::divider();
         
         // Help button
         $bar = JToolBar::getInstance('toolbar');
@@ -69,14 +77,7 @@ class GamificationViewDashboard extends JView {
 	 * @return void
 	 */
 	protected function setDocument() {
-	    
 		$this->document->setTitle(JText::_('COM_GAMIFICATION_DASHBOARD_ADMINISTRATION'));
-		
-		// Header styles
-		$this->document->addStyleSheet('../media/'.$this->option.'/css/admin/bootstrap.min.css');
-		
-		// Load scripts
-//		JHtml::_('behavior.modal', 'a.modal');
 	}
 	
 }

@@ -15,36 +15,39 @@
 defined('_JEXEC') or die;
 ?>
 <div class="row-fluid">
-	<div class="span6">
+	<div class="span6 form-horizontal">
         <form action="<?php echo JRoute::_('index.php?option=com_gamification'); ?>" method="post" name="adminForm" id="adminForm" class="form-validate" enctype="multipart/form-data">
-            <div class="width-100 fltlft">
-                <fieldset class="adminform">
-                    <legend><?php echo JText::_("COM_GAMIFICATION_BADGE_DATA_LEGEND"); ?></legend>
-                    
-                    <ul class="adminformlist">
-                        <li><?php echo $this->form->getLabel('title'); ?>
-                        <?php echo $this->form->getInput('title'); ?></li>
-                        
-                        <li><?php echo $this->form->getLabel('group_id'); ?>
-                        <?php echo $this->form->getInput('group_id'); ?></li>
-                        
-                        <li><?php echo $this->form->getLabel('points'); ?>
-                        <?php echo $this->form->getInput('points'); ?></li>
-                        
-                        <li><?php echo $this->form->getLabel('points_id'); ?>
-                        <?php echo $this->form->getInput('points_id'); ?></li>
-                        
-                        <li><?php echo $this->form->getLabel('image'); ?>
-                        <?php echo $this->form->getInput('image'); ?></li>
-                        
-                        <li><?php echo $this->form->getLabel('published'); ?>
-                        <?php echo $this->form->getInput('published'); ?></li>
-                           
-                        <li><?php echo $this->form->getLabel('id'); ?>
-                        <?php echo $this->form->getInput('id'); ?></li>
-                    </ul>
-                </fieldset>
-            </div>
+        
+            <fieldset>
+                <div class="control-group">
+                    <div class="control-label"><?php echo $this->form->getLabel('title'); ?></div>
+    				<div class="controls"><?php echo $this->form->getInput('title'); ?></div>
+                </div>
+                <div class="control-group">
+                    <div class="control-label"><?php echo $this->form->getLabel('group_id'); ?></div>
+    				<div class="controls"><?php echo $this->form->getInput('group_id'); ?></div>
+                </div>
+                <div class="control-group">
+                    <div class="control-label"><?php echo $this->form->getLabel('points'); ?></div>
+    				<div class="controls"><?php echo $this->form->getInput('points'); ?></div>
+                </div>
+                <div class="control-group">
+                    <div class="control-label"><?php echo $this->form->getLabel('points_id'); ?></div>
+    				<div class="controls"><?php echo $this->form->getInput('points_id'); ?></div>
+                </div>
+                <div class="control-group">
+                    <div class="control-label"><?php echo $this->form->getLabel('image'); ?></div>
+    				<div class="controls"><?php echo $this->form->getInput('image'); ?></div>
+                </div>
+                <div class="control-group">
+                    <div class="control-label"><?php echo $this->form->getLabel('published'); ?></div>
+    				<div class="controls"><?php echo $this->form->getInput('published'); ?></div>
+                </div>
+                <div class="control-group">
+                    <div class="control-label"><?php echo $this->form->getLabel('id'); ?></div>
+    				<div class="controls"><?php echo $this->form->getInput('id'); ?></div>
+                </div>
+            </fieldset>
         
             <input type="hidden" name="task" value="" />
             <?php echo JHtml::_('form.token'); ?>
@@ -54,10 +57,11 @@ defined('_JEXEC') or die;
     <?php if(!empty($this->item->image)){?>
     <div class="span6">
     	<img src="<?php echo "../". $this->imagesFolder ."/". $this->item->image; ?>" class="img-polaroid" />
-    	<div>
-    	<img src="<?php echo "../media/com_gamification/images/remove.png"; ?>" />
-    	<a href="<?php echo JRoute::_("index.php?option=com_gamification&task=badge.removeimage&id=".(int)$this->item->id."&".JSession::getFormToken()."=1");?>"><?php echo JText::_("COM_GAMIFICATION_REMOVE_IMAGE");?></a>
-    	</div> 
+    	<br /><br />
+	    <a class="btn btn-mini btn-danger" href="<?php echo JRoute::_("index.php?option=com_gamification&task=badge.removeimage&id=".(int)$this->item->id."&".JSession::getFormToken()."=1");?>">
+	       <i class="icon-trash"></i>
+	       <?php echo JText::_("COM_GAMIFICATION_REMOVE_IMAGE");?>
+        </a>
     </div>
     <?php }?>
 </div>

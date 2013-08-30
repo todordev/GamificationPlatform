@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
-    <fieldset name="general" label="COM_GAMIFICATION_GENERAL">
-        <field name="bootstrap_include" type="radio" default="1" label="COM_GAMIFICATION_BOOTSTRAP_INCLUDE" description="COM_GAMIFICATION_BOOTSTRAP_INCLUDE_DESC" class="btn-group">
-            <option value="0">JNO</option>
-            <option value="1">JYES</option>
-        </field>
-    </fieldset>
     <fieldset name="images" label="COM_GAMIFICATION_IMAGES" description="COM_GAMIFICATION_IMAGES_PARAMS">
         <field name="images_directory" type="text" default="images/gamification" size="50" label="COM_GAMIFICATION_IMAGES_DIRECTORY" description="COM_GAMIFICATION_IMAGES_DIRECTORY_DESC" />
     </fieldset>

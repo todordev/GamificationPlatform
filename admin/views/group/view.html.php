@@ -16,7 +16,7 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.view');
 
-class GamificationViewGroup extends JView {
+class GamificationViewGroup extends JViewLegacy {
     
     protected $state;
     protected $item;
@@ -59,20 +59,16 @@ class GamificationViewGroup extends JView {
         $this->documentTitle = $isNew  ? JText::_('COM_GAMIFICATION_NEW_GROUP')
                                        : JText::_('COM_GAMIFICATION_EDIT_GROUP');
 
-        if(!$isNew) {                              
-            JToolBarHelper::title($this->documentTitle, 'itp-edit-group');
-        } else {
-            JToolBarHelper::title($this->documentTitle, 'itp-new-group');
-        }
+        JToolbarHelper::title($this->documentTitle);
 		                             
-        JToolBarHelper::apply('group.apply');
-        JToolBarHelper::save2new('group.save2new');
-        JToolBarHelper::save('group.save');
+        JToolbarHelper::apply('group.apply');
+        JToolbarHelper::save2new('group.save2new');
+        JToolbarHelper::save('group.save');
     
         if(!$isNew){
-            JToolBarHelper::cancel('group.cancel', 'JTOOLBAR_CANCEL');
+            JToolbarHelper::cancel('group.cancel', 'JTOOLBAR_CANCEL');
         }else{
-            JToolBarHelper::cancel('group.cancel', 'JTOOLBAR_CLOSE');
+            JToolbarHelper::cancel('group.cancel', 'JTOOLBAR_CLOSE');
         }
         
     }
@@ -84,13 +80,12 @@ class GamificationViewGroup extends JView {
 	 */
 	protected function setDocument() {
 	    
-	    // Add behaviors
-        JHtml::_('behavior.tooltip');
-        JHtml::_('behavior.formvalidation');
-        
 		$this->document->setTitle($this->documentTitle);
         
 		// Add scripts
+		JHtml::_('behavior.tooltip');
+		JHtml::_('behavior.formvalidation');
+		
 		$this->document->addScript('../media/'.$this->option.'/js/admin/'.JString::strtolower($this->getName()).'.js');
         
 	}

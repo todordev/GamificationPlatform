@@ -22,7 +22,7 @@ jimport('joomla.application.component.controller');
  * @package     Gamification Platform
  * @subpackage  Components
   */
-class GamificationControllerNotification extends JController {
+class GamificationControllerNotification extends JControllerLegacy {
     
 	/**
      * Method to get a model object, loading it if required.

@@ -17,7 +17,7 @@ defined('_JEXEC') or die;
 jimport('joomla.application.component.view');
 jimport('joomla.application.categories');
 
-class GamificationViewProfiles extends JView {
+class GamificationViewProfiles extends JViewLegacy {
     
     protected $items;
     protected $pagination;
@@ -38,21 +38,66 @@ class GamificationViewProfiles extends JView {
         $this->items      = $this->get('Items');
         $this->pagination = $this->get('Pagination');
         
-        // Prepare filters
-        $listOrder        = $this->escape($this->state->get('list.ordering'));
-        $listDirn         = $this->escape($this->state->get('list.direction'));
-        
-        $this->listOrder  = $listOrder;
-        $this->listDirn   = $listDirn;
+        JHtml::addIncludePath(JPATH_COMPONENT_SITE.'/helpers/html');
         
         // Add submenu
         GamificationHelper::addSubmenu($this->getName());
         
+        // Prepare sorting data
+        $this->prepareSorting();
+        
         // Prepare actions
         $this->addToolbar();
+        $this->addSidebar();
         $this->setDocument();
         
         parent::display($tpl);
+    }
+    
+    /**
+     * Prepare sortable fields, sort values and filters.
+     */
+    protected function prepareSorting() {
+    
+        // Prepare filters
+        $this->listOrder  = $this->escape($this->state->get('list.ordering'));
+        $this->listDirn   = $this->escape($this->state->get('list.direction'));
+        $this->saveOrder  = (strcmp($this->listOrder, 'a.ordering') != 0 ) ? false : true;
+    
+        if ($this->saveOrder) {
+            $this->saveOrderingUrl = 'index.php?option='.$this->option.'&task='.$this->getName().'.saveOrderAjax&format=raw';
+            JHtml::_('sortablelist.sortable', $this->getName().'List', 'adminForm', strtolower($this->listDirn), $this->saveOrderingUrl);
+        }
+    
+        $this->sortFields = array(
+            'a.name'            => JText::_('COM_GAMIFICATION_NAME'),
+            'a.registerDate'    => JText::_('COM_GAMIFICATION_REGISTERED_DATE'),
+            'a.block'           => JText::_('COM_GAMIFICATION_STATE'),
+            'a.id'              => JText::_('JGRID_HEADING_ID')
+        );
+    
+    }
+    
+    /**
+     * Add a menu on the sidebar of page
+     */
+    protected function addSidebar() {
+    
+        JHtmlSidebar::setAction('index.php?option='.$this->option.'&view='.$this->getName());
+        
+        $states = array(
+            JHtml::_("select.option", "0", JText::_("COM_GAMIFICATION_ENABLED")),
+            JHtml::_("select.option", "1", JText::_("COM_GAMIFICATION_BLOCKED"))
+        );
+        
+        JHtmlSidebar::addFilter(
+            JText::_('COM_GAMIFICATION_SELECT_STATE'),
+            'filter_state',
+            JHtml::_('select.options', $states, 'value', 'text', $this->state->get('filter.state'), true)
+        );
+        
+        $this->sidebar = JHtmlSidebar::render();
+    
     }
     
     /**
@@ -63,10 +108,9 @@ class GamificationViewProfiles extends JView {
     protected function addToolbar(){
         
         // Set toolbar items for the page
-        JToolBarHelper::title(JText::_('COM_GAMIFICATION_PROFILES'), 'itp-profiles');
-//        JToolBarHelper::editList('profile.edit');
-//        JToolBarHelper::divider();
-        JToolBarHelper::custom('profiles.backToDashboard', "itp-dashboard-back", "", JText::_("COM_GAMIFICATION_DASHBOARD"), false);
+        JToolbarHelper::title(JText::_('COM_GAMIFICATION_PROFILES'));
+        
+        JToolbarHelper::custom('profiles.backToDashboard', "dashboard", "", JText::_("COM_GAMIFICATION_DASHBOARD"), false);
         
     }
     
@@ -79,10 +123,12 @@ class GamificationViewProfiles extends JView {
 	    
 		$this->document->setTitle(JText::_('COM_GAMIFICATION_PROFILES'));
 
-		// Styles
-		$this->document->addStyleSheet('../media/'.$this->option.'/css/admin/style.css');
+		// Scripts
+		JHtml::_('behavior.multiselect');
+		JHtml::_('formbehavior.chosen', 'select');
+		JHtml::_('bootstrap.tooltip');
 		
-		JHtml::_('behavior.tooltip');
+		$this->document->addScript('../media/'.$this->option.'/js/admin/list.js');
 	}
     
 }

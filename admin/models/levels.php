@@ -33,7 +33,9 @@ class GamificationModelLevels extends JModelList {
                 'title', 'a.title',
                 'points', 'a.points',
                 'value', 'a.value',
-                'group_id', 'a.group_id'
+                'group_name', 'b.name',
+                'rank_name', 'd.title',
+                'published', 'a.published',
             );
         }
 
@@ -54,15 +56,18 @@ class GamificationModelLevels extends JModelList {
         $params = JComponentHelper::getParams($this->option);
         $this->setState('params', $params);
         
-        $value = $this->getUserStateFromRequest($this->context.'.filter.group_id', 'filter_group_id');
-        $this->setState('filter.group_id', $value);
+        $value = $this->getUserStateFromRequest($this->context.'.filter.group', 'filter_group');
+        $this->setState('filter.group', $value);
         
-        $value = $this->getUserStateFromRequest($this->context.'.filter.rank_id', 'filter_rank_id');
-        $this->setState('filter.rank_id', $value);
+        $value = $this->getUserStateFromRequest($this->context.'.filter.rank', 'filter_rank');
+        $this->setState('filter.rank', $value);
         
         $value = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
         $this->setState('filter.search', $value);
 
+        $value = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_state', '', 'string');
+        $this->setState('filter.state', $value);
+        
         // List state information.
         parent::populateState('a.points', 'asc');
     }
@@ -81,7 +86,10 @@ class GamificationModelLevels extends JModelList {
     protected function getStoreId($id = '') {
         
         // Compile the store id.
-        $id.= ':' . $this->getState('filter.search');
+        $id .= ':' . $this->getState('filter.search');
+        $id .= ':' . $this->getState('filter.group');
+        $id .= ':' . $this->getState('filter.rank');
+        $id .= ':' . $this->getState('filter.state');
 
         return parent::getStoreId($id);
     }
@@ -104,7 +112,7 @@ class GamificationModelLevels extends JModelList {
         $query->select(
             $this->getState(
                 'list.select',
-                'a.id, a.title, a.points, a.value, a.group_id, a.rank_id, '.
+                'a.id, a.title, a.points, a.value, a.group_id, a.rank_id, a.published, '.
                 'b.name AS group_name, ' .
                 'c.abbr AS points_type, c.title AS points_name, ' .
                 'd.title AS rank_title'
@@ -115,6 +123,26 @@ class GamificationModelLevels extends JModelList {
         $query->innerJoin($db->quoteName('#__gfy_points').' AS c ON a.points_id = c.id');
         $query->leftJoin($db->quoteName('#__gfy_ranks').' AS d ON a.rank_id = d.id');
 
+        // Filter by group id
+        $groupId = $this->getState('filter.group');
+        if (!empty($groupId)) {
+            $query->where('a.group_id = '.(int) $groupId);
+        }
+        
+        // Filter by rank id
+        $rankId = $this->getState('filter.rank');
+        if (!empty($rankId)) {
+            $query->where('a.rank_id = '.(int) $rankId);
+        }
+        
+        // Filter by state
+        $state = $this->getState('filter.state');
+        if (is_numeric($state)) {
+            $query->where('a.published = '.(int) $state);
+        } else if ($state === '') {
+            $query->where('(a.published IN (0, 1))');
+        }
+        
         // Filter by search in title
         $search = $this->getState('filter.search');
         if (!empty($search)) {
@@ -125,18 +153,6 @@ class GamificationModelLevels extends JModelList {
                 $quoted  = $db->quote("%" . $escaped . "%", false);
                 $query->where('a.title LIKE '.$quoted);
             }
-        }
-
-        // Filter by group id
-        $groupId = $this->getState('filter.group_id');
-        if (!empty($groupId)) {
-            $query->where('a.group_id = '.(int) $groupId);
-        }
-        
-        // Filter by rank id
-        $rankId = $this->getState('filter.rank_id');
-        if (!empty($rankId)) {
-            $query->where('a.rank_id = '.(int) $rankId);
         }
         
         // Add the list ordering clause.

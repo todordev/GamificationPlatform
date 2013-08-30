@@ -1,0 +1,12 @@
+@CHARSET "UTF-8";
+
+.gfy-media-points, .gfy-media-level {
+	font-size: medium;
+	font-weight: bold;
+}
+
+.gfy-modlb-number {
+	width: 20px;
+	text-align: center;
+	font-weight: bold;
+}

@@ -16,7 +16,7 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.view');
 
-class GamificationViewBadge extends JView {
+class GamificationViewBadge extends JViewLegacy {
     
     protected $state;
     protected $item;
@@ -62,23 +62,19 @@ class GamificationViewBadge extends JView {
         JFactory::getApplication()->input->set('hidemainmenu', true);
         $isNew = ($this->item->id == 0);
         
-        $this->documentTitle= $isNew  ? JText::_('COM_GAMIFICATION_NEW_BADGE')
-                                      : JText::_('COM_GAMIFICATION_EDIT_BADGE');
+        $this->documentTitle = $isNew  ? JText::_('COM_GAMIFICATION_NEW_BADGE')
+                                       : JText::_('COM_GAMIFICATION_EDIT_BADGE');
 
-        if(!$isNew) {
-            JToolBarHelper::title($this->documentTitle, 'itp-edit-badge');
-        } else {
-            JToolBarHelper::title($this->documentTitle, 'itp-new-badge');
-        }
+        JToolbarHelper::title($this->documentTitle);
 		                             
-        JToolBarHelper::apply('badge.apply');
-        JToolBarHelper::save2new('badge.save2new');
-        JToolBarHelper::save('badge.save');
+        JToolbarHelper::apply('badge.apply');
+        JToolbarHelper::save2new('badge.save2new');
+        JToolbarHelper::save('badge.save');
     
         if(!$isNew){
-            JToolBarHelper::cancel('badge.cancel', 'JTOOLBAR_CANCEL');
+            JToolbarHelper::cancel('badge.cancel', 'JTOOLBAR_CANCEL');
         }else{
-            JToolBarHelper::cancel('badge.cancel', 'JTOOLBAR_CLOSE');
+            JToolbarHelper::cancel('badge.cancel', 'JTOOLBAR_CLOSE');
         }
         
     }
@@ -92,14 +88,10 @@ class GamificationViewBadge extends JView {
 	    
 		$this->document->setTitle($this->documentTitle);
         
-		// Add behaviors
-        JHtml::_('behavior.tooltip');
-        JHtml::_('behavior.formvalidation');
-        
-        // Add styles
-		$this->document->addStyleSheet('../media/'.$this->option.'/css/admin/bootstrap.min.css');
-		
 		// Add scripts
+		JHtml::_('behavior.tooltip');
+		JHtml::_('behavior.formvalidation');
+		
 		$this->document->addScript('../media/'.$this->option.'/js/admin/'.JString::strtolower($this->getName()).'.js');
         
 	}

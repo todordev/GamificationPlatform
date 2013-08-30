@@ -15,16 +15,29 @@
 defined('_JEXEC') or die;
 ?>
 <tr>
-    <th width="1%">
-        <input type="checkbox" name="checkall-toggle" value="" onclick="checkAll(this)" />
+    <th width="1%" class="nowrap center hidden-phone">
+        <?php echo JHtml::_('grid.checkall'); ?>
     </th>
-	<th class="title">
-	     <?php echo JHtml::_('grid.sort',  'COM_GAMIFICATION_TITLE', 'a.title', $this->listDirn, $this->listOrder); ?>
+    <th width="1%" style="min-width: 55px" class="nowrap center">
+		<?php echo JHtml::_('grid.sort', 'JSTATUS', 'a.published', $this->listDirn, $this->listOrder); ?>
 	</th>
-	<th width="5%" class="center"><?php echo JHtml::_('grid.sort',  'COM_GAMIFICATION_VALUE', 'a.value', $this->listDirn, $this->listOrder); ?></th>
-	<th width="20%" class="center"><?php echo JHtml::_('grid.sort',  'COM_GAMIFICATION_POINTS', 'a.points', $this->listDirn, $this->listOrder); ?></th>
-	<th width="20%"><?php echo JText::_('COM_GAMIFICATION_RANK'); ?></th>
-	<th width="20%"><?php echo JText::_('COM_GAMIFICATION_GROUP'); ?></th>
-    <th width="3%" class="nowrap"><?php echo JHtml::_('grid.sort',  'JGRID_HEADING_ID', 'a.id', $this->listDirn, $this->listOrder); ?></th>
+	<th class="title">
+	    <?php echo JHtml::_('grid.sort',  'COM_GAMIFICATION_TITLE', 'a.title', $this->listDirn, $this->listOrder); ?>
+	</th>
+	<th width="5%" class="nowrap center hidden-phone">
+	    <?php echo JHtml::_('grid.sort',  'COM_GAMIFICATION_VALUE', 'a.value', $this->listDirn, $this->listOrder); ?>
+    </th>
+	<th width="20%" class="nowrap center hidden-phone">
+	    <?php echo JHtml::_('grid.sort',  'COM_GAMIFICATION_POINTS', 'a.points', $this->listDirn, $this->listOrder); ?>
+     </th>
+	<th width="20%" class="nowrap center hidden-phone">
+	    <?php echo JHtml::_('grid.sort',  'COM_GAMIFICATION_RANK', 'd.title', $this->listDirn, $this->listOrder); ?>
+    </th>
+	<th width="20%" class="nowrap center hidden-phone">
+	    <?php echo JHtml::_('grid.sort',  'COM_GAMIFICATION_GROUP', 'b.name', $this->listDirn, $this->listOrder); ?>
+    </th>
+    <th width="3%" class="nowrap center hidden-phone">
+        <?php echo JHtml::_('grid.sort',  'JGRID_HEADING_ID', 'a.id', $this->listDirn, $this->listOrder); ?>
+    </th>
 </tr>
 	  

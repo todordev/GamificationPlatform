@@ -35,8 +35,8 @@ class GamificationModelProfiles extends JModelList {
             $config['filter_fields'] = array(
                 'id', 'a.id',
                 'name', 'a.name',
-                'user_id', 'a.user_id',
-                'registerDate', 'a.registerDate'
+                'registerDate', 'a.registerDate',
+                'state', 'a.block'
             );
         }
 
@@ -63,7 +63,7 @@ class GamificationModelProfiles extends JModelList {
         $this->setState('params', $params);
 
         // List state information.
-        parent::populateState('a.id', 'asc');
+        parent::populateState('a.registerDate', 'asc');
         
     }
 

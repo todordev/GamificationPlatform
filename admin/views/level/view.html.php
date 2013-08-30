@@ -16,7 +16,7 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.view');
 
-class GamificationViewLevel extends JView {
+class GamificationViewLevel extends JViewLegacy {
     
     protected $state;
     protected $item;
@@ -56,23 +56,19 @@ class GamificationViewLevel extends JView {
         JFactory::getApplication()->input->set('hidemainmenu', true);
         $isNew = ($this->item->id == 0);
         
-        $this->documentTitle= $isNew  ? JText::_('COM_GAMIFICATION_NEW_LEVEL')
-                                      : JText::_('COM_GAMIFICATION_EDIT_LEVEL');
+        $this->documentTitle = $isNew  ? JText::_('COM_GAMIFICATION_NEW_LEVEL')
+                                       : JText::_('COM_GAMIFICATION_EDIT_LEVEL');
 
-        if(!$isNew) {
-            JToolBarHelper::title($this->documentTitle, 'itp-edit-level');
-        } else {
-            JToolBarHelper::title($this->documentTitle, 'itp-new-level');
-        }
+        JToolbarHelper::title($this->documentTitle);
 		                             
-        JToolBarHelper::apply('level.apply');
-        JToolBarHelper::save2new('level.save2new');
-        JToolBarHelper::save('level.save');
+        JToolbarHelper::apply('level.apply');
+        JToolbarHelper::save2new('level.save2new');
+        JToolbarHelper::save('level.save');
     
         if(!$isNew){
-            JToolBarHelper::cancel('level.cancel', 'JTOOLBAR_CANCEL');
+            JToolbarHelper::cancel('level.cancel', 'JTOOLBAR_CANCEL');
         }else{
-            JToolBarHelper::cancel('level.cancel', 'JTOOLBAR_CLOSE');
+            JToolbarHelper::cancel('level.cancel', 'JTOOLBAR_CLOSE');
         }
         
     }
@@ -86,11 +82,10 @@ class GamificationViewLevel extends JView {
 	    
 		$this->document->setTitle($this->documentTitle);
         
-		// Add behaviors
-        JHtml::_('behavior.tooltip');
-        JHtml::_('behavior.formvalidation');
-        
 		// Add scripts
+		JHtml::_('behavior.tooltip');
+		JHtml::_('behavior.formvalidation');
+		
 		$this->document->addScript('../media/'.$this->option.'/js/admin/'.JString::strtolower($this->getName()).'.js');
         
 	}

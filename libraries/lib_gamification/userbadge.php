@@ -133,11 +133,17 @@ class GamificationUserBadge implements GamificationInterfaceUserMechanic {
         $query  = $this->db->getQuery(true);
         
         $query
-            ->update($this->quoteName("#__gfy_userbadges"))
-            ->set($this->quoteName("badge_id") ."=". (int)$this->badge_id)
-            ->set($this->quoteName("note")     ."=". $this->db->quote($this->note))
-            ->where($this->quoteName("id")     ."=". (int)$this->id);
+            ->update($this->db->quoteName("#__gfy_userbadges"))
+            ->set($this->db->quoteName("badge_id") ."=". (int)$this->badge_id);
             
+        // If there is a note, store it. In other hand, 
+        // the system will set the column to its default value NULL.
+        if(!empty($this->note)) {
+            $query->set($this->db->quoteName("note") ."=". $this->db->quote($this->note));
+        }
+        
+        $query->where($this->db->quoteName("id") ."=". (int)$this->id);
+        
         $this->db->setQuery($query);
         $this->db->query();
     }
@@ -148,11 +154,16 @@ class GamificationUserBadge implements GamificationInterfaceUserMechanic {
         $query  = $this->db->getQuery(true);
         
         $query
-            ->insert($this->quoteName("#__gfy_userbadges"))
-            ->set($this->quoteName("user_id")  ."=". (int)$this->user_id)
-            ->set($this->quoteName("group_id") ."=". (int)$this->group_id)
-            ->set($this->quoteName("note")     ."=". $this->db->quote($this->note))
-            ->set($this->quoteName("badge_id") ."=". (int)$this->badge_id);
+            ->insert($this->db->quoteName("#__gfy_userbadges"))
+            ->set($this->db->quoteName("user_id")  ."=". (int)$this->user_id)
+            ->set($this->db->quoteName("group_id") ."=". (int)$this->group_id)
+            ->set($this->db->quoteName("badge_id") ."=". (int)$this->badge_id);
+        
+        // If there is a note, store it. In other hand, 
+        // the system will set the column to its default value NULL.
+        if(!empty($this->note)) {
+            $query->set($this->db->quoteName("note") ."=". $this->db->quote($this->note));
+        }
             
         $this->db->setQuery($query);
         $this->db->query();

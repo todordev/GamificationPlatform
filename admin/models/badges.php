@@ -31,9 +31,9 @@ class GamificationModelBadges extends JModelList {
             $config['filter_fields'] = array(
                 'id', 'a.id',
                 'title', 'a.title',
+                'group_name', 'b.name',
                 'points', 'a.points',
-                'published', 'a.published',
-                'group_id', 'a.group_id'
+                'published', 'a.published'
             );
         }
 
@@ -60,6 +60,9 @@ class GamificationModelBadges extends JModelList {
 
         $value = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_state', '', 'string');
         $this->setState('filter.state', $value);
+        
+        $value = $this->getUserStateFromRequest($this->context.'.filter.group', 'filter_group', '', 'string');
+        $this->setState('filter.group', $value);
 
         // List state information.
         parent::populateState('a.points', 'asc');
@@ -114,13 +117,19 @@ class GamificationModelBadges extends JModelList {
         $query->leftJoin($db->quoteName('#__gfy_points').' AS c ON a.points_id = c.id');
 
         // Filter by state
+        $group = $this->getState('filter.group');
+        if (!empty($group)) {
+            $query->where('a.group_id = '.(int) $group);
+        }
+        
+        // Filter by state
         $state = $this->getState('filter.state');
         if (is_numeric($state)) {
             $query->where('a.published = '.(int) $state);
         } else if ($state === '') {
             $query->where('(a.published IN (0, 1))');
         }
-
+        
         // Filter by search in title
         $search = $this->getState('filter.search');
         if (!empty($search)) {
@@ -145,7 +154,13 @@ class GamificationModelBadges extends JModelList {
         $orderCol   = $this->getState('list.ordering');
         $orderDirn  = $this->getState('list.direction');
         
-        return $orderCol.' '.$orderDirn;
+        $orderString = $orderCol.' '.$orderDirn;
+        
+        if(strcmp("b.name", $orderCol) == 0) {
+            $orderString .= ", a.points ASC";
+        }
+        
+        return $orderString;
     }
     
 }

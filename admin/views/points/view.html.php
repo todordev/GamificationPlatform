@@ -16,7 +16,7 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.view');
 
-class GamificationViewPoints extends JView {
+class GamificationViewPoints extends JViewLegacy {
     
     protected $state;
     protected $items;
@@ -35,23 +35,59 @@ class GamificationViewPoints extends JView {
         $this->items      = $this->get('Items');
         $this->pagination = $this->get('Pagination');
         
-        // Prepare filters
-        $listOrder        = $this->escape($this->state->get('list.ordering'));
-        $listDirn         = $this->escape($this->state->get('list.direction'));
-        $saveOrder        = (strcmp($listOrder, 'a.ordering') != 0 ) ? false : true;
-        
-        $this->listOrder  = $listOrder;
-        $this->listDirn   = $listDirn;
-        $this->saveOrder  = $saveOrder;
-        
         // Add submenu
         GamificationHelper::addSubmenu($this->getName());
         
+        // Prepare sorting data
+        $this->prepareSorting();
+        
         // Prepare actions
         $this->addToolbar();
+        $this->addSidebar();
         $this->setDocument();
         
         parent::display($tpl);
+    }
+    
+    /**
+     * Prepare sortable fields, sort values and filters.
+     */
+    protected function prepareSorting() {
+    
+        // Prepare filters
+        $this->listOrder  = $this->escape($this->state->get('list.ordering'));
+        $this->listDirn   = $this->escape($this->state->get('list.direction'));
+        $this->saveOrder  = (strcmp($this->listOrder, 'a.ordering') != 0 ) ? false : true;
+    
+        if ($this->saveOrder) {
+            $this->saveOrderingUrl = 'index.php?option='.$this->option.'&task='.$this->getName().'.saveOrderAjax&format=raw';
+            JHtml::_('sortablelist.sortable', $this->getName().'List', 'adminForm', strtolower($this->listDirn), $this->saveOrderingUrl);
+        }
+    
+        $this->sortFields = array(
+            'a.title'     => JText::_('COM_GAMIFICATION_TITLE'),
+            'a.published' => JText::_('JSTATUS'),
+            'b.title'     => JText::_('COM_GAMIFICATION_GROUP'),
+            'a.id'        => JText::_('JGRID_HEADING_ID')
+        );
+    
+    }
+    
+    /**
+     * Add a menu on the sidebar of page
+     */
+    protected function addSidebar() {
+    
+        JHtmlSidebar::setAction('index.php?option='.$this->option.'&view='.$this->getName());
+        
+        JHtmlSidebar::addFilter(
+            JText::_('JOPTION_SELECT_PUBLISHED'),
+            'filter_state',
+            JHtml::_('select.options', JHtml::_('jgrid.publishedOptions', array("archived" => false, "trash"=>false)), 'value', 'text', $this->state->get('filter.state'), true)
+        );
+        
+        $this->sidebar = JHtmlSidebar::render();
+    
     }
     
     /**
@@ -62,16 +98,16 @@ class GamificationViewPoints extends JView {
     protected function addToolbar(){
         
         // Set toolbar items for the page
-        JToolBarHelper::title(JText::_('COM_GAMIFICATION_POINTS_MANAGER'), 'itp-points');
-        JToolBarHelper::addNew('point.add');
-        JToolBarHelper::editList('point.edit');
-        JToolBarHelper::divider();
-        JToolBarHelper::publishList("points.publish");
-        JToolBarHelper::unpublishList("points.unpublish");
-        JToolBarHelper::divider();
-        JToolBarHelper::deleteList(JText::_("COM_GAMIFICATION_DELETE_ITEMS_QUESTION"), "points.delete");
-        JToolBarHelper::divider();
-        JToolBarHelper::custom('points.backToDashboard', "itp-dashboard-back", "", JText::_("COM_GAMIFICATION_DASHBOARD"), false);
+        JToolbarHelper::title(JText::_('COM_GAMIFICATION_POINTS_MANAGER'));
+        JToolbarHelper::addNew('point.add');
+        JToolbarHelper::editList('point.edit');
+        JToolbarHelper::divider();
+        JToolbarHelper::publishList("points.publish");
+        JToolbarHelper::unpublishList("points.unpublish");
+        JToolbarHelper::divider();
+        JToolbarHelper::deleteList(JText::_("COM_GAMIFICATION_DELETE_ITEMS_QUESTION"), "points.delete");
+        JToolbarHelper::divider();
+        JToolbarHelper::custom('points.backToDashboard', "dashboard", "", JText::_("COM_GAMIFICATION_DASHBOARD"), false);
         
     }
     
@@ -81,7 +117,15 @@ class GamificationViewPoints extends JView {
 	 * @return void
 	 */
 	protected function setDocument() {
+	    
 		$this->document->setTitle(JText::_('COM_GAMIFICATION_POINTS_MANAGER'));
+		
+		// Scripts
+		JHtml::_('behavior.multiselect');
+		JHtml::_('formbehavior.chosen', 'select');
+		JHtml::_('bootstrap.tooltip');
+		
+		$this->document->addScript('../media/'.$this->option.'/js/admin/list.js');
 	}
     
 }

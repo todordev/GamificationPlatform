@@ -7,22 +7,21 @@
 	<authorEmail>todor@itprism.com</authorEmail>
 	<authorUrl>http://itprism.com</authorUrl>
 	<version>1.1</version>
-	<creationDate>14 August, 2013</creationDate>
+	<creationDate>31 August, 2013</creationDate>
 	<description>MOD_GAMIFICATIONPROFILE_DESCRIPTION</description>
 
 	<languages folder="language">
-		<language tag="en-GB">en-GB/en-GB.mod_gamificationprofile.ini
-		</language>
-		<language tag="en-GB">en-GB/en-GB.mod_gamificationprofile.sys.ini
-		</language>
+		<language tag="en-GB">en-GB/en-GB.mod_gamificationprofile.ini</language>
+		<language tag="en-GB">en-GB/en-GB.mod_gamificationprofile.sys.ini</language>
 	</languages>
 
-	<help url="MOD_CROWDFUNDINGINFO_HELP_URL" />
+	<help url="MOD_GAMIFICATIONPROFILE_HELP_URL" />
 
 	<files>
+        <folder>css</folder>
+        <folder>tmpl</folder>
+        <filename>index.html</filename>
 		<filename module="mod_gamificationprofile">mod_gamificationprofile.php</filename>
-		<folder>tmpl</folder>
-		<filename>index.html</filename>
 	</files>
 
 	<config>
@@ -38,14 +37,14 @@
 
 			<fieldset name="points" label="MOD_GAMIFICATIONPROFILE_POINTS_OPTIONS" addfieldpath="/administrator/components/com_gamification/models/fields">
 				
-				<field name="display_points" type="radio"
+				<field name="display_points" type="radio" class="btn-group"
 					label="MOD_GAMIFICATIONPROFILE_DISPLAY_POINTS" description="MOD_GAMIFICATIONPROFILE_DISPLAY_POINTS_DESC"
 					default="0">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
 
-                <field name="display_points_abbr" type="radio"
+                <field name="display_points_abbr" type="radio" class="btn-group"
                     label="MOD_GAMIFICATIONPROFILE_DISPLAY_POINTS_ABBR" 
                     description="MOD_GAMIFICATIONPROFILE_DISPLAY_POINTS_ABBR_DESC"
                     default="0">
@@ -61,25 +60,28 @@
 			
 			<fieldset name="level" label="MOD_GAMIFICATIONPROFILE_LEVEL_OPTIONS" addfieldpath="/administrator/components/com_gamification/models/fields">
                 
-                <field name="display_level" type="radio"
+                <field name="display_level" type="radio" class="btn-group"
                     label="MOD_GAMIFICATIONPROFILE_DISPLAY_LEVEL" description="MOD_GAMIFICATIONPROFILE_DISPLAY_LEVEL_DESC"
                     default="0">
+                    
                     <option value="0">JNO</option>
                     <option value="1">JYES</option>
                 </field>
 
-                <field name="display_level_title" type="radio"
+                <field name="display_level_title" type="radio" class="btn-group"
                     label="MOD_GAMIFICATIONPROFILE_DISPLAY_LEVEL_TITLE" 
                     description="MOD_GAMIFICATIONPROFILE_DISPLAY_LEVEL_TITLE_DESC"
                     default="0">
+                    
                     <option value="0">JNO</option>
                     <option value="1">JYES</option>
                 </field>
                 
-                <field name="display_level_rank" type="radio"
+                <field name="display_level_rank" type="radio" class="btn-group"
                     label="MOD_GAMIFICATIONPROFILE_DISPLAY_LEVEL_RANK" 
                     description="MOD_GAMIFICATIONPROFILE_DISPLAY_LEVEL_RANK_DESC"
                     default="0">
+                    
                     <option value="0">JNO</option>
                     <option value="1">JYES</option>
                 </field>
@@ -87,24 +89,28 @@
             </fieldset>
 
             <fieldset name="rank" label="MOD_GAMIFICATIONPROFILE_RANK_OPTIONS" addfieldpath="/administrator/components/com_gamification/models/fields">
-                <field name="display_rank" type="radio"
+            
+                <field name="display_rank" type="radio" class="btn-group"
                     label="MOD_GAMIFICATIONPROFILE_DISPLAY_RANK" description="MOD_GAMIFICATIONPROFILE_DISPLAY_RANK_DESC"
                     default="0">
+                    
                     <option value="0">JNO</option>
                     <option value="1">JYES</option>
                 </field>
-                <field name="display_rank_picture" type="radio"
+                <field name="display_rank_picture" type="radio" class="btn-group"
                     label="MOD_GAMIFICATIONPROFILE_DISPLAY_RANK_PICTURE" 
                     description="MOD_GAMIFICATIONPROFILE_DISPLAY_RANK_PICTURE_DESC"
                     default="0">
+                    
                     <option value="0">JNO</option>
                     <option value="1">JYES</option>
                 </field>
+                
             </fieldset>
             
             <fieldset name="badges" label="MOD_GAMIFICATIONPROFILE_BADGES_OPTIONS" addfieldpath="/administrator/components/com_gamification/models/fields">
                 
-                <field name="display_badges" type="radio"
+                <field name="display_badges" type="radio" class="btn-group"
                     label="MOD_GAMIFICATIONPROFILE_DISPLAY_BADGES" 
                     description="MOD_GAMIFICATIONPROFILE_DISPLAY_BADGES_DESC"
                     default="0">
@@ -113,9 +119,10 @@
                     <option value="1">JYES</option>
                 </field>
                 
-                <field name="display_badges_note" type="radio"
+                <field name="display_badges_note" type="radio" class="btn-group"
                     label="MOD_GAMIFICATIONPROFILE_DISPLAY_BADGES_NOTE" description="MOD_GAMIFICATIONPROFILE_DISPLAY_BADGES_NOTE_DESC"
                     default="0">
+                    
                     <option value="0">JNO</option>
                     <option value="1">JYES</option>
                 </field>
@@ -124,9 +131,10 @@
             
             <fieldset name="progress_bar" label="MOD_GAMIFICATIONPROFILE_PROGRESS_BAR_OPTIONS" addfieldpath="/administrator/components/com_gamification/models/fields">
                 
-                <field name="display_progress_bar" type="radio"
+                <field name="display_progress_bar" type="radio" class="btn-group"
                     label="MOD_GAMIFICATIONPROFILE_DISPLAY_PROGRESS_BAR" description="MOD_GAMIFICATIONPROFILE_DISPLAY_PROGRESS_BAR_DESC"
                     default="0">
+                    
                     <option value="0">JNO</option>
                     <option value="1">JYES</option>
                 </field>
@@ -140,9 +148,10 @@
                     <option value="badges">MOD_GAMIFICATIONPROFILE_BADGES</option>
                 </field>
                 
-                <field name="display_badges_information" type="radio"
+                <field name="display_badges_information" type="radio" class="btn-group"
                     label="MOD_GAMIFICATIONPROFILE_DISPLAY_INFORMATION" description="MOD_GAMIFICATIONPROFILE_DISPLAY_INFORMATION_DESC"
                     default="0">
+                    
                     <option value="0">JNO</option>
                     <option value="1">JYES</option>
                 </field>

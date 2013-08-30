@@ -7,7 +7,7 @@
     <authorEmail>todor@itprism.com</authorEmail>
     <authorUrl>http://itprism.com</authorUrl>
     <version>1.1</version>
-    <creationDate>14 August, 2013</creationDate>
+    <creationDate>31 August, 2013</creationDate>
 	<description>PLG_SYSTEM_GAMIFICATION_DESC</description>
 	
 	<languages folder="language">
@@ -30,22 +30,38 @@
                     description="PLG_SYSTEM_GAMIFICATION_POINTS_DESC" 
                     display_root="0" />
                 
-                <field name="enable_leveling" type="radio" default="0" label="PLG_SYSTEM_GAMIFICATION_ENABLE_LEVELING" description="PLG_SYSTEM_GAMIFICATION_ENABLE_LEVELING_DESC" >
+                <field name="enable_leveling" type="radio" default="0" label="PLG_SYSTEM_GAMIFICATION_ENABLE_LEVELING" description="PLG_SYSTEM_GAMIFICATION_ENABLE_LEVELING_DESC" class="btn-group">
                    <option value="0">JNO</option>
                    <option value="1">JYES</option>
                 </field>
                 
-                <field name="enable_ranking" type="radio" default="0" label="PLG_SYSTEM_GAMIFICATION_ENABLE_RANKING" description="PLG_SYSTEM_GAMIFICATION_ENABLE_RANKING_DESC" >
+                <field name="enable_ranking" type="radio" default="0" label="PLG_SYSTEM_GAMIFICATION_ENABLE_RANKING" description="PLG_SYSTEM_GAMIFICATION_ENABLE_RANKING_DESC" class="btn-group">
                    <option value="0">JNO</option>
                    <option value="1">JYES</option>
                 </field>
                 
-                <field name="enable_badging" type="radio" default="0" label="PLG_SYSTEM_GAMIFICATION_ENABLE_BADGING" description="PLG_SYSTEM_GAMIFICATION_ENABLE_BADGING_DESC" >
+                <field name="enable_badging" type="radio" default="0" label="PLG_SYSTEM_GAMIFICATION_ENABLE_BADGING" description="PLG_SYSTEM_GAMIFICATION_ENABLE_BADGING_DESC" class="btn-group">
                    <option value="0">JNO</option>
                    <option value="1">JYES</option>
                 </field>
                 
             </fieldset>
+            
+            <fieldset name="integration" label="PLG_SYSTEM_GAMIFICATION_INTEGRATION">
+                <field name="notification_integration" type="list" default="" label="PLG_SYSTEM_GAMIFICATION_NOTIFICATION_INTEGRATION" description="PLG_SYSTEM_GAMIFICATION_NOTIFICATION_INTEGRATION_DESC">
+                    <option value="">PLG_SYSTEM_GAMIFICATION_NONE</option>
+                    <option value="gamification">PLG_SYSTEM_GAMIFICATION_GAMIFICATION_PLATFORM</option>
+                    <option value="socialcommunity">PLG_SYSTEM_GAMIFICATION_SOCIAL_COMMUNITY</option>
+                    <option value="jomsocial">PLG_SYSTEM_GAMIFICATION_JOM_SOCIAL</option>
+                </field>
+                <field name="activity_integration" type="list" default="" label="PLG_SYSTEM_GAMIFICATION_ACTIVITY_INTEGRATION" description="PLG_SYSTEM_GAMIFICATION_ACTIVITY_INTEGRATION_DESC">
+                    <option value="">PLG_SYSTEM_GAMIFICATION_NONE</option>
+                    <option value="gamification">PLG_SYSTEM_GAMIFICATION_GAMIFICATION_PLATFORM</option>
+                    <option value="socialcommunity">PLG_SYSTEM_GAMIFICATION_SOCIAL_COMMUNITY</option>
+                    <option value="jomsocial">PLG_SYSTEM_GAMIFICATION_JOM_SOCIAL</option>
+                </field>
+            </fieldset>
+            
         </fields>
     </config>
     

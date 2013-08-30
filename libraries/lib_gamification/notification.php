@@ -127,12 +127,18 @@ class GamificationNotification {
         $query
             ->insert($this->db->quoteName("#__gfy_notifications"))
             ->set($this->db->quoteName("note")    ." = " . $this->db->quote($this->note) )
-            ->set($this->db->quoteName("image")   ." = " . $this->db->quote($this->image) )
-            ->set($this->db->quoteName("url")     ." = " . $this->db->quote($this->url) )
             ->set($this->db->quoteName("created") ." = " . $this->db->quote($unixTimestamp) )
             ->set($this->db->quoteName("read")    ." = " . (int)$this->read)
             ->set($this->db->quoteName("user_id") ." = " . (int)$this->user_id);
             
+        if(!empty($this->image)) {
+            $query->set($this->db->quoteName("image")   ." = " . $this->db->quote($this->image) );
+        }
+        
+        if(!empty($this->image)) {
+            $query->set($this->db->quoteName("url")     ." = " . $this->db->quote($this->url) );
+        }
+        
         $this->db->setQuery($query);
         $this->db->query();
         

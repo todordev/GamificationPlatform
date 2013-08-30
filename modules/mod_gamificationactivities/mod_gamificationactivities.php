@@ -23,12 +23,6 @@ $componentParams = JComponentHelper::getParams("com_gamification");
 
 // Load helpers
 JHtml::addIncludePath(GAMIFICATION_PATH_COMPONENT_SITE.'/helpers/html');
-JHtml::addIncludePath(ITPRISM_PATH_LIBRARY.'/ui/helpers');
-
-// Load Twitter Bootstrap
-if($componentParams->get("bootstrap_include", 1)) {
-    JHtml::_("itprism.ui.bootstrap");
-}
 
 $imagePath       = $componentParams->get("images_directory", "images/gamification");
 
@@ -58,8 +52,8 @@ if( (strcmp("none", $integrateType) != 0) AND !empty($numberItems)) {
         $usersIds[] = $item->user_id; 
     }
     
-    jimport("itprism.integrate.social");
-    $socialProfiles = ITPrismIntegrateSocial::factory($integrateType, $usersIds);
+    jimport("itprism.integrate.profiles");
+    $socialProfiles = ITPrismIntegrateProfiles::factory($integrateType, $usersIds);
 }
 
 require JModuleHelper::getLayoutPath('mod_gamificationactivities', $params->get('layout', 'default'));

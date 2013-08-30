@@ -14,25 +14,27 @@
 // no direct access
 defined('_JEXEC') or die;
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_gamification&layout=edit'); ?>" method="post" name="adminForm" id="adminForm" class="form-validate" >
-    <div class="width-40 fltlft">
-        <fieldset class="adminform">
-            <legend><?php echo JText::_("COM_GAMIFICATION_GROUP_LEGEND"); ?></legend>
+<div class="row-fluid">
+	<div class="span6 form-horizontal">
+        <form action="<?php echo JRoute::_('index.php?option=com_gamification'); ?>" method="post" name="adminForm" id="adminForm" class="form-validate" >
             
-            <ul class="adminformlist">
-                <li><?php echo $this->form->getLabel('name'); ?>
-                <?php echo $this->form->getInput('name'); ?></li>
-                
-    			<li><?php echo $this->form->getLabel('note'); ?>
-                <?php echo $this->form->getInput('note'); ?></li>   
-                
-                <li><?php echo $this->form->getLabel('id'); ?>
-                <?php echo $this->form->getInput('id'); ?></li>
-            </ul>
-            
-        </fieldset>
+            <fieldset>
+                <div class="control-group">
+                    <div class="control-label"><?php echo $this->form->getLabel('name'); ?></div>
+    				<div class="controls"><?php echo $this->form->getInput('name'); ?></div>
+                </div>
+                <div class="control-group">
+                    <div class="control-label"><?php echo $this->form->getLabel('note'); ?></div>
+    				<div class="controls"><?php echo $this->form->getInput('note'); ?></div>
+                </div>
+                <div class="control-group">
+                    <div class="control-label"><?php echo $this->form->getLabel('id'); ?></div>
+    				<div class="controls"><?php echo $this->form->getInput('id'); ?></div>
+                </div>
+            </fieldset>
+        
+            <input type="hidden" name="task" value="" />
+            <?php echo JHtml::_('form.token'); ?>
+        </form>
     </div>
-
-    <input type="hidden" name="task" value="" />
-    <?php echo JHtml::_('form.token'); ?>
-</form>
+</div>

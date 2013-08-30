@@ -7,7 +7,7 @@
 	<authorEmail>todor@itprism.com</authorEmail>
 	<authorUrl>http://itprism.com</authorUrl>
 	<version>1.1</version>
-	<creationDate>14 August, 2013</creationDate>
+	<creationDate>31 August, 2013</creationDate>
 	<description>MOD_GAMIFICATIONACTIVITIES_DESCRIPTION</description>
 
 	<languages folder="language">
@@ -15,7 +15,7 @@
 		<language tag="en-GB">en-GB/en-GB.mod_gamificationactivities.sys.ini</language>
 	</languages>
 
-	<help url="MOD_CROWDFUNDINGINFO_HELP_URL" />
+	<help url="MOD_GAMIFICATIONACTIVITIES_HELP_URL" />
 
 	<files>
 		<filename module="mod_gamificationactivities">mod_gamificationactivities.php</filename>
@@ -27,7 +27,7 @@
 		<fields name="params">
 			<fieldset name="basic">
 
-                <field name="name_linkable" type="radio"
+                <field name="name_linkable" type="radio" class="btn-group"
                     label="MOD_GAMIFICATIONACTIVITIES_NAME_LINKABLE" 
                     description="MOD_GAMIFICATIONACTIVITIES_NAME_LINKABLE_DESC"
                     default="1">
@@ -48,11 +48,10 @@
                     description="MOD_GAMIFICATIONACTIVITIES_INTEGRATE_DESC"
                     default="none">
                     <option value="none">MOD_GAMIFICATIONACTIVITIES_NONE</option>
-                    <option value="social_community">MOD_GAMIFICATIONACTIVITIES_SOCIAL_COMMUNITY</option>
+                    <option value="socialcommunity">MOD_GAMIFICATIONACTIVITIES_SOCIAL_COMMUNITY</option>
                     <option value="kunena">MOD_GAMIFICATIONACTIVITIES_KUNENA</option>
                     <option value="gravatar">MOD_GAMIFICATIONACTIVITIES_GRAVATAR</option>
                     <option value="jomsocial">MOD_GAMIFICATIONACTIVITIES_JOMSOCIAL</option>
-                    <option value="community_builder">MOD_GAMIFICATIONACTIVITIES_COMMUNITY_BUILDER</option>
                 </field>
                 
                 <field name="avatar_size" type="text"

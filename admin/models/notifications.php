@@ -30,7 +30,9 @@ class GamificationModelNotifications extends JModelList {
         if (empty($config['filter_fields'])) {
             $config['filter_fields'] = array(
                 'id', 'a.id',
-                'name', 'b.name'
+                'created', 'a.created',
+                'read', 'a.read',
+                'name', 'b.name',
             );
         }
 
@@ -52,9 +54,12 @@ class GamificationModelNotifications extends JModelList {
         $this->setState('params', $params);
         
         // Load the filter state.
-        $search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
-        $this->setState('filter.search', $search);
+        $value = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
+        $this->setState('filter.search', $value);
 
+        $value = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_state', '', 'string');
+        $this->setState('filter.state', $value);
+        
         // List state information.
         parent::populateState('a.created', 'desc');
     }
@@ -74,6 +79,7 @@ class GamificationModelNotifications extends JModelList {
         
         // Compile the store id.
         $id.= ':' . $this->getState('filter.search');
+        $id.= ':' . $this->getState('filter.state');
 
         return parent::getStoreId($id);
     }
@@ -104,6 +110,14 @@ class GamificationModelNotifications extends JModelList {
         $query->from($db->quoteName('#__gfy_notifications').' AS a');
         $query->innerJoin($db->quoteName('#__users').' AS b ON a.user_id = b.id');
 
+        // Filter by state
+        $state = $this->getState('filter.state');
+        if (is_numeric($state)) {
+            $query->where('a.read = '.(int) $state);
+        } else if ($state === '') {
+            $query->where('(a.read IN (0, 1))');
+        }
+        
         // Filter by search in title
         $search = $this->getState('filter.search');
         if (!empty($search)) {

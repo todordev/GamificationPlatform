@@ -19,12 +19,6 @@ jimport('joomla.application.component.modeladmin');
 class GamificationModelNotification extends JModelAdmin {
     
     /**
-     * @var     string  The prefix to use with controller messages.
-     * @since   1.6
-     */
-    protected $text_prefix = 'COM_GAMIFICATION';
-    
-    /**
      * Returns a reference to the a Table object, always creating it.
      *
      * @param   type    The table type to instantiate
@@ -92,11 +86,11 @@ class GamificationModelNotification extends JModelAdmin {
         $row->load($id);
         
         $row->set("note",    $note);
-        $row->set("url",     $url);
-        $row->set("image",   $image);
+        $row->set("url",     (!$url)   ? null : $url);
+        $row->set("image",   (!$image) ? null : $image);
         $row->set("read",    $read);
         
-        $row->store();
+        $row->store(true);
         
         return $row->id;
     

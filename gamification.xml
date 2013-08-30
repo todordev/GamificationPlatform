@@ -37,13 +37,14 @@
 	
 	<!-- Site Main File Copy Section -->
 	<files folder="site">
+        <folder>controllers</folder>
+        <folder>helpers</folder>
+        <folder>models</folder>
+        <folder>views</folder>
 		<filename>controller.php</filename>
+        <filename>gamification.php</filename>
 		<filename>index.html</filename>
 		<filename>router.php</filename>
-		<filename>gamification.php</filename>
-		<folder>controllers</folder>
-		<folder>models</folder>
-		<folder>views</folder>
 	</files>
 
 	<languages folder="site">
@@ -51,7 +52,7 @@
 	</languages>
 	
 	<administration>
-		<menu img="../media/com_gamification/images/menu_gamification.png" link="option=com_gamification">COM_GAMIFICATION</menu>
+		<menu link="option=com_gamification">COM_GAMIFICATION</menu>
 	
 		<files folder="admin">		    		
 			<folder>controllers</folder>

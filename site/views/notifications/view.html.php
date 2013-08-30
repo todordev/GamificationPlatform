@@ -5,7 +5,7 @@
  * @author       Todor Iliev
  * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * VirtualCurrency is free software. This version may have been modified pursuant
+ * Gamification Platform is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
@@ -16,7 +16,7 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.view');
 
-class GamificationViewNotifications extends JView {
+class GamificationViewNotifications extends JViewLegacy {
     
 	protected $state;
 	protected $items;
@@ -83,7 +83,6 @@ class GamificationViewNotifications extends JView {
 		$this->document->addStyleSheet('media/'.$this->option.'/css/site/style.css');
 		
 		// Scripts
-		JHtml::_("itprism.ui.bootstrap");
 		JHtml::_('behavior.tooltip');
         
 		$this->document->addScript('media/'.$this->option.'/js/site/'.JString::strtolower($this->getName()).'.js');

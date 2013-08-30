@@ -60,7 +60,7 @@ defined('_JEXEC') or die;
     ?>
     <div class="media">
         <?php if($displayNumber) {?>
-        <div class="pull-left"><?php echo $i + 1;?></div>
+        <div class="pull-left gfy-modlb-number"><?php echo $i + 1;?></div>
         <?php }?>
         
         <a class="pull-left" href="<?php echo $link;?>">
@@ -73,6 +73,6 @@ defined('_JEXEC') or die;
         </div>
         
     </div>
-        
+    <div class="clearfix"></div>
 <?php }?>
 </div>

@@ -47,7 +47,7 @@ abstract class JHtmlGamification {
         if(!$value) {
             $html = '--';
         } else {
-            $html = '<span class="hasTip" title="'.htmlspecialchars($name, ENT_QUOTES, "UTF-8").'">'.$value.' [ ' .$abbr.' ]'.'</span>';
+            $html = '<span class="hasTooltip" title="'.htmlspecialchars($name, ENT_QUOTES, "UTF-8").'">'.$value.' [ ' .$abbr.' ]'.'</span>';
         }
     
         return $html;
@@ -60,7 +60,10 @@ abstract class JHtmlGamification {
         $classes = array();
         
         if(!empty($tip) AND !empty($note)) {
-            $classes[] = "hasTip";
+            
+            JHtml::_("bootstrap.tooltip");
+            
+            $classes[] = "hasTooltip";
             
             $tip   = strip_tags(JString::trim($note));
             $title = ' title="'.htmlspecialchars($note, ENT_QUOTES, "UTF-8").'"';
@@ -96,12 +99,14 @@ abstract class JHtmlGamification {
         
         // Prepare current level
         if(!empty($tip)) {
-            $classes[]    = "hasTip";
             
+            JHtml::_("bootstrap.tooltip");
+            
+            $classes[]    = "hasTooltip";
             $titleCurrent = ' title="'.JText::sprintf("MOD_GAMIFICATIONPROFILE_POINTS_INFORMATION", $userPoints).'"';
-            
         }
         
+        // START Labels
         $html[] = '<div class="gfy-progress-labels">';
         
         $html[] = '<div class="gfy-prgss-lbl-current">';
@@ -124,20 +129,23 @@ abstract class JHtmlGamification {
                 switch($gameMechanic) {
                 
                     case "badges":
-                        $titleNext = ' title="'.JText::sprintf("MOD_GAMIFICATIONPROFILE_POINTS_BADGES_INFORMATION_REACH", $userPoints, $titleNext).'"';
+                        $titleNext = ' title="'.JText::sprintf("MOD_GAMIFICATIONPROFILE_POINTS_BADGES_INFORMATION_REACH", $neededPoints, $titleNext).'"';
                         break;
                 
                     case "ranks":
-                        $titleNext = ' title="'.JText::sprintf("MOD_GAMIFICATIONPROFILE_POINTS_RANKS_INFORMATION_REACH", $userPoints, $titleNext).'"';
+                        $titleNext = ' title="'.JText::sprintf("MOD_GAMIFICATIONPROFILE_POINTS_RANKS_INFORMATION_REACH", $neededPoints, $titleNext).'"';
                         break;
                 
                     default:
-                        $titleNext = ' title="'.JText::sprintf("MOD_GAMIFICATIONPROFILE_POINTS_LEVELS_INFORMATION_REACH", $userPoints, $titleNext).'"';
+                        $titleNext = ' title="'.JText::sprintf("MOD_GAMIFICATIONPROFILE_POINTS_LEVELS_INFORMATION_REACH", $neededPoints, $titleNext).'"';
                         break;
                 }
             }
         
         }
+        
+        // END Labels
+        $html[] = '</div>';
         
         $html[] = '<div class="clearfix"></div>';
         $html[] = '<div class="progress">';
@@ -151,5 +159,27 @@ abstract class JHtmlGamification {
     
         return implode("\n", $html);
     }
+    
+    public static function boolean($value, $title = "") {
+	    
+        $title = addslashes(htmlspecialchars(JString::trim($title), ENT_COMPAT, 'UTF-8'));
+        
+	    if(!$value) { // unpublished
+		    $class  = "unpublish";
+	    } else {
+	        $class  = "ok";
+	    }
+	    
+	    if(!empty($title)) {
+	        $title  = ' title="'.$title.'"';
+	    }
+		
+		$html[] = '<a class="btn btn-micro" rel="tooltip" ';
+		$html[] = ' href="javascript:void(0);" ' . $title. '">';
+		$html[] = '<i class="icon-' . $class . '"></i>';
+		$html[] = '</a>';
+		
+		return implode($html);
+	}
     
 }

@@ -98,6 +98,7 @@ class GamificationModelLevel extends JModelAdmin {
         $value        = JArrayHelper::getValue($data, "value");
         $rankId       = JArrayHelper::getValue($data, "rank_id");
         $groupId      = JArrayHelper::getValue($data, "group_id");
+        $published    = JArrayHelper::getValue($data, "published");
         
         // Load a record from the database
         $row = $this->getTable();
@@ -109,6 +110,7 @@ class GamificationModelLevel extends JModelAdmin {
         $row->set("value",       $value);
         $row->set("rank_id",     $rankId);
         $row->set("group_id",    $groupId);
+        $row->set("published",   $published);
         
         $row->store();
         

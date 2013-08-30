@@ -16,7 +16,7 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.view');
 
-class GamificationViewPoint extends JView {
+class GamificationViewPoint extends JViewLegacy {
     
     protected $state;
     protected $item;
@@ -56,23 +56,19 @@ class GamificationViewPoint extends JView {
         JFactory::getApplication()->input->set('hidemainmenu', true);
         $isNew = ($this->item->id == 0);
         
-        $this->documentTitle= $isNew  ? JText::_('COM_GAMIFICATION_NEW_POINTS')
-                                      : JText::_('COM_GAMIFICATION_EDIT_POINTS');
+        $this->documentTitle = $isNew  ? JText::_('COM_GAMIFICATION_NEW_POINTS')
+                                       : JText::_('COM_GAMIFICATION_EDIT_POINTS');
 
-        if(!$isNew) {
-            JToolBarHelper::title($this->documentTitle, 'itp-edit-points');
-        } else {
-            JToolBarHelper::title($this->documentTitle, 'itp-new-points');
-        }
+        JToolbarHelper::title($this->documentTitle);
 		                             
-        JToolBarHelper::apply('point.apply');
-        JToolBarHelper::save2new('point.save2new');
-        JToolBarHelper::save('point.save');
+        JToolbarHelper::apply('point.apply');
+        JToolbarHelper::save2new('point.save2new');
+        JToolbarHelper::save('point.save');
     
         if(!$isNew){
-            JToolBarHelper::cancel('point.cancel', 'JTOOLBAR_CANCEL');
+            JToolbarHelper::cancel('point.cancel', 'JTOOLBAR_CANCEL');
         }else{
-            JToolBarHelper::cancel('point.cancel', 'JTOOLBAR_CLOSE');
+            JToolbarHelper::cancel('point.cancel', 'JTOOLBAR_CLOSE');
         }
         
     }

@@ -7,7 +7,7 @@
 	<authorEmail>todor@itprism.com</authorEmail>
 	<authorUrl>http://itprism.com</authorUrl>
 	<version>1.1</version>
-	<creationDate>13 August, 2013</creationDate>
+	<creationDate>31 August, 2013</creationDate>
 	<description>MOD_GAMIFICATIONLEADERBOARD_DESCRIPTION</description>
 
 	<languages folder="language">
@@ -15,11 +15,12 @@
 		<language tag="en-GB">en-GB/en-GB.mod_gamificationleaderboard.sys.ini</language>
 	</languages>
 
-	<help url="MOD_CROWDFUNDINGINFO_HELP_URL" />
+	<help url="MOD_GAMIFICATIONLEADERBOARD_HELP_URL" />
 
 	<files>
+        <folder>css</folder>
+        <folder>tmpl</folder>
 		<filename module="mod_gamificationleaderboard">mod_gamificationleaderboard.php</filename>
-		<folder>tmpl</folder>
 		<filename>index.html</filename>
 	</files>
 
@@ -36,18 +37,20 @@
                     <option value="levels">MOD_GAMIFICATIONLEADERBOARD_LEVELS</option>
                 </field>
 				
-                <field name="display_number" type="radio"
+                <field name="display_number" type="radio" class="btn-group"
                     label="MOD_GAMIFICATIONLEADERBOARD_DISPLAY_NUMBER" 
                     description="MOD_GAMIFICATIONLEADERBOARD_DISPLAY_NUMBER_DESC"
                     default="1">
+                    
                     <option value="0">JNO</option>
                     <option value="1">JYES</option>
                 </field>
                 
-                <field name="name_linkable" type="radio"
+                <field name="name_linkable" type="radio" class="btn-group"
                     label="MOD_GAMIFICATIONLEADERBOARD_NAME_LINKABLE" 
                     description="MOD_GAMIFICATIONLEADERBOARD_NAME_LINKABLE_DESC"
                     default="1">
+                    
                     <option value="0">JNO</option>
                     <option value="1">JYES</option>
                 </field>
@@ -83,18 +86,20 @@
                     description="MOD_GAMIFICATIONLEADERBOARD_GROUP_DESC"
                 />
                 
-                <field name="levels_display_title" type="radio"
+                <field name="levels_display_title" type="radio" class="btn-group"
                     label="MOD_GAMIFICATIONLEADERBOARD_DISPLAY_LEVEL_TITLE" 
                     description="MOD_GAMIFICATIONLEADERBOARD_DISPLAY_LEVEL_TITLE_DESC"
                     default="0">
+                    
                     <option value="0">JNO</option>
                     <option value="1">JYES</option>
                 </field>
                 
-                <field name="levels_display_rank" type="radio"
+                <field name="levels_display_rank" type="radio" class="btn-group"
                     label="MOD_GAMIFICATIONLEADERBOARD_DISPLAY_LEVEL_RANK" 
                     description="MOD_GAMIFICATIONLEADERBOARD_DISPLAY_LEVEL_RANK_DESC"
                     default="0">
+                    
                     <option value="0">JNO</option>
                     <option value="1">JYES</option>
                 </field>
@@ -107,11 +112,10 @@
                     description="MOD_GAMIFICATIONLEADERBOARD_INTEGRATE_DESC"
                     default="none">
                     <option value="none">MOD_GAMIFICATIONLEADERBOARD_NONE</option>
-                    <option value="social_community">MOD_GAMIFICATIONLEADERBOARD_SOCIAL_COMMUNITY</option>
+                    <option value="socialcommunity">MOD_GAMIFICATIONLEADERBOARD_SOCIAL_COMMUNITY</option>
                     <option value="kunena">MOD_GAMIFICATIONLEADERBOARD_KUNENA</option>
                     <option value="gravatar">MOD_GAMIFICATIONLEADERBOARD_GRAVATAR</option>
                     <option value="jomsocial">MOD_GAMIFICATIONLEADERBOARD_JOMSOCIAL</option>
-                    <option value="community_builder">MOD_GAMIFICATIONLEADERBOARD_COMMUNITY_BUILDER</option>
                 </field>
                 
                 <field name="avatar_size" type="text"

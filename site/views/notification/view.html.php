@@ -16,7 +16,7 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.view');
 
-class GamificationViewNotification extends JView {
+class GamificationViewNotification extends JViewLegacy {
     
 	protected $item;
 	protected $state;
@@ -41,9 +41,6 @@ class GamificationViewNotification extends JView {
 		$model->read();
 		
 		$this->version    = new GamificationVersion();
-		
-		JHtml::addIncludePath(ITPRISM_PATH_LIBRARY.'/ui/helpers');
-		JHtml::_("itprism.ui.bootstrap");
 		
         $this->prepareDocument();
                 

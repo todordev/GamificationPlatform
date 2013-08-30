@@ -18,6 +18,6 @@ jimport("gamification.init");
 
 jimport('joomla.application.component.controller');
 
-$controller = JController::getInstance('Gamification');
+$controller = JControllerLegacy::getInstance('Gamification');
 $controller->execute(JFactory::getApplication()->input->getCmd('task'));
 $controller->redirect();

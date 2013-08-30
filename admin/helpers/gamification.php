@@ -31,55 +31,61 @@ class GamificationHelper {
 	 */
 	public static function addSubmenu($vName = 'dashboard') {
 	    
-	    JSubMenuHelper::addEntry(
+	    JHtmlSidebar::addEntry(
 			JText::_('COM_GAMIFICATION_DASHBOARD'),
 			'index.php?option='.self::$extension.'&view=dashboard',
 			$vName == 'dashboard'
 		);
 		
-		JSubMenuHelper::addEntry(
+		JHtmlSidebar::addEntry(
 			JText::_('COM_GAMIFICATION_GROUPS'),
 			'index.php?option='.self::$extension.'&view=groups',
 			$vName == 'groups'
 		);
 		
-		JSubMenuHelper::addEntry(
+		JHtmlSidebar::addEntry(
 			JText::_('COM_GAMIFICATION_POINTS'),
 			'index.php?option='.self::$extension.'&view=points',
 			$vName == 'points'
 		);
 		
-		JSubMenuHelper::addEntry(
+		JHtmlSidebar::addEntry(
 			JText::_('COM_GAMIFICATION_BADGES'),
 			'index.php?option='.self::$extension.'&view=badges',
 			$vName == 'badges'
 		);
 		
-		JSubMenuHelper::addEntry(
+		JHtmlSidebar::addEntry(
 			JText::_('COM_GAMIFICATION_RANKS'),
 			'index.php?option='.self::$extension.'&view=ranks',
 			$vName == 'ranks'
 		);
 		
-		JSubMenuHelper::addEntry(
+		JHtmlSidebar::addEntry(
 			JText::_('COM_GAMIFICATION_LEVELS'),
 			'index.php?option='.self::$extension.'&view=levels',
 			$vName == 'levels'
 		);
 		
-		JSubMenuHelper::addEntry(
+		JHtmlSidebar::addEntry(
 			JText::_('COM_GAMIFICATION_PROFILES'),
 			'index.php?option='.self::$extension.'&view=profiles',
 			$vName == 'profiles'
 		);
 		
-		JSubMenuHelper::addEntry(
+		JHtmlSidebar::addEntry(
     		JText::_('COM_GAMIFICATION_NOTIFICATIONS'),
     		'index.php?option='.self::$extension.'&view=notifications',
     		$vName == 'notifications'
         );
 		
-		JSubMenuHelper::addEntry(
+		JHtmlSidebar::addEntry(
+    		JText::_('COM_GAMIFICATION_ACTIVITIES'),
+    		'index.php?option='.self::$extension.'&view=activities',
+    		$vName == 'activities'
+        );
+		
+		JHtmlSidebar::addEntry(
         	JText::_('COM_GAMIFICATION_PLUGINS'),
         	'index.php?option=com_plugins&view=plugins&filter_search=gamification',
         	$vName == 'plugins'

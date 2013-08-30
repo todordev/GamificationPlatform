@@ -7,7 +7,7 @@
     <authorEmail>todor@itprism.com</authorEmail>
     <authorUrl>http://itprism.com</authorUrl>
     <version>1.1</version>
-    <creationDate>14 August, 2013</creationDate>
+    <creationDate>31 August, 2013</creationDate>
     <description>PLG_USER_GAMIFICATION_DESC</description>
     
     <languages folder="language">
@@ -23,20 +23,24 @@
     <config>
         <fields name="params">
             <fieldset name="basic" addfieldpath="/administrator/components/com_gamification/models/fields">
-                <field name="points_give" type="radio" default="0" label="PLG_USER_GAMIFICATION_GIVE_POINTS" description="PLG_USER_GAMIFICATION_GIVE_POINTS_DESC">
+                <field name="points_give" type="radio" default="0" label="PLG_USER_GAMIFICATION_GIVE_POINTS" description="PLG_USER_GAMIFICATION_GIVE_POINTS_DESC" class="btn-group">
                     <option value="0">JNO</option>
                     <option value="1">JYES</option>
                 </field>
                 <field name="points_types" type="gfypointstypes" label="PLG_USER_GAMIFICATION_TYPES" description="PLG_USER_GAMIFICATION_TYPES_DESC" />
+            </fieldset>
+            <fieldset name="integration" label="PLG_USER_GAMIFICATION_INTEGRATION">
                 <field name="notification_integration" type="list" default="" label="PLG_USER_GAMIFICATION_NOTIFICATION_INTEGRATION" description="PLG_USER_GAMIFICATION_NOTIFICATION_INTEGRATION_DESC">
                     <option value="">PLG_USER_GAMIFICATION_NONE</option>
                     <option value="gamification">PLG_USER_GAMIFICATION_GAMIFICATION_PLATFORM</option>
                     <option value="socialcommunity">PLG_USER_GAMIFICATION_SOCIAL_COMMUNITY</option>
+                    <option value="jomsocial">PLG_USER_GAMIFICATION_JOM_SOCIAL</option>
                 </field>
                 <field name="activity_integration" type="list" default="" label="PLG_USER_GAMIFICATION_ACTIVITY_INTEGRATION" description="PLG_USER_GAMIFICATION_ACTIVITY_INTEGRATION_DESC">
                     <option value="">PLG_USER_GAMIFICATION_NONE</option>
                     <option value="gamification">PLG_USER_GAMIFICATION_GAMIFICATION_PLATFORM</option>
                     <option value="socialcommunity">PLG_USER_GAMIFICATION_SOCIAL_COMMUNITY</option>
+                    <option value="jomsocial">PLG_USER_GAMIFICATION_JOM_SOCIAL</option>
                 </field>
             </fieldset>
         </fields>

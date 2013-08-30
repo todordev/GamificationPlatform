@@ -26,8 +26,6 @@ jimport('joomla.plugin.plugin');
  */
 class plgSystemGamification extends JPlugin {
 	
-    protected $notification;
-
     /**
      * Update some gamifigation mechanics of the user - levels, badges, ranks,...
      */
@@ -48,17 +46,12 @@ class plgSystemGamification extends JPlugin {
             return;
         }
     
-        $userId = JFactory::getUser()->id;
-        if(!$userId) {
+        $this->userId = JFactory::getUser()->id;
+        if(!$this->userId) {
             return;
         }
         
         $this->loadLanguage();
-        
-        // Initialize notification object
-        jimport("gamification.notification");
-        $this->notification = new GamificationNotification();
-        $this->notification->setUserId($userId);
         
         // Get points
         jimport("gamification.points");
@@ -72,7 +65,7 @@ class plgSystemGamification extends JPlugin {
         if($points->id AND $points->published) {
              
             $keys = array(
-                "user_id"     => $userId,
+                "user_id"     => $this->userId,
                 "points_id"   => $points->id
             );
              
@@ -116,8 +109,25 @@ class plgSystemGamification extends JPlugin {
         } else { // Level UP
             
             if($level->levelUp()) {
-                $note = JText::sprintf("PLG_SYSTEM_GAMIFICATION_LEVEL_NOTIFICATION", $level->getLevel());
-                $this->notification->send($note);
+                
+                // Level with rank
+                if(!empty($level->rank_id)) {
+                    $rank = $level->getRank();
+                    
+                    $note = JText::sprintf("PLG_SYSTEM_GAMIFICATION_LEVEL_RANK_NOTIFICATION", $level->getLevel(), $rank->getTitle());
+                    $this->notify($note);
+                    
+                    $info = JText::sprintf("PLG_SYSTEM_GAMIFICATION_LEVEL_RANK_ACTIVITY", $level->getLevel(), $rank->getTitle());
+                    $this->storeActivity($info);
+                    
+                } else { // Level without rank
+                    
+                    $note = JText::sprintf("PLG_SYSTEM_GAMIFICATION_LEVEL_NOTIFICATION", $level->getLevel());
+                    $this->notify($note);
+                    
+                    $info = JText::sprintf("PLG_SYSTEM_GAMIFICATION_LEVEL_ACTIVITY", $level->getLevel());
+                    $this->storeActivity($info);
+                }
             }
             
         }
@@ -143,8 +153,18 @@ class plgSystemGamification extends JPlugin {
         } else { // Give a new rank
             
             if($rank->giveRank()) {
+                
+                // Prepare the link to the rank image.
+                $image = $rank->getImage();
+                if(!empty($image)) {
+                    $image = $this->getImagePath($image);
+                }
+                
                 $note = JText::sprintf("PLG_SYSTEM_GAMIFICATION_RANK_NOTIFICATION", $rank->getTitle());
-                $this->notification->send($note);
+                $this->notify($note, $image);
+                
+                $info = JText::sprintf("PLG_SYSTEM_GAMIFICATION_RANK_ACTIVITY", $rank->getTitle());
+                $this->storeActivity($info, $image);
             }
             
         }
@@ -162,10 +182,69 @@ class plgSystemGamification extends JPlugin {
         
         // Send a notification to user about the new badge
         if(!empty($badge->badge_id)) {
+            
+            // Prepare the link to the badge image.
+            $image = $badge->getImage();
+            if(!empty($image)) {
+                $image = $this->getImagePath($image);
+            }
+            
             $note = JText::sprintf("PLG_SYSTEM_GAMIFICATION_BADGE_NOTIFICATION", $badge->getTitle());
-            $this->notification->send($note);
+            $this->notify($note, $image);
+            
+            $info = JText::sprintf("PLG_SYSTEM_GAMIFICATION_BADGE_ACTIVITY", $badge->getTitle());
+            $this->storeActivity($info, $image);
         }
     
+    }
+    
+    public function notify($message, $image = null) {
+         
+        $service = $this->params->get("notification_integration");
+        
+        jimport("itprism.integrate.notification");
+        $notification = ITPrismIntegrateNotification::factory($service);
+         
+        $notification->setNote($message);
+        $notification->setUserId($this->userId);
+         
+        if(!empty($image)) {
+            $notification->setImage($image);
+        }
+        
+        $notification->send();
+         
+    }
+    
+    public function storeActivity($info, $image = null) {
+         
+        $service = $this->params->get("activity_integration");
+        
+        jimport("itprism.integrate.activity");
+         
+        $activity = ITPrismIntegrateActivity::factory($service);
+        $activity->setInfo($info);
+        $activity->setUserId($this->userId);
+         
+        // Application to JomSocial object
+        if(strcmp("jomsocial", $service) == 0) {
+            $activity->setApp("gamification.points");
+        }
+         
+        if(!empty($image)) {
+            $activity->setImage($image);
+        }
+        
+        $activity->store();
+    }
+    
+    private function getImagePath($image) {
+        
+        $componentParams = JComponentHelper::getParams("com_gamification");
+        $imagesFolder = $componentParams->get("images_directory", "images/gamification");
+        $image = $imagesFolder."/".$image;
+        
+        return $image;
     }
 	
 }

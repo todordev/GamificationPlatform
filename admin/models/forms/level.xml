@@ -41,6 +41,17 @@
             required="true"
         />
         
+        <field name="published" type="list" class="inputbox" 
+            label="JSTATUS" 
+            description="JFIELD_PUBLISHED_DESC" 
+            size="1" 
+            filter="intval" 
+            default="1"
+        >
+            <option value="1">JPUBLISHED</option>
+            <option value="0">JUNPUBLISHED</option>
+        </field>
+        
 		<field name="id" type="text" class="readonly"
 		  label="JGLOBAL_FIELD_ID_LABEL"
 		  description="JGLOBAL_FIELD_ID_DESC" 

@@ -67,7 +67,7 @@ class plgUserGamification extends JPlugin {
 	 * @todo Remove this method because it is used only for testing.
 	 */
 	public function onUserLogin($user, $options) {
-	    /* 
+	    
 	    // Get user id
 	    $userName = JArrayHelper::getValue($user, 'username');
 	    
@@ -86,7 +86,7 @@ class plgUserGamification extends JPlugin {
 		if($this->params->get("points_give", 0)) {
 		    $this->givePoints($user);
 		}
-	     */
+	     
 	}
 	
 	/**
@@ -132,22 +132,22 @@ class plgUserGamification extends JPlugin {
     	            
     	            // Send notification and store activity
     	             
-    	            // Notification services
-    	            $iServices = $this->params->get("notification_integration");
-    	            if(!empty($iServices)) {
+    	            // Notification service
+    	            $iService = $this->params->get("notification_integration");
+    	            if(!empty($iService)) {
     	            
     	                $message = JText::sprintf("PLG_USER_GAMIFICATION_NOTIFICATION_AFTER_REGISTRATION", $pointsType->value, $points->title);
-    	                $this->notify($iServices, $message, $userId);
+    	                $this->notify($iService, $message, $userId);
     	                 
     	            }
     	            
-    	            // ACtivity services
-    	            $iServices = $this->params->get("activity_integration");
-    	            if(!empty($iServices)) {
+    	            // Activity service
+    	            $iService = $this->params->get("activity_integration");
+    	            if(!empty($iService)) {
     	                 
     	                $points  = htmlspecialchars($pointsType->value." ".$userPoints->getTitle(), ENT_QUOTES, "UTF-8");
     	                $notice  = JText::sprintf("PLG_USER_GAMIFICATION_ACTIVITY_AFTER_REGISTRATION", $name, $points);
-    	                $this->storeActivity($iServices, $notice, $userId);
+    	                $this->storeActivity($iService, $notice, $userId);
     	            
     	            }
     	            
@@ -161,53 +161,32 @@ class plgUserGamification extends JPlugin {
 	    
 	}
 	
-	public function notify($services, $message, $userId) {
+	public function notify($service, $message, $userId) {
 	    
-	    switch($services) {
-	        
-	        case "gamification":
-	            
-	            jimport("itprism.integrate.notification.gamification");
-	            $notifier = new ITPrismIntegrateNotificationGamification($userId, $message);
-	            $notifier->send();
-	            
-	            break;
-	            
-            case "socialcommunity":
-	                 
-                jimport("itprism.integrate.notification.socialcommunity");
-                $notifier = new ITPrismIntegrateNotificationSocialCommunity($userId, $message);
-                $notifier->send();
-                 
-                break;
-	                
-	    }
+	    jimport("itprism.integrate.notification");
+	    $notifier = ITPrismIntegrateNotification::factory($service);
+	    
+	    $notifier->setNote($message);
+	    $notifier->setUserId($userId);
+	    
+	    $notifier->send();
 	    
 	}
 	
-	public function storeActivity($services, $notice, $userId) {
+	public function storeActivity($service, $notice, $userId) {
 	    
-	    switch($services) {
-	        
-	        case "gamification":
-	            
-                jimport("itprism.integrate.activity.gamification");
-                
-                $this->activity = new ITPrismIntegrateActivityGamification($userId, $notice);
-                $this->activity->store();
-	            
-	            break;
-	            
-            case "socialcommunity":
-	                 
-                jimport("itprism.integrate.activity.socialcommunity");
-                $this->activity = new ITPrismIntegrateActivitySocialCommunity($userId, $notice);
-                $this->activity->store();
-                 
-                break;
-	                
+	    jimport("itprism.integrate.activity");
+	    
+	    $activity = ITPrismIntegrateActivity::factory($service);
+	    $activity->setInfo($notice);
+	    $activity->setUserId($userId);
+	    
+	    // Application to JomSocial object
+	    if(strcmp("jomsocial", $service) == 0) {
+	        $activity->setApp("gamification.points");
 	    }
 	    
+	    $activity->store();
 	}
 	
 

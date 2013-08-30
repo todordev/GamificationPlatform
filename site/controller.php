@@ -16,7 +16,7 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.controller');
 
-class GamificationController extends JController {
+class GamificationController extends JControllerLegacy {
     
     /**
      * Method to display a view.

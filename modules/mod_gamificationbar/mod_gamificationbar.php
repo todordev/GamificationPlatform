@@ -19,18 +19,10 @@ jimport("gamification.init");
 // Get component parameters
 $componentParams = JComponentHelper::getParams("com_gamification");
 
-// Load helpers
-JHtml::addIncludePath(ITPRISM_PATH_LIBRARY.'/ui/helpers');
-
-// Load Twitter Bootstrap
-if($componentParams->get("bootstrap_include", 1)) {
-    JHtml::_("itprism.ui.bootstrap");
-}
-
 $doc = JFactory::getDocument();
 
-$doc->addStyleSheet(JURI::root().'media/com_gamification/css/modules/gamificationbar.css');
-$doc->addScript(JURI::root()."media/com_gamification/js/modules/jquery.gamificationnotifications.js");
+$doc->addStyleSheet(JURI::root().'modules/mod_gamificationbar/css/style.css');
+$doc->addScript(JURI::root()."modules/mod_gamificationbar/js/jquery.gamificationnotifications.js");
 $js = '
     jQuery(document).ready(function() {
         jQuery("#gfy-ntfy").GamificationNotifications({

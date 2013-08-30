@@ -62,7 +62,7 @@ class GamificationModelPoints extends JModelList {
         $this->setState('filter.state', $value);
 
         // List state information.
-        parent::populateState('a.title', 'asc');
+        parent::populateState('a.id', 'asc');
     }
 
     /**

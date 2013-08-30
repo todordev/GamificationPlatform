@@ -79,7 +79,5 @@ defined('_JEXEC') or die; ?>
         <h4><?php echo JText::_("MOD_GAMIFICATIONPROFILE_PROGRESS");?></h4>
         <?php echo JHtml::_("gamification.progress", $progress, $params->get("display_badges_information", 0));?>
     </div>
-    <div id="gfy-tooltip-container">
-    </div>
 </div>
 <?php }?>

@@ -16,7 +16,7 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.view');
 
-class GamificationViewRank extends JView {
+class GamificationViewRank extends JViewLegacy {
     
     protected $state;
     protected $item;
@@ -62,23 +62,19 @@ class GamificationViewRank extends JView {
         JFactory::getApplication()->input->set('hidemainmenu', true);
         $isNew = ($this->item->id == 0);
         
-        $this->documentTitle= $isNew  ? JText::_('COM_GAMIFICATION_NEW_RANK')
-                                      : JText::_('COM_GAMIFICATION_EDIT_RANK');
+        $this->documentTitle = $isNew  ? JText::_('COM_GAMIFICATION_NEW_RANK')
+                                       : JText::_('COM_GAMIFICATION_EDIT_RANK');
 
-        if(!$isNew) {
-            JToolBarHelper::title($this->documentTitle, 'itp-edit-rank');
-        } else {
-            JToolBarHelper::title($this->documentTitle, 'itp-new-rank');
-        }
+        JToolbarHelper::title($this->documentTitle);
 		                             
-        JToolBarHelper::apply('rank.apply');
-        JToolBarHelper::save2new('rank.save2new');
-        JToolBarHelper::save('rank.save');
+        JToolbarHelper::apply('rank.apply');
+        JToolbarHelper::save2new('rank.save2new');
+        JToolbarHelper::save('rank.save');
     
         if(!$isNew){
-            JToolBarHelper::cancel('rank.cancel', 'JTOOLBAR_CANCEL');
+            JToolbarHelper::cancel('rank.cancel', 'JTOOLBAR_CANCEL');
         }else{
-            JToolBarHelper::cancel('rank.cancel', 'JTOOLBAR_CLOSE');
+            JToolbarHelper::cancel('rank.cancel', 'JTOOLBAR_CLOSE');
         }
         
     }
@@ -92,14 +88,10 @@ class GamificationViewRank extends JView {
 	    
 		$this->document->setTitle($this->documentTitle);
         
-		// Add behaviors
-        JHtml::_('behavior.tooltip');
-        JHtml::_('behavior.formvalidation');
-        
-        // Add styles
-		$this->document->addStyleSheet('../media/'.$this->option.'/css/admin/bootstrap.min.css');
-		
 		// Add scripts
+		JHtml::_('behavior.tooltip');
+		JHtml::_('behavior.formvalidation');
+		
 		$this->document->addScript('../media/'.$this->option.'/js/admin/'.JString::strtolower($this->getName()).'.js');
         
 	}

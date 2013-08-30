@@ -22,7 +22,7 @@ jimport( 'joomla.application.component.controller' );
  * @package      Gamification Platform
  * @subpackage   Components
   */
-class GamificationController extends JController {
+class GamificationController extends JControllerLegacy {
     
 	public function display( ) {
 

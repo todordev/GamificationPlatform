@@ -21,17 +21,10 @@ $componentParams = JComponentHelper::getParams("com_gamification");
 
 // Load helpers
 JHtml::addIncludePath(GAMIFICATION_PATH_COMPONENT_SITE.'/helpers/html');
-JHtml::addIncludePath(ITPRISM_PATH_LIBRARY.'/ui/helpers');
-
-// Load Twitter Bootstrap
-if($componentParams->get("bootstrap_include", 1)) {
-    JHtml::_("itprism.ui.bootstrap");
-}
 
 $doc = JFactory::getDocument();
 
-$doc->addStyleSheet('media/com_gamification/css/modules/mod_gamificationprofile.css');
-// $doc->addScript('media/com_gamification/js/modules/mod_gamificationprofile.js');
+$doc->addStyleSheet(JURI::root().'modules/mod_gamificationprofile/css/style.css');
 
 $userId  = JFactory::getUser()->id;
 $groupId = $params->get("group_id");

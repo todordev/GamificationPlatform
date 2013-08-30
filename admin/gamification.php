@@ -20,7 +20,7 @@ jimport("gamification.init");
 jimport('joomla.application.component.controller');
 
 // Get an instance of the controller prefixed by HelloWorld
-$controller = JController::getInstance("Gamification");
+$controller = JControllerLegacy::getInstance("Gamification");
 
 // Perform the Request task
 $controller->execute(JFactory::getApplication()->input->getCmd('task'));

@@ -16,11 +16,18 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.view');
 
-class GamificationViewNotifications extends JView {
+class GamificationViewNotifications extends JViewLegacy {
     
     protected $state;
     protected $items;
     protected $pagination;
+    
+    protected $option;
+    
+    public function __construct($config){
+        parent::__construct($config);
+        $this->option = JFactory::getApplication()->input->get("option");
+    }
     
     public function display($tpl = null){
         
@@ -28,21 +35,68 @@ class GamificationViewNotifications extends JView {
         $this->items      = $this->get('Items');
         $this->pagination = $this->get('Pagination');
         
-        // Prepare filters
-        $this->listOrder  = $this->escape($this->state->get('list.ordering'));
-        $this->listDirn   = $this->escape($this->state->get('list.direction'));
-        $this->saveOrder  = (strcmp($this->listOrder, 'a.ordering') != 0 ) ? false : true;
+        JHtml::addIncludePath(JPATH_COMPONENT_SITE.'/helpers/html');
         
         JLoader::register('JHtmlString', JPATH_LIBRARIES.'/joomla/html/html/string.php');
         
         // Add submenu
         GamificationHelper::addSubmenu($this->getName());
         
+        // Prepare sorting data
+        $this->prepareSorting();
+        
         // Prepare actions
         $this->addToolbar();
+        $this->addSidebar();
         $this->setDocument();
         
         parent::display($tpl);
+    }
+    
+    /**
+     * Prepare sortable fields, sort values and filters.
+     */
+    protected function prepareSorting() {
+    
+        // Prepare filters
+        $this->listOrder  = $this->escape($this->state->get('list.ordering'));
+        $this->listDirn   = $this->escape($this->state->get('list.direction'));
+        $this->saveOrder  = (strcmp($this->listOrder, 'a.ordering') != 0 ) ? false : true;
+    
+        if ($this->saveOrder) {
+            $this->saveOrderingUrl = 'index.php?option='.$this->option.'&task='.$this->getName().'.saveOrderAjax&format=raw';
+            JHtml::_('sortablelist.sortable', $this->getName().'List', 'adminForm', strtolower($this->listDirn), $this->saveOrderingUrl);
+        }
+    
+        $this->sortFields = array(
+            'b.name'      => JText::_('COM_GAMIFICATION_USER'),
+            'a.read'      => JText::_('COM_GAMIFICATION_READ'),
+            'a.created'   => JText::_('COM_GAMIFICATION_CREATED'),
+            'a.id'        => JText::_('JGRID_HEADING_ID')
+        );
+    
+    }
+    
+    /**
+     * Add a menu on the sidebar of page
+     */
+    protected function addSidebar() {
+    
+        JHtmlSidebar::setAction('index.php?option='.$this->option.'&view='.$this->getName());
+    
+        $states = array(
+            JHtml::_("select.option", "0", JText::_("COM_GAMIFICATION_NOT_READ")),
+            JHtml::_("select.option", "1", JText::_("COM_GAMIFICATION_READ"))
+        );
+        
+        JHtmlSidebar::addFilter(
+            JText::_('COM_GAMIFICATION_SELECT_STATE'),
+            'filter_state',
+            JHtml::_('select.options', $states, 'value', 'text', $this->state->get('filter.state'), true)
+        );
+    
+        $this->sidebar = JHtmlSidebar::render();
+    
     }
     
     /**
@@ -53,13 +107,12 @@ class GamificationViewNotifications extends JView {
     protected function addToolbar(){
         
         // Set toolbar items for the page
-        JToolBarHelper::title(JText::_('COM_GAMIFICATION_NOTIFICATIONS_MANAGER'), 'itp-notifications');
-        JToolBarHelper::addNew('group.add');
-        JToolBarHelper::editList('group.edit');
-        JToolBarHelper::divider();
-        JToolBarHelper::deleteList(JText::_("COM_GAMIFICATION_DELETE_ITEMS_QUESTION"), "groups.delete");
-        JToolBarHelper::divider();
-        JToolBarHelper::custom('groups.backToDashboard', "itp-dashboard-back", "", JText::_("COM_GAMIFICATION_DASHBOARD"), false);
+        JToolbarHelper::title(JText::_('COM_GAMIFICATION_NOTIFICATIONS_MANAGER'));
+        JToolbarHelper::editList('notification.edit');
+        JToolbarHelper::divider();
+        JToolbarHelper::deleteList(JText::_("COM_GAMIFICATION_DELETE_ITEMS_QUESTION"), "notifications.delete");
+        JToolbarHelper::divider();
+        JToolbarHelper::custom('notifications.backToDashboard', "dashboard", "", JText::_("COM_GAMIFICATION_DASHBOARD"), false);
         
     }
     
@@ -68,7 +121,15 @@ class GamificationViewNotifications extends JView {
 	 * @return void
 	 */
 	protected function setDocument() {
+	    
 		$this->document->setTitle(JText::_('COM_GAMIFICATION_NOTIFICATIONS_MANAGER'));
+		
+		// Scripts
+		JHtml::_('behavior.multiselect');
+		JHtml::_('formbehavior.chosen', 'select');
+		JHtml::_('bootstrap.tooltip');
+		
+		$this->document->addScript('../media/'.$this->option.'/js/admin/list.js');
 	}
     
 }

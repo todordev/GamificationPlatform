@@ -14,40 +14,49 @@
 // no direct access
 defined('_JEXEC') or die;
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_gamification'); ?>" method="post" name="adminForm" id="adminForm" class="form-validate" enctype="multipart/form-data">
-    <div class="width-40 fltlft">
-        <fieldset class="adminform">
-            <legend><?php echo JText::_("COM_GAMIFICATION_LEVEL_DATA_LEGEND"); ?></legend>
+<div class="row-fluid">
+	<div class="span6 form-horizontal">
+        <form action="<?php echo JRoute::_('index.php?option=com_gamification'); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
             
-            <ul class="adminformlist">
-                <li><?php echo $this->form->getLabel('title'); ?>
-                <?php echo $this->form->getInput('title'); ?></li>
+            <fieldset>
                 
-                <li><?php echo $this->form->getLabel('group_id'); ?>
-                <?php echo $this->form->getInput('group_id'); ?></li>
+                <div class="control-group">
+                    <div class="control-label"><?php echo $this->form->getLabel('title'); ?></div>
+    				<div class="controls"><?php echo $this->form->getInput('title'); ?></div>
+                </div>
+                <div class="control-group">
+                    <div class="control-label"><?php echo $this->form->getLabel('group_id'); ?></div>
+    				<div class="controls"><?php echo $this->form->getInput('group_id'); ?></div>
+                </div>
+                <div class="control-group">
+                    <div class="control-label"><?php echo $this->form->getLabel('points'); ?></div>
+    				<div class="controls"><?php echo $this->form->getInput('points'); ?></div>
+                </div>
+                <div class="control-group">
+                    <div class="control-label"><?php echo $this->form->getLabel('points_id'); ?></div>
+    				<div class="controls"><?php echo $this->form->getInput('points_id'); ?></div>
+                </div>
+                <div class="control-group">
+                    <div class="control-label"><?php echo $this->form->getLabel('value'); ?></div>
+    				<div class="controls"><?php echo $this->form->getInput('value'); ?></div>
+                </div>
+                <div class="control-group">
+                    <div class="control-label"><?php echo $this->form->getLabel('rank_id'); ?></div>
+    				<div class="controls"><?php echo $this->form->getInput('rank_id'); ?></div>
+                </div>
+                <div class="control-group">
+                    <div class="control-label"><?php echo $this->form->getLabel('published'); ?></div>
+    				<div class="controls"><?php echo $this->form->getInput('published'); ?></div>
+                </div>
+                <div class="control-group">
+                    <div class="control-label"><?php echo $this->form->getLabel('id'); ?></div>
+    				<div class="controls"><?php echo $this->form->getInput('id'); ?></div>
+                </div>
                 
-                <li><?php echo $this->form->getLabel('points'); ?>
-                <?php echo $this->form->getInput('points'); ?></li>
-                
-                <li><?php echo $this->form->getLabel('points_id'); ?>
-                <?php echo $this->form->getInput('points_id'); ?></li>
-                
-                <li><?php echo $this->form->getLabel('value'); ?>
-                <?php echo $this->form->getInput('value'); ?></li>
-                
-                <li><?php echo $this->form->getLabel('rank_id'); ?>
-                <?php echo $this->form->getInput('rank_id'); ?></li>
-                
-                <li><?php echo $this->form->getLabel('published'); ?>
-                <?php echo $this->form->getInput('published'); ?></li>
-                   
-                <li><?php echo $this->form->getLabel('id'); ?>
-                <?php echo $this->form->getInput('id'); ?></li>
-            </ul>
-        </fieldset>
+            </fieldset>
+        
+            <input type="hidden" name="task" value="" />
+            <?php echo JHtml::_('form.token'); ?>
+        </form>
     </div>
-
-    <input type="hidden" name="task" value="" />
-    <?php echo JHtml::_('form.token'); ?>
-</form>
-    
+</div>

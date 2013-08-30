@@ -16,7 +16,7 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.view');
 
-class GamificationViewNotifications extends JView {
+class GamificationViewNotifications extends JViewLegacy {
     
 	protected $state;
 	protected $items;

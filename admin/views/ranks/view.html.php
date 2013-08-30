@@ -16,7 +16,7 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.view');
 
-class GamificationViewRanks extends JView {
+class GamificationViewRanks extends JViewLegacy {
     
     protected $state;
     protected $items;
@@ -35,22 +35,70 @@ class GamificationViewRanks extends JView {
         $this->items      = $this->get('Items');
         $this->pagination = $this->get('Pagination');
         
-        // Prepare filters
-        $this->listOrder  = $this->escape($this->state->get('list.ordering'));
-        $this->listDirn   = $this->escape($this->state->get('list.direction'));
-        $this->saveOrder  = (strcmp($this->listOrder, 'a.ordering') != 0 ) ? false : true;
-        
         // Include HTML helper
         JHtml::addIncludePath(JPATH_COMPONENT_SITE.'/helpers/html');
         
         // Add submenu
         GamificationHelper::addSubmenu($this->getName());
         
+        // Prepare sorting data
+        $this->prepareSorting();
+        
         // Prepare actions
         $this->addToolbar();
+        $this->addSidebar();
         $this->setDocument();
         
         parent::display($tpl);
+    }
+    
+    /**
+     * Prepare sortable fields, sort values and filters.
+     */
+    protected function prepareSorting() {
+    
+        // Prepare filters
+        $this->listOrder  = $this->escape($this->state->get('list.ordering'));
+        $this->listDirn   = $this->escape($this->state->get('list.direction'));
+        $this->saveOrder  = (strcmp($this->listOrder, 'a.ordering') != 0 ) ? false : true;
+    
+        if ($this->saveOrder) {
+            $this->saveOrderingUrl = 'index.php?option='.$this->option.'&task='.$this->getName().'.saveOrderAjax&format=raw';
+            JHtml::_('sortablelist.sortable', $this->getName().'List', 'adminForm', strtolower($this->listDirn), $this->saveOrderingUrl);
+        }
+    
+        $this->sortFields = array(
+            'a.title'     => JText::_('COM_GAMIFICATION_TITLE'),
+            'a.published' => JText::_('JSTATUS'),
+            'a.points'    => JText::_('COM_GAMIFICATION_POINTS'),
+            'b.name'      => JText::_('COM_GAMIFICATION_GROUP'),
+            'a.id'        => JText::_('JGRID_HEADING_ID')
+        );
+    
+    }
+    
+    /**
+     * Add a menu on the sidebar of page
+     */
+    protected function addSidebar() {
+    
+        JHtmlSidebar::setAction('index.php?option='.$this->option.'&view='.$this->getName());
+    
+        JHtmlSidebar::addFilter(
+            JText::_('JOPTION_SELECT_PUBLISHED'),
+            'filter_state',
+            JHtml::_('select.options', JHtml::_('jgrid.publishedOptions', array("archived" => false, "trash"=>false)), 'value', 'text', $this->state->get('filter.state'), true)
+        );
+    
+        $groupsOptions = GamificationHelper::getGroupsOptions();
+        JHtmlSidebar::addFilter(
+            JText::_('COM_GAMIFICATION_SELECT_GROUP'),
+            'filter_group',
+            JHtml::_('select.options', $groupsOptions, 'value', 'text', $this->state->get('filter.group'), true)
+        );
+    
+        $this->sidebar = JHtmlSidebar::render();
+    
     }
     
     /**
@@ -61,16 +109,16 @@ class GamificationViewRanks extends JView {
     protected function addToolbar(){
         
         // Set toolbar items for the page
-        JToolBarHelper::title(JText::_('COM_GAMIFICATION_RANKS_MANAGER'), 'itp-ranks');
-        JToolBarHelper::addNew('rank.add');
-        JToolBarHelper::editList('rank.edit');
-        JToolBarHelper::divider();
-        JToolBarHelper::publishList("ranks.publish");
-        JToolBarHelper::unpublishList("ranks.unpublish");
-        JToolBarHelper::divider();
-        JToolBarHelper::deleteList(JText::_("COM_GAMIFICATION_DELETE_ITEMS_QUESTION"), "ranks.delete");
-        JToolBarHelper::divider();
-        JToolBarHelper::custom('ranks.backToDashboard', "itp-dashboard-back", "", JText::_("COM_GAMIFICATION_DASHBOARD"), false);
+        JToolbarHelper::title(JText::_('COM_GAMIFICATION_RANKS_MANAGER'));
+        JToolbarHelper::addNew('rank.add');
+        JToolbarHelper::editList('rank.edit');
+        JToolbarHelper::divider();
+        JToolbarHelper::publishList("ranks.publish");
+        JToolbarHelper::unpublishList("ranks.unpublish");
+        JToolbarHelper::divider();
+        JToolbarHelper::deleteList(JText::_("COM_GAMIFICATION_DELETE_ITEMS_QUESTION"), "ranks.delete");
+        JToolbarHelper::divider();
+        JToolbarHelper::custom('ranks.backToDashboard', "dashboard", "", JText::_("COM_GAMIFICATION_DASHBOARD"), false);
         
     }
     
@@ -81,9 +129,14 @@ class GamificationViewRanks extends JView {
 	 */
 	protected function setDocument() {
 	    
-	    JHtml::_('behavior.tooltip');
-	    
 		$this->document->setTitle(JText::_('COM_GAMIFICATION_RANKS_MANAGER'));
+		
+		// Scripts
+		JHtml::_('behavior.multiselect');
+		JHtml::_('formbehavior.chosen', 'select');
+		JHtml::_('bootstrap.tooltip');
+		
+		$this->document->addScript('../media/'.$this->option.'/js/admin/list.js');
 	}
     
 }

@@ -14,30 +14,35 @@
 // no direct access
 defined('_JEXEC') or die;
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_gamification'); ?>" method="post" name="adminForm" id="adminForm" class="form-validate" >
-    <div class="width-40 fltlft">
-        <fieldset class="adminform">
-        
-            <ul class="adminformlist">
-                <li><?php echo $this->form->getLabel('note'); ?>
-                <?php echo $this->form->getInput('note'); ?></li>
-                
-    			<li><?php echo $this->form->getLabel('url'); ?>
-                <?php echo $this->form->getInput('url'); ?></li>   
-                
-                <li><?php echo $this->form->getLabel('image'); ?>
-                <?php echo $this->form->getInput('image'); ?></li>
-                
-                <li><?php echo $this->form->getLabel('read'); ?>
-                <?php echo $this->form->getInput('read'); ?></li>
-                
-                <li><?php echo $this->form->getLabel('id'); ?>
-                <?php echo $this->form->getInput('id'); ?></li>
-            </ul>
+<div class="row-fluid">
+	<div class="span6 form-horizontal">
+        <form action="<?php echo JRoute::_('index.php?option=com_gamification'); ?>" method="post" name="adminForm" id="adminForm" class="form-validate" >
             
-        </fieldset>
+            <fieldset>
+                <div class="control-group">
+                    <div class="control-label"><?php echo $this->form->getLabel('note'); ?></div>
+    				<div class="controls"><?php echo $this->form->getInput('note'); ?></div>
+                </div>
+                <div class="control-group">
+                    <div class="control-label"><?php echo $this->form->getLabel('url'); ?></div>
+    				<div class="controls"><?php echo $this->form->getInput('url'); ?></div>
+                </div>
+                <div class="control-group">
+                    <div class="control-label"><?php echo $this->form->getLabel('image'); ?></div>
+    				<div class="controls"><?php echo $this->form->getInput('image'); ?></div>
+                </div>
+                <div class="control-group">
+                    <div class="control-label"><?php echo $this->form->getLabel('read'); ?></div>
+    				<div class="controls"><?php echo $this->form->getInput('read'); ?></div>
+                </div>
+                <div class="control-group">
+                    <div class="control-label"><?php echo $this->form->getLabel('id'); ?></div>
+    				<div class="controls"><?php echo $this->form->getInput('id'); ?></div>
+                </div>
+            </fieldset>
+        
+            <input type="hidden" name="task" value="" />
+            <?php echo JHtml::_('form.token'); ?>
+        </form>
     </div>
-
-    <input type="hidden" name="task" value="" />
-    <?php echo JHtml::_('form.token'); ?>
-</form>
+</div>

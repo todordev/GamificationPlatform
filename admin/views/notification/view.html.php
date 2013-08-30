@@ -16,7 +16,7 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.view');
 
-class GamificationViewNotification extends JView {
+class GamificationViewNotification extends JViewLegacy {
     
     protected $state;
     protected $item;
@@ -57,12 +57,12 @@ class GamificationViewNotification extends JView {
         
         $this->documentTitle = JText::_('COM_GAMIFICATION_EDIT_NOTIFICATION');
 
-        JToolBarHelper::title($this->documentTitle, 'itp-edit-group');
+        JToolbarHelper::title($this->documentTitle);
 		                             
-        JToolBarHelper::apply('notification.apply');
-        JToolBarHelper::save('notification.save');
+        JToolbarHelper::apply('notification.apply');
+        JToolbarHelper::save('notification.save');
     
-        JToolBarHelper::cancel('notification.cancel', 'JTOOLBAR_CANCEL');
+        JToolbarHelper::cancel('notification.cancel', 'JTOOLBAR_CANCEL');
         
     }
     
@@ -73,13 +73,12 @@ class GamificationViewNotification extends JView {
 	 */
 	protected function setDocument() {
 	    
-	    // Add behaviors
-        JHtml::_('behavior.tooltip');
-        JHtml::_('behavior.formvalidation');
-        
 		$this->document->setTitle($this->documentTitle);
         
 		// Add scripts
+		JHtml::_('behavior.tooltip');
+		JHtml::_('behavior.formvalidation');
+		
 		$this->document->addScript('../media/'.$this->option.'/js/admin/'.JString::strtolower($this->getName()).'.js');
         
 	}
