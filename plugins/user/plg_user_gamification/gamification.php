@@ -66,7 +66,7 @@ class plgUserGamification extends JPlugin {
 	 *
 	 * @todo Remove this method because it is used only for testing.
 	 */
-	public function onUserLogin($user, $options) {
+	/* public function onUserLogin($user, $options) {
 	    
 	    // Get user id
 	    $userName = JArrayHelper::getValue($user, 'username');
@@ -87,7 +87,7 @@ class plgUserGamification extends JPlugin {
 		    $this->givePoints($user);
 		}
 	     
-	}
+	} */
 	
 	/**
 	 * 
