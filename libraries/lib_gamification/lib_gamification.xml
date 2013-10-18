@@ -5,12 +5,12 @@
 	<author>Todor Iliev</author>
 	<authorEmail>todor@itprism.com</authorEmail>
     <authorUrl>http://itprism.com</authorUrl>
-	<copyright>Copyright (C) 2010 Todor Iliev ( ITPrism.com ). All rights reserved.</copyright>
+	<copyright>Copyright (C) 2013 Todor Iliev ( ITPrism.com ). All rights reserved.</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
 	<packager>ITPrism</packager>
 	<packagerurl>http://itprism.com</packagerurl>
-	<version>1.1</version>
-	<creationDate>25 August, 2013</creationDate>
+	<version>1.2</version>
+	<creationDate>18 October, 2013</creationDate>
 	<description>Gamification Library</description>
 	<files folder="files">
 	    <folder>interface</folder>

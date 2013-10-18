@@ -1,20 +1,19 @@
 <?php
 /**
- * @package		 Gamification Platform
- * @subpackage	 Gamification Library
+ * @package		 GamificationPlatform
+ * @subpackage	 GamificationLibrary
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2013 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * Gamification Library is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
  */
 
 defined('JPATH_PLATFORM') or die;
 
 /**
  * This class contains methods used for gamifying users. 
+ * 
+ * @package		 GamificationPlatform
+ * @subpackage	 GamificationLibrary
  * 
  * @todo It is not completed. Complete it!
  */
@@ -29,17 +28,44 @@ class GamificationProfile {
     /**
      * Initialize user profile and his gamification units.
      * 
-     * @param integer $id
-     * @param array $options     This options are used for specifying some things for loading.
+     * <code>
+     *
+     * $userId   = 1;
+     * 
+     * $profile  = new GamificationProfile();
+     * $profile->load($userId);
+     *
+     * </code>
+     * 
+     * @param integer User ID
+     * @param array   This options are used for specifying the things for loading.
      */
     public function __construct($id = 0, $options = array()){
+    	
         $this->db = JFactory::getDbo();
         
         if(!empty($id)) {
             $this->load($id, $options);
         }
+        
     }
     
+    /**
+     * Load profile data.
+     *
+     * <code>
+     *
+     * $userId   = 1;
+     * 
+     * $profile  = new GamificationProfile();
+     * $profile->load($userId);
+     *
+     * </code>
+     *
+     * @param integer User ID
+     * @param array   This options are used for specifying the things for loading.
+     *
+     */
     public function load($id = null, $options = array()) {
         
         // Create a new query object.
@@ -59,9 +85,27 @@ class GamificationProfile {
         
     }
     
-    public function bind($data) {
+    /**
+     * Set the data to the object parameters.
+     *
+     * <code>
+     *
+     * $data = array(
+     * 	    "name" 		=> "Todor",
+     * 		"username"  => "ITPrism"
+     * );
+     *
+     * $profile   = new GamificationProfile();
+     * $profile->bind($data);
+     *
+     * </code>
+     *
+     * @param array $src
+     * @param array $ignore
+     */
+    public function bind($src, $ignore = array()) {
         
-        foreach($data as $key => $value) {
+        foreach($src as $key => $value) {
             $this->$key = $value;
         }
         

@@ -1,18 +1,20 @@
 <?php
 /**
- * @package		 Gamification Platform
- * @subpackage	 Gamification Library
+ * @package		 GamificationPlatform
+ * @subpackage	 GamificationLibrary
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2013 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * Gamification Library is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
  */
 
 defined('JPATH_PLATFORM') or die;
 
+/**
+ * This class contains methods that are used for managing a notification.
+ *
+ * @package		 GamificationPlatform
+ * @subpackage	 GamificationLibrary
+ */
 class GamificationNotification {
 
     /**
@@ -34,7 +36,20 @@ class GamificationNotification {
      */
     protected $db;
     
+    /**
+     * Initialize the object and load data.
+     *
+     * <code>
+     *
+     * $id = 1;
+     * $notification   = new GamificationNotification($id);
+     *
+     * </code>
+     *
+     * @param number $id
+     */
 	public function __construct($id = 0) {
+		
         $this->db = JFactory::getDbo();
         
         if(!empty($id)) {
@@ -42,10 +57,20 @@ class GamificationNotification {
         } else {
             $this->init();
         }
+        
     }
     
     /**
-     * Load user notification using.
+     * Load user notification.
+     * 
+     * <code>
+     *
+     * $id = 1;
+     * $notification   = new GamificationNotification();
+     * $notification->load($id);
+     *
+     * </code>
+     *  
      * @param integer $id
      */
     public function load($id) {
@@ -55,7 +80,7 @@ class GamificationNotification {
         
         $query
             ->select("a.*")
-            ->from($this->db->quoteName("#__gfy_notifications") . ' AS a' )
+            ->from($this->db->quoteName("#__gfy_notifications", "a"))
             ->where("a.id   = ". (int)$id);
             
         $this->db->setQuery($query);
@@ -69,7 +94,7 @@ class GamificationNotification {
         
     }
     
-    public function init() {
+    protected function init() {
         
         $date          = new JDate();
         $this->created = $date->format("Y-m-d H:i:s");
@@ -78,6 +103,25 @@ class GamificationNotification {
         
     }
     
+    /**
+     * Set notification data to object parameters.
+     *
+     * <code>
+     *
+     * $data = array(
+     * 		"note" 	  => "...",
+     * 		"image"   => "picture.png",
+     * 		"url"     => "http://itprism.com/",
+     * 		"user_id" => 1
+     * );
+     * 
+     * $notification   = new GamificationNotification();
+     * $notification->bind($data);
+     *
+     * </code>
+     *
+     * @param array $data
+     */
     public function bind($data) {
         
         foreach($data as $key => $value) {
@@ -86,10 +130,34 @@ class GamificationNotification {
         
     }
     
+    /**
+     * Set notification as read.
+     *
+     * <code>
+     *
+     * $id = 1;
+     * $notification   = new GamificationNotification($id);
+     * $notification->setRead();
+     *
+     * </code>
+     *
+     */
     public function setRead() {
         $this->read = 1;
     }
     
+    /**
+     * Set notification as NOT read.
+     *
+     * <code>
+     *
+     * $id = 1;
+     * $notification   = new GamificationNotification($id);
+     * $notification->setNotRead();
+     *
+     * </code>
+     *
+     */
     public function setNotRead() {
         $this->read = 0;
     }
@@ -146,6 +214,25 @@ class GamificationNotification {
         
     }
     
+    /**
+     * Store the data about the notification.
+     *
+     * <code>
+     *
+     * $data = array(
+     * 		"note" 	  => "...",
+     * 		"image"   => "picture.png",
+     * 		"url"     => "http://itprism.com/",
+     * 		"user_id" => 1
+     * );
+     * 
+     * $notification   = new GamificationNotification();
+     * $notification->bind($data);
+     * $notification->store();
+     *
+     * </code>
+     *
+     */
     public function store() {
         
         if(!$this->id) {
@@ -155,7 +242,18 @@ class GamificationNotification {
         }
     }
     
-    
+    /**
+     * Remove the notification.
+     *
+     * <code>
+     *
+     * $id = 1;
+     * $notification   = new GamificationNotification($id);
+     * $notification->remove();
+     *
+     * </code>
+     *
+     */
     public function remove() {
         
         if(!$this->id) {
@@ -176,12 +274,21 @@ class GamificationNotification {
     }
     
     /**
-     * 
      * Initialize main variables, create a new notification 
      * and send it to user.
      * 
-     * @param string $note
-     * @param integer $userId    This is the receiver of the message.
+     * <code>
+     *
+     * $note   = "......";
+     * $userId = 1;
+     * 
+     * $notification   = new GamificationNotification();
+     * $notification->send($note, $userId);
+     *
+     * </code>
+     * 
+     * @param string  The message, that will be send to a user.
+     * @param integer This is the receiver of the message.
      */
     public function send($note = null, $userId = null) {
         
@@ -198,6 +305,21 @@ class GamificationNotification {
         $this->store();
     }
     
+    /**
+     * Initialize main variables, create a new notification
+     * and send it to user.
+     *
+     * <code>
+     *
+     * $userId = 1;
+     *
+     * $notification   = new GamificationNotification();
+     * $notification->setUserId($note, $userId);
+     *
+     * </code>
+     *
+     * @param integer User ID ( receiver of the message )
+     */
     public function setUserId($userId) {
         $this->user_id = $userId;
     }

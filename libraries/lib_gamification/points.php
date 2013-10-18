@@ -1,52 +1,88 @@
 <?php
 /**
- * @package		 Gamification Platform
- * @subpackage	 Gamification Library
+ * @package		 GamificationPlatform
+ * @subpackage	 GamificationLibrary
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2013 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * Gamification Library is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
  */
 
 defined('JPATH_PLATFORM') or die;
 
 JLoader::register("GamificationTablePoint", JPATH_ADMINISTRATOR .DIRECTORY_SEPARATOR."components".DIRECTORY_SEPARATOR."com_gamification".DIRECTORY_SEPARATOR."tables".DIRECTORY_SEPARATOR."point.php");
+JLoader::register("GamificationInterfaceTable", JPATH_LIBRARIES .DIRECTORY_SEPARATOR."gamification".DIRECTORY_SEPARATOR."interface".DIRECTORY_SEPARATOR."table.php");
 
 /**
  * This class contains methods that are used for managing points.
+ * 
+ * @package		 GamificationPlatform
+ * @subpackage	 GamificationLibrary
  */
-class GamificationPoints extends GamificationTablePoint {
+class GamificationPoints implements GamificationInterfaceTable {
 
+	protected $table;
     protected static $instances = array();
     
+    /**
+     * Initialize the object and load data.
+     *
+     * <code>
+     *
+     * // create object points by ID
+     * $pointsId   = 1;
+     * $points     = new GamificationPoints($pointsId);
+     *
+     * // create object points by abbreviation
+     * $pointsAbbr = "P";
+     * $points     = new GamificationPoints($pointsAbbr);
+     *
+     * </code>
+     *
+     * @param number:string $id
+     */
     public function __construct($id = 0) {
         
-        // Set database driver
-        $db = JFactory::getDbo();
-        parent::__construct($db);
+    	$this->table = new GamificationTablePoint(JFactory::getDbo());
         
         if(!empty($id)) {
-            $this->load($id);
+            $this->table->load($id);
         }
+        
     }
     
+    /**
+     *
+     * Create an instance of the object and load data.
+     *
+     * <code>
+     *
+     * // create object points by ID
+     * $pointsId   = 1;
+     * $points     = GamificationPoints::getInstance($pointsId);
+     *
+     * // create object points by abbreviation
+     * $pointsAbbr = "P";
+     * $points     = GamificationPoints::getInstance($pointsAbbr);
+     * 
+     * </code>
+     *
+     * @param number:string $id
+     *
+     * @return null:GamificationPoints
+     */
     public static function getInstance($id = 0)  {
         
-        // If it is array with user id and currency id, 
-        // I will generate a new array index.
         if(!is_numeric($id)) {
+        	
             $keys = array(
                 "abbr" => $id
             );
             
-            $index = JApplication::stringURLSafe($id);
         } else {
             $keys  = $id;
-            $index = $id;
         }
+        
+        $index = JApplication::getHash($id);
         
         if (empty(self::$instances[$index])){
             $item = new GamificationPoints($keys);
@@ -56,6 +92,113 @@ class GamificationPoints extends GamificationTablePoint {
         return self::$instances[$index];
     }
     
+    /**
+     * Load points data using the table object.
+     *
+     * <code>
+     *
+     * $pointsId   = 1;
+     * $points     = new GamificationPoints();
+     * $points->load($pointsId);
+     *
+     * </code>
+     *
+     * @param $keys
+     * @param $reset
+     *
+     */
+    public function load($keys, $reset = true) {
+    	$this->table->load($keys, $reset);
+    }
+    
+    /**
+     * Set the data to the object parameters.
+     *
+     * <code>
+     *
+     * $data = array(
+     * 	    "title" 	=> "Points",
+     * 		"abbr"   	=> "P",
+     * 		"published" => 1,
+     * 		"group_id"  => 4
+     * );
+     *
+     * $points   = new GamificationPoints();
+     * $points->bind($data);
+     *
+     * </code>
+     *
+     * @param array $src
+     * @param array $ignore
+     */
+    public function bind($src, $ignore = array()) {
+    	$this->table->bind($src, $ignore);
+    }
+    
+    /**
+     * Save the data to the database.
+     *
+     * <code>
+     *
+     * $data = array(
+     * 	    "title" 	=> "Points",
+     * 		"abbr"   	=> "P",
+     * 		"published" => 1,
+     * 		"group_id"  => 4
+     * );
+     *
+     * $points   = new GamificationPoints();
+     * $points->bind($data);
+     * $points->store(true);
+     *
+     * </code>
+     *
+     * @param $updateNulls
+     *
+     */
+    public function store($updateNulls = false) {
+    	$this->table->store($updateNulls);
+    }
+    
+    /**
+     *
+     * Return points ID.
+     *
+     * <code>
+     *
+     * // create object points by abbreviation
+     * $abbr       = "P";
+     * $points     = GamificationPoints::getInstance($abbr);
+     * 
+     * $pointsId   = $points->getId();
+     * 
+     * </code>
+     *
+     * @return null:integer
+     */
+    public function getId() {
+        return $this->table->id;
+    }
+    
+    /**
+     * Check for published item.
+     *
+     * <code>
+     *
+     * $pointsId    = 1;
+     * $points      = GamificationPoints::getInstance($pointsId);
+     *
+     * if(!$points->isPublished()) {
+     *    // .....
+     * }
+     *
+     * </code>
+     *
+     * @return boolean
+     */
+    public function isPublished() {
+        return (!$this->table->published) ? false : true;
+    }
     
 }
 

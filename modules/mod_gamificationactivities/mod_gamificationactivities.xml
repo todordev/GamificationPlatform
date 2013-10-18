@@ -2,13 +2,18 @@
 <extension type="module" version="3.1" client="site" method="upgrade">
 	<name>MOD_GAMIFICATIONACTIVITIES</name>
 	<author>Todor Iliev</author>
-	<copyright>Copyright (C) 2010 Todor Iliev ( ITPrism.com )</copyright>
+	<copyright>Copyright (C) 2013 Todor Iliev ( ITPrism.com )</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html</license>
 	<authorEmail>todor@itprism.com</authorEmail>
 	<authorUrl>http://itprism.com</authorUrl>
-	<version>1.1</version>
-	<creationDate>31 August, 2013</creationDate>
-	<description>MOD_GAMIFICATIONACTIVITIES_DESCRIPTION</description>
+	<version>1.2</version>
+	<creationDate>18 October, 2013</creationDate>
+	<description><![CDATA[
+    <p>Gamification Activities is a module that displays last user activites.</p>
+    <p>Invest in the extension and help for its improvement. You can <a href="http://itprism.com/sponsorship" target="_blank">sponsor the extension via SMS, PayPal or Bitcoin</a>.</p>
+    <p><a href="http://itprism.com/" target="_blank">Subscribe for the newsletter</a> to receive <strong>gifts</strong>, <strong>discount codes</strong>, information about <strong>updates</strong> and information about <strong>new ITPrism extensions</strong>.</p>
+    <p>Please, <a href="http://extensions.joomla.org/extensions/e-commerce/credits-a-point-systems/23872" target="_blank">vote for the extension</a> on Joomla! Extensions Directory</p>
+    ]]></description>
 
 	<languages folder="language">
 		<language tag="en-GB">en-GB/en-GB.mod_gamificationactivities.ini</language>

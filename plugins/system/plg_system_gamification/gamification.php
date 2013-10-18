@@ -62,11 +62,11 @@ class plgSystemGamification extends JPlugin {
          
         // Get user points
         $userPoints = null;
-        if($points->id AND $points->published) {
+        if($points->getId() AND $points->isPublished()) {
              
             $keys = array(
                 "user_id"     => $this->userId,
-                "points_id"   => $points->id
+                "points_id"   => $points->getId()
             );
              
             $userPoints  = GamificationUserPoints::getInstance($keys);

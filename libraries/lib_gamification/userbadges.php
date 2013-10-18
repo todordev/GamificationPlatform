@@ -1,41 +1,45 @@
 <?php
 /**
- * @package		 Gamification Platform
- * @subpackage	 Gamification Library
+ * @package		 GamificationPlatform
+ * @subpackage	 GamificationLibrary
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2013 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * Gamification Library is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
  */
 
 defined('JPATH_PLATFORM') or die;
 
 /**
  * This class contains methods that are used for managing user badges.
+ *
+ * @package		 GamificationPlatform
+ * @subpackage	 GamificationLibrary
  */
 class GamificationUserBadges {
 
-    /**
-     * Users ID
-     * 
-     * @var integer
-     */
-    public $userId;
+    protected $userId;
     
-    public $badges = array();
+    protected $badges = array();
     
-    /**
-     * Database driver
-     * 
-     * @var JDatabaseMySQLi
-     */
     protected $db;
     
     protected static $instances = array();
     
+    /**
+     * Initialize the object and load data.
+     *
+     * <code>
+     *
+     * $keys = array(
+     * 	   "user_id"  => 1,
+     * 	   "group_id" => 2
+     * );
+     * $userBadges    = new GamificationUserBadges($keys);
+     *
+     * </code>
+     *
+     * @param array $keys
+     */
     public function __construct($keys = array()) {
         
         $this->db       = JFactory::getDbo();
@@ -46,10 +50,21 @@ class GamificationUserBadges {
     }
     
     /**
-     * Initialize user badge
+     * Create an object and load user badges.
+     *
+     * <code>
+     *
+     * $keys = array(
+     * 	   "user_id"  => 1,
+     * 	   "group_id" => 2
+     * );
+     * $userBadges    = GamificationUserBadges::getInstance($keys);
+     *
+     * </code>
      *
      * @param  array $keys
-     * @return multitype:
+     *
+     * @return null:GamificationUserBadges
      */
     public static function getInstance(array $keys)  {
     
@@ -69,8 +84,21 @@ class GamificationUserBadges {
     /**
      * Load all user badges and set them to group index.
      * Every user can have only one badge for a group.
-     * 
-     * @param array $keys  The keys that will use to load data.
+     *
+     * <code>
+     *
+     * $keys = array(
+     * 	   "user_id"  => 1,
+     * 	   "group_id" => 2
+     * );
+     *
+     * $userBadges     = new GamificationUserBadges();
+     * $userBadges->load($keys);
+     *
+     * </code>
+     *
+     * @param $keys
+     *
      */
     public function load($keys) {
         
@@ -108,17 +136,52 @@ class GamificationUserBadges {
         
     }
 
+    /**
+     * Return user badges. They can be obtained by group ID. 
+     * 
+     * <code>
+     *
+     * $keys = array(
+     * 	   "user_id"  => 1,
+     * 	   "group_id" => 2
+     * );
+     *
+     * $userBadges  = GamificationUserBadges::getInstance($keys);
+     * $badges      = $userBadges->getBadges();
+     *
+     * </code>
+     *
+     * @param  $groupId
+     * 
+     * @return array
+     *
+     */
     public function getBadges($groupId = null) {
         return (!is_null($groupId)) ? JArrayHelper::getValue($this->badges, $groupId, array()) : $this->badges;
     }
     
     /**
-     * Get a badge.
-     * 
+     * Get badge by badge ID and group ID.
+     *
+     * <code>
+     *
+     * $keys = array(
+     * 	   "user_id"  => 1,
+     * 	   "group_id" => 2
+     * );
+     *
+     * $badgeId     = 1;
+     *
+     * $userBadges  = GamificationUserBadges::getInstance($keys);
+     * $badge       = $userBadges->getBadge($badgeId);
+     *
+     * </code>
+     *
      * @param integer $badgeId
      * @param integer $groupId
-     * 
-     * @return mixed    NULL OR GamificationUserBadge
+     *
+     * @return null:GamificationUserBadge
+     *
      */
     public function getBadge($badgeId, $groupId = null) {
         

@@ -1,18 +1,20 @@
 <?php
 /**
- * @package		 Gamification Platform
- * @subpackage	 Gamification Library
+ * @package		 GamificationPlatform
+ * @subpackage	 GamificationLibrary
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2013 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * Gamification Library is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
  */
 
 defined('JPATH_PLATFORM') or die;
 
+/**
+ * This class contains methods that are used for managing an activity.
+ *
+ * @package		 GamificationPlatform
+ * @subpackage	 GamificationLibrary
+ */
 class GamificationActivity {
 
     /**
@@ -28,12 +30,26 @@ class GamificationActivity {
     public $user_id;
     
     /**
-     * Driver of the database
+     * Driver of the database.
+     * 
      * @var JDatabaseMySQLi
      */
     protected $db;
     
+    /**
+     * Initialize the object and load activity data.
+     * 
+     * <code>
+     * 
+     * $activityId = 1;
+     * $activity   = new GamificationActivity($activityId);
+     * 
+     * </code>
+     * 
+     * @param number $id
+     */
 	public function __construct($id = 0) {
+		
         $this->db = JFactory::getDbo();
         
         if(!empty($id)) {
@@ -41,11 +57,23 @@ class GamificationActivity {
         } else {
             $this->init();
         }
+        
     }
     
     /**
-     * Load user notification using.
+     * Load user activity data.
+     * 
+     * <code>
+     * 
+     * $activityId = 1;
+     * 
+     * $activity   = new GamificationActivity();
+     * $activity->load($activityId);
+     * 
+     * </code>
+     * 
      * @param integer $id
+     * 
      */
     public function load($id) {
         
@@ -54,8 +82,8 @@ class GamificationActivity {
         
         $query
             ->select("a.*")
-            ->from($this->db->quoteName("#__gfy_activities") . ' AS a' )
-            ->where("a.id   = ". (int)$id);
+            ->from($this->db->quoteName("#__gfy_activities", "a"))
+            ->where("a.id = ". (int)$id);
             
         $this->db->setQuery($query);
         $result = $this->db->loadAssoc();
@@ -68,7 +96,10 @@ class GamificationActivity {
         
     }
     
-    public function init() {
+    /**
+     * Initialize the object data.
+     */
+    protected function init() {
         
         $date          = new JDate();
         $this->created = $date->format("Y-m-d H:i:s");
@@ -76,12 +107,59 @@ class GamificationActivity {
         
     }
     
+    /**
+     * Set the data to the object parameters.
+     * 
+     * <code>
+     * 
+     * $data = array(
+     * 	    "info" 		=> "......",
+     * 		"image" 	=> "picture.png",
+     * 		"url"   	=> "http://itprism.com/",
+     * 		"user_id"   => 1
+     * );
+     * 
+     * $activity   = new GamificationActivity();
+     * $activity->bind($data);
+     * 
+     * </code>
+     * 
+     * @param array $data
+     */
     public function bind($data) {
         
         foreach($data as $key => $value) {
             $this->$key = $value;
         }
         
+    }
+    
+    /**
+     * Save the data to the database.
+     * 
+     * <code>
+     * 
+     * $data = array(
+     * 	    "info" 		=> "......",
+     * 		"image" 	=> "picture.png",
+     * 		"url"   	=> "http://itprism.com/",
+     * 		"user_id"   => 1
+     * );
+     * 
+     * $activity   = new GamificationActivity();
+     * $activity->bind($data);
+     * $activity->store();
+     * 
+     * </code>
+     * 
+     */
+    public function store() {
+    
+    	if(!$this->id) {
+    		$this->id = $this->insertObject();
+    	} else {
+    		$this->updateObject();
+    	}
     }
     
     protected function updateObject() {
@@ -132,15 +210,6 @@ class GamificationActivity {
         
         return $this->db->insertid();
         
-    }
-    
-    public function store() {
-        
-        if(!$this->id) {
-            $this->id = $this->insertObject();
-        } else {
-            $this->updateObject();
-        }
     }
     
 }

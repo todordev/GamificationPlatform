@@ -1,14 +1,10 @@
 <?php
 /**
- * @package		 Gamification Platform
- * @subpackage	 Gamification Library
+ * @package		 GamificationPlatform
+ * @subpackage	 GamificationLibrary
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2013 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * Gamification Library is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
  */
 
 defined('JPATH_PLATFORM') or die;
@@ -19,6 +15,9 @@ jimport('gamification.userrank');
 
 /**
  * This class contains methods that manage user rank based on points.
+ * 
+ * @package		 GamificationPlatform
+ * @subpackage	 GamificationLibrary
  */
 class GamificationUserRankPoints extends GamificationUserRank {
 
@@ -32,10 +31,26 @@ class GamificationUserRankPoints extends GamificationUserRank {
     public static $instances = array();
     
     /**
-     * Initialize user level
+     * Create and initialize user rank.
      *
-     * @param  mixed $keys
-     * @return multitype:
+     * <code>
+     *
+     * $keys = array(
+     * 	   "user_id" => 1,
+     * 	   "group_id" => 2
+     * );
+     * 
+     * // Get user points
+     * $userPoints  = GamificationUserPoints::getInstance($keys);
+     *
+     * // Get user rank.
+     * $rank       = GamificationUserRankPoints::getInstance($userPoints);
+     *
+     * </code>
+     * 
+     * @param  GamificationUserPoints $userPoints
+     * 
+     * @return null:GamificationUserRankPoints
      */
     public static function getInstance(GamificationUserPoints $userPoints)  {
     
@@ -63,8 +78,24 @@ class GamificationUserRankPoints extends GamificationUserRank {
     }
     
     /**
-     * Set the object GamificationUserPoints to the variable.
+     * Set the user points to the object.
      *
+     * <code>
+     *
+     * $keys = array(
+     * 	   "user_id" => 1,
+     * 	   "group_id" => 2
+     * );
+     * 
+     * // Get user points
+     * $userPoints  = GamificationUserPoints::getInstance($keys);
+     * 
+     * // Create user rank object, which is based on points.
+     * $rank  = new GamificationUserRankPoints($keys);
+     * $rank->setUserPoints($userPoints);
+     * 
+     * </code>
+     * 
      * @param GamificationUserPoints $userPoints
      */
     public function setUserPoints($userPoints) {
@@ -73,6 +104,26 @@ class GamificationUserRankPoints extends GamificationUserRank {
     
     /**
      * Update rank to new one.
+     * 
+     * <code>
+     *
+     * $keys = array(
+     * 	   "user_id"  => 1,
+     * 	   "group_id" => 2
+     * );
+     * 
+     * // Get user points
+     * $userPoints  = GamificationUserPoints::getInstance($keys);
+     * 
+     * // Create user rank object, which is based on points.
+     * $rank        = GamificationUserRankPoints::getInstance($userPoints);
+     * 
+     * $newRank     = $rank->giveRank();
+     * if($newRank) {
+     *  //....
+     * }
+     * 
+     * </code>
      * 
      * @return boolean TRUE if we are giving a new rank. FALSE if we do not giving a new rank.
      */
@@ -101,11 +152,11 @@ class GamificationUserRankPoints extends GamificationUserRank {
     /**
      * Find a rank that actual have to be.
      * 
-     * @return mixed NULL or integer
+     * @return null:integer
      */
-    public function findActualRankId() {
+    protected function findActualRankId() {
         
-        // Get all levels
+        // Get all ranks
         $query = $this->db->getQuery(true);
         
         $query
@@ -164,14 +215,31 @@ class GamificationUserRankPoints extends GamificationUserRank {
     /**
      * Create a record to the database, adding first rank.
      *  
-     * @param array $data 
+     * <code>
+     *
+     * $keys = array(
+     * 	   "user_id"  => 1,
+     * 	   "group_id" => 2
+     * );
+     * 
+     * // Get user points
+     * $userPoints  = GamificationUserPoints::getInstance($keys);
+     * 
+     * // Create user rank object, which is based on points.
+     * $rank        = GamificationUserRankPoints::getInstance($userPoints);
+     * 
+     * if(!$rank->id) {
+     *      $data = array(
+     * 	       "user_id"  => $userPoints->user_id,
+     * 	       "group_id" => $userPoints->group_id
+     *      );
+     *      
+     *      $rank->startRanking($data);
+     * }
      * 
      * </code>
-     * $data = array( 
-     *     "user_id"  => $userId,
-     *     "group_id" => $groupId
-     * );
-     * <code>
+     * 
+     * @param array $data 
      * 
      */
     public function startRanking($data) {

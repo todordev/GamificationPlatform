@@ -2,13 +2,18 @@
 <extension version="3.1" type="plugin" group="user" method="upgrade">
     <name>PLG_USER_GAMIFICATION</name>
     <author>Todor Iliev</author>
-    <copyright>Copyright (C) 2010 Todor Iliev ( ITPrism.com ). All rights reserved.</copyright>
+    <copyright>Copyright (C) 2013 Todor Iliev ( ITPrism.com ). All rights reserved.</copyright>
     <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
     <authorEmail>todor@itprism.com</authorEmail>
     <authorUrl>http://itprism.com</authorUrl>
-    <version>1.1</version>
-    <creationDate>31 August, 2013</creationDate>
-    <description>PLG_USER_GAMIFICATION_DESC</description>
+    <version>1.2</version>
+    <creationDate>18 October, 2013</creationDate>
+    <description><![CDATA[
+    <p>User - Gamification is an extension that gives units to users after registration, login, logout,...</p>
+    <p>Invest in the extension improvement. You can <a href="http://itprism.com/sponsorship" target="_blank">sponsor the extension via SMS, PayPal or Bitcoin</a>.</p>
+    <p><a href="http://itprism.com/" target="_blank">Subscribe for the newsletter</a> to receive information about updates and new ITPrism extensions.</p>
+    <p>Please, <a href="http://extensions.joomla.org/extensions/e-commerce/credits-a-point-systems/23872" target="_blank">vote for the extension</a> on Joomla! Extensions Directory</p>
+    ]]></description>
     
     <languages folder="language">
         <language tag="en-GB">en-GB/en-GB.plg_user_gamification.ini</language>
@@ -19,6 +24,8 @@
         <filename plugin="gamification">gamification.php</filename>
         <filename>index.html</filename>
     </files>
+    
+    <help url="PLG_USER_GAMIFICATION_HELP_URL" />
     
     <config>
         <fields name="params">

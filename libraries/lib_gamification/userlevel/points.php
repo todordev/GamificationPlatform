@@ -1,14 +1,10 @@
 <?php
 /**
- * @package		 Gamification Platform
- * @subpackage	 Gamification Library
+ * @package		 GamificationPlatform
+ * @subpackage	 GamificationLibrary
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2013 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * Gamification Library is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
  */
 
 defined('JPATH_PLATFORM') or die;
@@ -19,6 +15,9 @@ jimport('gamification.userlevel');
 
 /**
  * This class contains methods that manage user level based on points.
+ * 
+ * @package		 GamificationPlatform
+ * @subpackage	 GamificationLibrary
  */
 class GamificationUserLevelPoints extends GamificationUserLevel {
 
@@ -32,10 +31,26 @@ class GamificationUserLevelPoints extends GamificationUserLevel {
     public static $instances = array();
     
     /**
-     * Initialize user level
+     * Create and initialize user level.
      *
-     * @param  mixed $keys
-     * @return multitype:
+     * <code>
+     *
+     * $keys = array(
+     * 	   "user_id" => 1,
+     * 	   "group_id" => 2
+     * );
+     * 
+     * // Get user points
+     * $userPoints  = GamificationUserPoints::getInstance($keys);
+     *
+     * // Get user level.
+     * $level       = GamificationUserLevelPoints::getInstance($userPoints);
+     *
+     * </code>
+     * 
+     * @param  GamificationUserPoints $userPoints
+     * 
+     * @return null:GamificationUserLevelPoints
      */
     public static function getInstance(GamificationUserPoints $userPoints)  {
     
@@ -63,8 +78,24 @@ class GamificationUserLevelPoints extends GamificationUserLevel {
     }
     
     /**
-     * Set the object GamificationUserPoints to the variable.
+     * Set the user points to the object.
      *
+     * <code>
+     *
+     * $keys = array(
+     * 	   "user_id" => 1,
+     * 	   "group_id" => 2
+     * );
+     * 
+     * // Get user points
+     * $userPoints  = GamificationUserPoints::getInstance($keys);
+     * 
+     * // Create user level object, which is based on points.
+     * $level  = new GamificationUserLevelPoints($keys);
+     * $level->setUserPoints($userPoints);
+     * 
+     * </code>
+     * 
      * @param GamificationUserPoints $userPoints
      */
     public function setUserPoints($userPoints) {
@@ -73,6 +104,26 @@ class GamificationUserLevelPoints extends GamificationUserLevel {
     
     /**
      * Update level to new one.
+     * 
+     * <code>
+     *
+     * $keys = array(
+     * 	   "user_id"  => 1,
+     * 	   "group_id" => 2
+     * );
+     * 
+     * // Get user points
+     * $userPoints  = GamificationUserPoints::getInstance($keys);
+     * 
+     * // Create user level object, which is based on points.
+     * $level       = GamificationUserLevelPoints::getInstance($userPoints);
+     * 
+     * $levelUp     = $level->levelUp();
+     * if($levelUp) {
+     *  //....
+     * }
+     * 
+     * </code>
      * 
      * @return boolean Return true if level up or false if not.
      */
@@ -101,11 +152,11 @@ class GamificationUserLevelPoints extends GamificationUserLevel {
     }
     
     /**
-     * Find a level that actual have to be.
+     * Find the level that has to be reached by the user.
      * 
-     * @return mixed NULL or integer
+     * @return null:integer
      */
-    public function findActualLevelId() {
+    protected function findActualLevelId() {
         
         // Get all levels
         $query = $this->db->getQuery(true);
@@ -167,12 +218,31 @@ class GamificationUserLevelPoints extends GamificationUserLevel {
      *  
      * @param array $data 
      * 
-     * </code>
-     * $data = array( 
-     *     "user_id"  => $userId,
-     *     "group_id" => $groupId
-     * );
      * <code>
+     *
+     * $keys = array(
+     * 	   "user_id"  => 1,
+     * 	   "group_id" => 2
+     * );
+     * 
+     * // Get user points
+     * $userPoints  = GamificationUserPoints::getInstance($keys);
+     * 
+     * // Create user level object, which is based on points.
+     * $level       = GamificationUserLevelPoints::getInstance($userPoints);
+     * 
+     * if(!$level->id) {
+     * 
+     *    $data = array(
+     *        "user_id"   => $userPoints->user_id,
+     *        "group_id"  => $userPoints->group_id
+     *    );
+     *      
+     *    $level->startLeveling($data);
+     *    
+     * }
+     * 
+     * </code>
      * 
      */
     public function startLeveling($data) {

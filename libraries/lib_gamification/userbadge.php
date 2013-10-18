@@ -1,14 +1,10 @@
 <?php
 /**
- * @package		 Gamification Platform
- * @subpackage	 Gamification Library
+ * @package		 GamificationPlatform
+ * @subpackage	 GamificationLibrary
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2013 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * Gamification Library is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
  */
 
 defined('JPATH_PLATFORM') or die;
@@ -17,6 +13,9 @@ jimport('gamification.interface.usermechanic');
 
 /**
  * This is an object that represents user badge.
+ * 
+ * @package		 GamificationPlatform
+ * @subpackage	 GamificationLibrary
  */
 class GamificationUserBadge implements GamificationInterfaceUserMechanic {
 
@@ -59,6 +58,21 @@ class GamificationUserBadge implements GamificationInterfaceUserMechanic {
     
     protected static $instances = array();
     
+    /**
+     * Initialize the object and load data.
+     *
+     * <code>
+     *
+     * $keys = array(
+     * 	   "user_id"  => 1,
+     * 	   "group_id" => 2
+     * );
+     * $userBadge    = new GamificationUserBadge($keys);
+     *
+     * </code>
+     *
+     * @param array $keys
+     */
     public function __construct($keys = array()) {
         
         $this->db = JFactory::getDbo();
@@ -69,10 +83,21 @@ class GamificationUserBadge implements GamificationInterfaceUserMechanic {
     }
     
     /**
-     * Initialize user badge
+     * Create an object and load user badge.
+     * 
+     * <code>
+     *
+     * $keys = array(
+     * 	   "user_id"  => 1,
+     * 	   "group_id" => 2
+     * );
+     * $userBadge    = GamificationUserBadge::getInstance($keys);
+     *
+     * </code>
      * 
      * @param  array $keys 
-     * @return multitype:
+     * 
+     * @return null:GamificationUserBadge
      */
     public static function getInstance(array $keys)  {
     
@@ -90,9 +115,22 @@ class GamificationUserBadge implements GamificationInterfaceUserMechanic {
     }
     
     /**
-     * Load user badge data
+     * Load user badge data.
+     *
+     * <code>
+     *
+     * $keys = array(
+     * 	   "user_id"  => 1,
+     * 	   "group_id" => 2
+     * );
      * 
-     * @param array $keys
+     * $userBadge     = new GamificationUserBadge();
+     * $userBadge->load($keys);
+     *
+     * </code>
+     *
+     * @param $keys
+     *
      */
     public function load($keys) {
         
@@ -119,6 +157,30 @@ class GamificationUserBadge implements GamificationInterfaceUserMechanic {
         
     }
     
+    /**
+     * Set the data to the object parameters.
+     *
+     * <code>
+     *
+     * $keys = array(
+     * 	   "user_id"  => 1,
+     * 	   "group_id" => 2
+     * );
+     * 
+     * $data = array(
+     * 	    "note" 	=> "......",
+     * 		"badge_id"  => 2,
+     * 		"user_id"   => 3,
+     * 		"group_id"  => 4
+     * );
+     *
+     * $userBadge   = new GamificationUserBadge($keys);
+     * $userBadge->bind($data);
+     *
+     * </code>
+     *
+     * @param array $data
+     */
     public function bind($data) {
         
         foreach($data as $key => $value) {
@@ -172,6 +234,31 @@ class GamificationUserBadge implements GamificationInterfaceUserMechanic {
         
     }
     
+    /**
+     * Save the data to the database.
+     *
+     * <code>
+     *
+     * $keys = array(
+     * 	   "user_id"  => 1,
+     * 	   "group_id" => 2
+     * );
+     * 
+     * $data = array(
+     * 	    "note" 	=> "......",
+     * 		"badge_id"  => 2,
+     * 		"user_id"   => 3,
+     * 		"group_id"  => 4
+     * );
+     *
+     * $userBadge   = new GamificationUserBadge($keys);
+     * $userBadge->bind($data);
+     * $userBadge->store();
+     *
+     * </code>
+     *
+     * @todo do it to update null values
+     */
     public function store() {
         
         if(!$this->id) {
@@ -184,6 +271,18 @@ class GamificationUserBadge implements GamificationInterfaceUserMechanic {
     /**
      * Return the title of the badge.
      * 
+     * <code>
+     *
+     * $keys = array(
+     * 	   "user_id"  => 1,
+     * 	   "group_id" => 2
+     * );
+     * 
+     * $userBadge   = GamificationUserBadge::getInstance($keys);
+     * $title 		= $userBadge->getTitle();
+     *
+     * </code>
+     * 
      * @return string
      */
     public function getTitle() {
@@ -192,6 +291,18 @@ class GamificationUserBadge implements GamificationInterfaceUserMechanic {
     
     /**
      * Return badge image.
+     * 
+     * <code>
+     *
+     * $keys = array(
+     * 	   "user_id"  => 1,
+     * 	   "group_id" => 2
+     * );
+     * 
+     * $userBadge   = GamificationUserBadge::getInstance($keys);
+     * $image 		= $userBadge->getImage();
+     *
+     * </code>
      * 
      * @return string
      */
@@ -202,16 +313,54 @@ class GamificationUserBadge implements GamificationInterfaceUserMechanic {
     /**
      * Return the note about the badge.
      *
+     * <code>
+     *
+     * $keys = array(
+     * 	   "user_id"  => 1,
+     * 	   "group_id" => 2
+     * );
+     * 
+     * $userBadge   = GamificationUserBadge::getInstance($keys);
+     * $note 		= $userBadge->getNote();
+     *
+     * </code>
+     * 
      * @return string
      */
     public function getNote() {
         return $this->note;
     }
     
+    /**
+     * Set note for the user badge.
+     *
+     * <code>
+     *
+     * $userBadge   = new GamificationUserBadge();
+     * 
+     * $note 		= "....";
+     * $userBadge->setNote($note);
+     *
+     * </code>
+     *
+     */
     public function setNote($note) {
         $this->note = $note;
     }
     
+    /**
+     * Set user Id for the user badge.
+     *
+     * <code>
+     *
+     * $userBadge   = new GamificationUserBadge();
+     * 
+     * $userId 	    = 1;
+     * $userBadge->setUserId($userId);
+     *
+     * </code>
+     *
+     */
     public function setUserId($userId) {
         $this->user_id = (int)$userId;
     }

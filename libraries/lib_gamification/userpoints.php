@@ -1,14 +1,10 @@
 <?php
 /**
- * @package		 Gamification Platform
- * @subpackage	 Gamification Library
+ * @package		 GamificationPlatform
+ * @subpackage	 GamificationLibrary
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2013 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * Gamification Library is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
  */
 
 defined('JPATH_PLATFORM') or die;
@@ -18,6 +14,9 @@ jimport('gamification.interface.usermechanic');
 /**
  * This class contains methods that are used for managing user points.
  * The user points are collected units by users.
+ * 
+ * @package		 GamificationPlatform
+ * @subpackage	 GamificationLibrary
  * 
  * @todo Improve loading data
  */
@@ -37,13 +36,29 @@ class GamificationUserPoints implements GamificationInterfaceUserMechanic {
     public $points = 0;
     
     /**
-     * Database driver
+     * Database driver.
+     * 
      * @var JDatabaseMySQLi
      */
     protected $db;
     
     protected static $instances = array();
     
+    /**
+     * Initialize the object and load data.
+     *
+     * <code>
+     *
+     * $keys = array(
+     * 	   "user_id"   => 1,
+     * 	   "points_id" => 2
+     * );
+     * $userPoints    = new GamificationUserPoints($keys);
+     *
+     * </code>
+     *
+     * @param array $keys
+     */
     public function __construct($keys = array()) {
         
         $this->db = JFactory::getDbo();
@@ -53,6 +68,31 @@ class GamificationUserPoints implements GamificationInterfaceUserMechanic {
         
     }
     
+    /**
+     * Create an object and load user level.
+     *
+     * <code>
+     *
+     * // Create and initialize the object using points ID.
+     * $keys = array(
+     * 	   "user_id"   => 1,
+     * 	   "points_id" => 2
+     * );
+     * $userPoints    = GamificationUserPoints::getInstance($keys);
+     *
+     * // Create and initialize the object using abbreviation.
+     * $keys = array(
+     * 	   "user_id"  => 1,
+     * 	   "abbr"     => "P"
+     * );
+     * $userPoints    = GamificationUserPoints::getInstance($keys);
+     * 
+     * </code>
+     *
+     * @param  array $keys
+     *
+     * @return null:GamificationUserPoints
+     */
     public static function getInstance(array $keys)  {
     
         $userId   = JArrayHelper::getValue($keys, "user_id");
@@ -60,9 +100,9 @@ class GamificationUserPoints implements GamificationInterfaceUserMechanic {
         $abbr     = JArrayHelper::getValue($keys, "abbr");
         
         if(!empty($pointsId)) {
-            $index = md5($userId .":".$pointsId);
+            $index = md5($userId .":". $pointsId);
         } else if(!empty($abbr)) {
-            $index = md5($userId .":".$abbr);
+            $index = md5($userId .":". $abbr);
         }
         
         if (empty(self::$instances[$index])){
@@ -74,8 +114,30 @@ class GamificationUserPoints implements GamificationInterfaceUserMechanic {
     }
     
     /**
+     * Load user points using some indexes - user_id, abbr or points_id.
+     *
+     * <code>
+     *
+     * // Load data by points ID.
+     * $keys = array(
+     * 	   "user_id"   => 1,
+     * 	   "points_id" => 2
+     * );
      * 
-     * Load user points using some indexs - user_id, abbr or points_id.
+     * $userPoints    = new GamificationUserPoints();
+     * $userPoints->load($keys);
+     *
+     * // Load data by abbreviation.
+     * $keys = array(
+     * 	   "user_id"  => 1,
+     * 	   "abbr"     => "P"
+     * );
+     * 
+     * $userPoints    = new GamificationUserPoints();
+     * $userPoints->load($keys);
+     * 
+     * </code>
+     * 
      * @param array $keys
      */
     public function load($keys) {
@@ -99,8 +161,8 @@ class GamificationUserPoints implements GamificationInterfaceUserMechanic {
     }
     
     /**
+     * Laod user points by userId and pointsId.
      * 
-     * Laod user points by userId and pointsId
      * @param integer $userId
      * @param integer $pointsId
      */
@@ -128,8 +190,8 @@ class GamificationUserPoints implements GamificationInterfaceUserMechanic {
     }
     
 	/**
+     * Laod user points by user ID and abbreviation.
      * 
-     * Laod user points by user ID and abbreviation
      * @param integer $userId
      * @param string  $abbr
      */
@@ -171,6 +233,24 @@ class GamificationUserPoints implements GamificationInterfaceUserMechanic {
         
     }
     
+    /**
+     * Set the data to the object parameters.
+     *
+     * <code>
+     *
+     * $data = array(
+     * 		"user_id"   => 2,
+     * 		"points_id" => 3,
+     * 		"points"    => 200
+     * );
+     *
+     * $userPoints   = new GamificationUserPoints();
+     * $userPoints->bind($data);
+     *
+     * </code>
+     *
+     * @param array $data
+     */
     public function bind($data) {
         
         foreach($data as $key => $value) {
@@ -179,10 +259,44 @@ class GamificationUserPoints implements GamificationInterfaceUserMechanic {
         
     }
     
+    /**
+     * Increase user points.
+     *
+     * <code>
+     *
+     * $keys = array(
+     * 	   "user_id"   => 1,
+     * 	   "points_id" => 2
+     * );
+     *
+     * $userPoints   = GamificationUserPoints::getInstance($keys);
+     * $userPoints->increase(100);
+     * $userPoints->store();
+     *
+     * </code>
+     *
+     */
     public function increase($points) {
         $this->points += abs($points);
     }
     
+    /**
+     * Decrease user points.
+     *
+     * <code>
+     *
+     * $keys = array(
+     * 	   "user_id"   => 1,
+     * 	   "points_id" => 2
+     * );
+     *
+     * $userPoints   = GamificationUserPoints::getInstance($keys);
+     * $userPoints->decrease(100);
+     * $userPoints->store();
+     *
+     * </code>
+     *
+     */
     public function decrease($points) {
         $this->points -= abs($points);
     }
@@ -219,6 +333,22 @@ class GamificationUserPoints implements GamificationInterfaceUserMechanic {
         
     }
     
+    /**
+     * Decrease user points.
+     *
+     * <code>
+     *
+     * $keys = array(
+     * 	   "user_id"   => 1,
+     * 	   "points_id" => 2
+     * );
+     *
+     * $userPoints   = GamificationUserPoints::getInstance($keys);
+     * $userPoints->decrease(100);
+     *
+     * </code>
+     *
+     */
     public function store() {
         
         if(!$this->id) {
@@ -226,10 +356,23 @@ class GamificationUserPoints implements GamificationInterfaceUserMechanic {
         } else {
             $this->updateObject();
         }
+        
     }
     
     /**
-     * Return a string of points number and abbreviation.
+     * Return the number of points and abbreviation as a string.
+     * 
+     * <code>
+     *
+     * $keys = array(
+     * 	   "user_id"   => 1,
+     * 	   "points_id" => 2
+     * );
+     *
+     * $userPoints  = GamificationUserPoints::getInstance($keys);
+     * $amount      = $userPoints->getPointsString();
+     *
+     * </code>
      * 
      * @return string
      */
@@ -238,7 +381,19 @@ class GamificationUserPoints implements GamificationInterfaceUserMechanic {
     }
     
     /**
-     * Return points number
+     * Return the number of points.
+     * 
+     * <code>
+     *
+     * $keys = array(
+     * 	   "user_id"   => 1,
+     * 	   "points_id" => 2
+     * );
+     *
+     * $userPoints  = GamificationUserPoints::getInstance($keys);
+     * $points      = $userPoints->getPoints();
+     *
+     * </code>
      *
      * @return integer
      */
@@ -247,7 +402,19 @@ class GamificationUserPoints implements GamificationInterfaceUserMechanic {
     }
     
     /**
-     * Return abbreviation
+     * Return abbreviation.
+     * 
+     * <code>
+     *
+     * $keys = array(
+     * 	   "user_id"   => 1,
+     * 	   "points_id" => 2
+     * );
+     *
+     * $userPoints   = GamificationUserPoints::getInstance($keys);
+     * $abbreviation = $userPoints->getAbbr();
+     *
+     * </code>
      *
      * @return string
      */
@@ -256,7 +423,19 @@ class GamificationUserPoints implements GamificationInterfaceUserMechanic {
     }
     
     /**
-     * Return title
+     * Return title.
+     * 
+     * <code>
+     *
+     * $keys = array(
+     * 	   "user_id"   => 1,
+     * 	   "points_id" => 2
+     * );
+     *
+     * $userPoints  = GamificationUserPoints::getInstance($keys);
+     * $title       = $userPoints->getTitle();
+     *
+     * </code>
      *
      * @return string
      */

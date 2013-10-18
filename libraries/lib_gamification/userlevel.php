@@ -1,14 +1,10 @@
 <?php
 /**
- * @package		 Gamification Platform
- * @subpackage	 Gamification Library
+ * @package		 GamificationPlatform
+ * @subpackage	 GamificationLibrary
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2013 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * Gamification Library is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
  */
 
 defined('JPATH_PLATFORM') or die;
@@ -17,6 +13,9 @@ jimport('gamification.interface.usermechanic');
 
 /**
  * This is an object that represents user level.
+ * 
+ * @package		 GamificationPlatform
+ * @subpackage	 GamificationLibrary
  */
 class GamificationUserLevel implements GamificationInterfaceUserMechanic {
 
@@ -58,18 +57,35 @@ class GamificationUserLevel implements GamificationInterfaceUserMechanic {
    
     /**
      * User rank if the level is part of a rank.
-     * @var Object
+     * 
+     * @var object
      */
     protected $rank;
     
     /**
-     * Database driver
+     * Database driver.
+     * 
      * @var JDatabaseMySQLi
      */
     protected $db;
     
     protected static $instances = array();
     
+    /**
+     * Initialize the object and load data.
+     *
+     * <code>
+     *
+     * $keys = array(
+     * 	   "user_id"  => 1,
+     * 	   "group_id" => 2
+     * );
+     * $userLevel    = new GamificationUserLevel($keys);
+     *
+     * </code>
+     *
+     * @param array $keys
+     */
     public function __construct($keys = array()) {
         
         $this->db = JFactory::getDbo();
@@ -80,10 +96,21 @@ class GamificationUserLevel implements GamificationInterfaceUserMechanic {
     }
     
     /**
-     * Initialize user level
+     * Create an object and load user level.
+     * 
+     * <code>
+     *
+     * $keys = array(
+     * 	   "user_id"  => 1,
+     * 	   "group_id" => 2
+     * );
+     * $userLevel    = GamificationUserLevel::getInstance($keys);
+     *
+     * </code>
      * 
      * @param  array $keys 
-     * @return multitype:
+     * 
+     * @return null:GamificationUserLevel
      */
     public static function getInstance(array $keys)  {
     
@@ -101,9 +128,22 @@ class GamificationUserLevel implements GamificationInterfaceUserMechanic {
     }
     
     /**
-     * Load user level data
-     *  
-     * @param array $keys
+     * Load user level data.
+     *
+     * <code>
+     *
+     * $keys = array(
+     * 	   "user_id"  => 1,
+     * 	   "group_id" => 2
+     * );
+     * 
+     * $userLevel     = new GamificationUserLevel();
+     * $userLevel->load($keys);
+     *
+     * </code>
+     *
+     * @param $keys
+     *
      */
     public function load($keys) {
         
@@ -130,6 +170,24 @@ class GamificationUserLevel implements GamificationInterfaceUserMechanic {
         
     }
     
+    /**
+     * Set the data to the object parameters.
+     *
+     * <code>
+     *
+     * $data = array(
+     * 		"user_id"   => 2,
+     * 		"group_id"  => 3,
+     * 		"level_id"  => 4
+     * );
+     *
+     * $userLevel   = new GamificationUserLevel();
+     * $userLevel->bind($data);
+     *
+     * </code>
+     *
+     * @param array $data
+     */
     public function bind($data) {
         
         foreach($data as $key => $value) {
@@ -150,6 +208,7 @@ class GamificationUserLevel implements GamificationInterfaceUserMechanic {
             
         $this->db->setQuery($query);
         $this->db->query();
+        
     }
     
     protected function insertObject() {
@@ -170,6 +229,25 @@ class GamificationUserLevel implements GamificationInterfaceUserMechanic {
         
     }
     
+    /**
+     * Save the data to the database.
+     *
+     * <code>
+     *
+     * $data = array(
+     * 		"user_id"   => 2,
+     * 		"group_id"  => 3,
+     * 		"level_id"  => 4
+     * );
+     *
+     * $userLevel   = new GamificationUserLevel($keys);
+     * $userLevel->bind($data);
+     * $userLevel->store();
+     *
+     * </code>
+     *
+     * @todo do it to update null values
+     */
     public function store() {
         
         if(!$this->id) {
@@ -180,7 +258,19 @@ class GamificationUserLevel implements GamificationInterfaceUserMechanic {
     }
     
     /**
-     * Return the title of the level
+     * Return the title of the level.
+     * 
+     * <code>
+     *
+     * $keys = array(
+     * 	   "user_id"  => 1,
+     * 	   "group_id" => 2
+     * );
+     * 
+     * $userLevel   = GamificationUserLevel::getInstance($keys);
+     * $title 		= $userLevel->getTitle();
+     *
+     * </code>
      * 
      * @return string
      */
@@ -189,8 +279,21 @@ class GamificationUserLevel implements GamificationInterfaceUserMechanic {
     }
     
     /**
-     * Return level value
-     * @return integer
+     * Return the numerical value of level.
+     * 
+     * <code>
+     *
+     * $keys = array(
+     * 	   "user_id"  => 1,
+     * 	   "group_id" => 2
+     * );
+     * 
+     * $userLevel   = GamificationUserLevel::getInstance($keys);
+     * $value 		= $userLevel->getLevel();
+     *
+     * </code>
+     * 
+     * @return string
      */
     public function getLevel() {
         return (int)$this->value;
@@ -198,6 +301,20 @@ class GamificationUserLevel implements GamificationInterfaceUserMechanic {
     
     /**
      * Set the ID of the level.
+     * 
+     * <code>
+     *
+     * $keys = array(
+     * 	   "user_id"  => 1,
+     * 	   "group_id" => 2
+     * );
+     * 
+     * $levelId     = 1;
+     * 
+     * $userLevel   = GamificationUserLevel::getInstance($keys);
+     * $userLevel->setLevelId($levelId);
+     *
+     * </code>
      * 
      * @param integer $levelId
      */
@@ -208,16 +325,25 @@ class GamificationUserLevel implements GamificationInterfaceUserMechanic {
     /**
      * Create a record to the database, adding first level.
      *
-     * @param array $data
-     *
-     * </code>
-     * $data = array(
-     *     "user_id"  => $userId,
-     *     "group_id" => $groupId,
-     *     "level_id" => $levelId
-     * );
      * <code>
+     * 
+     * $keys = array(
+     * 	   "user_id"  => 1,
+     * 	   "group_id" => 2
+     * );
+     * 
+     * $data = array(
+     *     "user_id"  => 1,
+     *     "group_id" => 2,
+     *     "level_id" => 3
+     * );
+     * 
+     * $userLevel   = GamificationUserLevel::getInstance($keys);
+     * $userLevel->startLeveling($data);
+     * 
+     * </code>
      *
+     * @param array $data
      */
     public function startLeveling($data) {
     
@@ -235,10 +361,21 @@ class GamificationUserLevel implements GamificationInterfaceUserMechanic {
     }
     
     /**
-     * 
      * Get the rank where the level is positioned.
      * 
-     * @return mixed NULL or GamificationRank
+     * <code>
+     * 
+     * $keys = array(
+     * 	   "user_id"  => 1,
+     * 	   "group_id" => 2
+     * );
+     * 
+     * $userLevel   = GamificationUserLevel::getInstance($keys);
+     * $rank        = $userLevel->getRank();
+     * 
+     * </code>
+     * 
+     * @return null:GamificationRank
      */
     public function getRank() {
         

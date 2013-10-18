@@ -10,16 +10,16 @@
 defined('JPATH_PLATFORM') or die;
 
 /**
- * This interface provides methods 
- * that should be used for game mechanic classes.
+ * This interface provides methods that should be used for classes,
+ * which are based on Data Access Object Pattern.
  *
  * @package		 GamificationPlatform
  * @subpackage	 Interfaces
  */
-interface GamificationInterfaceUserMechanic {
+interface GamificationInterfaceTable {
     
-    public function load($keys);
-    public function bind($data);
-    public function store();
+    public function load($keys, $reset = true);
+    public function bind($data, $ignore = array());
+    public function store($updateNulls = false);
     
 }

@@ -1,14 +1,10 @@
 <?php
 /**
- * @package		 Gamification Platform
- * @subpackage	 Gamification Library
+ * @package		 GamificationPlatform
+ * @subpackage	 GamificationLibrary
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2013 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * Gamification Library is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
  */
 
 defined('JPATH_PLATFORM') or die;
@@ -17,6 +13,9 @@ jimport('gamification.interface.table');
 
 /**
  * This is an object that represents user progress.
+ * 
+ * @package		 GamificationPlatform
+ * @subpackage	 GamificationLibrary
  */
 class GamificationUserProgressBar {
 
@@ -25,10 +24,7 @@ class GamificationUserProgressBar {
      * 
      * @var GamificationUserPoints
      */
-    public $points;
-    
-    public $groupId;
-    public $userId;
+    protected $points;
     
     protected $currentUnit;
     protected $nextUnit;
@@ -61,16 +57,33 @@ class GamificationUserProgressBar {
      */
     protected $db;
     
+    /**
+     * Initialize the object and load data.
+     *
+     * <code>
+     *
+     * // Get user points
+     * $keys = array(
+     * 	   "user_id"   => 1,
+     * 	   "points_id" => 2
+     * );
+     * $userPoints    = GamificationUserPoints::getInstance($keys);
+     * 
+     * // A game mechanic - levels, ranks, badges,...
+     * $gameMechanic  = "levels";
+     * 
+     * $progressBar   = new GamificationUserProgressBar($userPoints, $gameMechanic);
+     *
+     * </code>
+     *
+     * @param GamificationUserPoints $points
+     * @param string $gameMechanic
+     */
     public function __construct(GamificationUserPoints $points, $gameMechanic) {
         
-        $this->userId  = $points->user_id;
-        $this->groupId = $points->group_id;
-        
-        $this->points  = $points;
-        
-        $this->gameMechanic   = $gameMechanic;
-        
-        $this->db = JFactory::getDbo();
+        $this->db           = JFactory::getDbo();
+        $this->points       = $points;
+        $this->gameMechanic = $gameMechanic;
         
         $this->init();
     }
@@ -81,8 +94,8 @@ class GamificationUserProgressBar {
     protected function init() {
         
         $keys = array(
-            "user_id"  => $this->userId,
-            "group_id" => $this->groupId
+            "user_id"  => $this->points->user_id,
+            "group_id" => $this->points->group_id
         );
         
         switch($this->gameMechanic) {
@@ -127,9 +140,9 @@ class GamificationUserProgressBar {
         $result = $this->db->loadObject();
         
         if(!empty($result)) {
-            $this->nextUnit = $result;
+            $this->nextUnit     = $result;
             
-            $this->percent      = $this->calcualtePercante($userPoints, $this->getPointsNext());
+            $this->percent      = $this->calcualtePercant($userPoints, $this->getPointsNext());
             $this->percentNext  = 100 - $this->percent;
             
         } else {
@@ -167,7 +180,7 @@ class GamificationUserProgressBar {
         if(!empty($result)) {
             $this->nextUnit = $result;
     
-            $this->percent      = $this->calcualtePercante($userPoints, $this->getPointsNext());
+            $this->percent      = $this->calcualtePercant($userPoints, $this->getPointsNext());
             $this->percentNext  = 100 - $this->percent;
     
         } else {
@@ -179,7 +192,7 @@ class GamificationUserProgressBar {
     
     /**
      * Prepare current and next badges.
-     *
+     * 
      * @param array $keys
      */
     protected function prepareBadges($keys) {
@@ -205,41 +218,146 @@ class GamificationUserProgressBar {
         if(!empty($result)) {
             $this->nextUnit     = $result;
     
-            $this->percent      = $this->calcualtePercante($userPoints, $this->getPointsNext());
+            $this->percent      = $this->calcualtePercant($userPoints, $this->getPointsNext());
             $this->percentNext  = 100 - $this->percent;
     
         } else {
-            $this->percent = 100;
-            $this->percentNext = 100;
+            $this->percent      = 100;
+            $this->percentNext  = 100;
         }
     
     }
     
-    protected function calcualtePercante($currentValue, $nextValue) {
+    protected function calcualtePercant($currentValue, $nextValue) {
         
         $percent = ($currentValue/$nextValue) * 100;
         
         return abs($percent);
     }
 
+    /**
+     * Return the percent of the progress.
+     * 
+     * <code>
+     *
+     * // Get user points
+     * $keys = array(
+     * 	   "user_id"   => 1,
+     * 	   "points_id" => 2
+     * );
+     * $userPoints    = GamificationUserPoints::getInstance($keys);
+     * 
+     * // A game mechanic - levels, ranks, badges,...
+     * $gameMechanic  = "levels";
+     * 
+     * $progressBar   = new GamificationUserProgressBar($userPoints, $gameMechanic);
+     * $precent       = $progressBar->getPercent();
+     *
+     * </code>
+     * 
+     * @return number
+     */
     public function getPercent() {
         return $this->percent;
     }
     
+    /**
+     * Return percentages that remain to the end.
+     * 
+     * <code>
+     *
+     * // Get user points
+     * $keys = array(
+     * 	   "user_id"   => 1,
+     * 	   "points_id" => 2
+     * );
+     * $userPoints    = GamificationUserPoints::getInstance($keys);
+     * 
+     * // A game mechanic - levels, ranks, badges,...
+     * $gameMechanic  = "levels";
+     * 
+     * $progressBar   = new GamificationUserProgressBar($userPoints, $gameMechanic);
+     * $precent       = $progressBar->getPercentNext();
+     *
+     * </code>
+     * 
+     * @return number
+     */
     public function getPercentNext() {
         return $this->percentNext;
     }
     
+    /**
+     * Return the last ( the current ) object which has been reached.
+     * 
+     * <code>
+     *
+     * // Get user points
+     * $keys = array(
+     * 	   "user_id"   => 1,
+     * 	   "points_id" => 2
+     * );
+     * $userPoints    = GamificationUserPoints::getInstance($keys);
+     * 
+     * // A game mechanic - levels, ranks, badges,...
+     * $gameMechanic  = "levels";
+     * 
+     * $progressBar   = new GamificationUserProgressBar($userPoints, $gameMechanic);
+     * $currentUnit   = $progressBar->getCurrentUnit();
+     *
+     * </code>
+     * 
+     * @return object
+     */
     public function getCurrentUnit() {
         return $this->currentUnit;
     }
     
+    /**
+     * Return the object that will have to be reached.
+     *
+     * <code>
+     *
+     * // Get user points
+     * $keys = array(
+     * 	   "user_id"   => 1,
+     * 	   "points_id" => 2
+     * );
+     * $userPoints    = GamificationUserPoints::getInstance($keys);
+     * 
+     * // A game mechanic - levels, ranks, badges,...
+     * $gameMechanic  = "levels";
+     * 
+     * $progressBar   = new GamificationUserProgressBar($userPoints, $gameMechanic);
+     * $nextUnit      = $progressBar->getNextUnit();
+     *
+     * </code>
+     * 
+     * @return object
+     */
     public function getNextUnit() {
         return $this->nextUnit;
     }
     
     /**
-     * Return the user points.
+     * Return the number of points, which the user has.
+     * 
+     * <code>
+     *
+     * // Get user points
+     * $keys = array(
+     * 	   "user_id"   => 1,
+     * 	   "points_id" => 2
+     * );
+     * $userPoints    = GamificationUserPoints::getInstance($keys);
+     * 
+     * // A game mechanic - levels, ranks, badges,...
+     * $gameMechanic  = "levels";
+     * 
+     * $progressBar   = new GamificationUserProgressBar($userPoints, $gameMechanic);
+     * $points        = $progressBar->getPoints();
+     *
+     * </code>
      * 
      * @return integer
      */
@@ -249,6 +367,25 @@ class GamificationUserProgressBar {
     
     /**
      * Return the title of the current unit.
+     * 
+     * <code>
+     *
+     * // Get user points
+     * $keys = array(
+     * 	   "user_id"   => 1,
+     * 	   "points_id" => 2
+     * );
+     * $userPoints    = GamificationUserPoints::getInstance($keys);
+     * 
+     * // A game mechanic - levels, ranks, badges,...
+     * $gameMechanic  = "levels";
+     * 
+     * $progressBar   = new GamificationUserProgressBar($userPoints, $gameMechanic);
+     * $title         = $progressBar->getTitleCurrent();
+     *
+     * </code>
+     * 
+     * @return string
      */
     public function getTitleCurrent() {
         return (!empty($this->currentUnit)) ? $this->currentUnit->getTitle() : null;
@@ -256,27 +393,107 @@ class GamificationUserProgressBar {
     
     /**
      * Return the title of the next unit.
+     * 
+     * <code>
+     *
+     * // Get user points
+     * $keys = array(
+     * 	   "user_id"   => 1,
+     * 	   "points_id" => 2
+     * );
+     * $userPoints    = GamificationUserPoints::getInstance($keys);
+     * 
+     * // A game mechanic - levels, ranks, badges,...
+     * $gameMechanic  = "levels";
+     * 
+     * $progressBar   = new GamificationUserProgressBar($userPoints, $gameMechanic);
+     * $title         = $progressBar->getTitleNext();
+     *
+     * </code>
+     * 
+     * @return string
      */
     public function getTitleNext() {
         return (!empty($this->nextUnit)) ? $this->nextUnit->title : null;
     }
     
     /**
-     * Return the points of the current unit.
+     * Return the number points of the current unit.
+     * Those points are the value, needed to be reached from the user,
+     * to receive the unit.
+     * 
+     * <code>
+     *
+     * // Get user points
+     * $keys = array(
+     * 	   "user_id"   => 1,
+     * 	   "points_id" => 2
+     * );
+     * $userPoints    = GamificationUserPoints::getInstance($keys);
+     * 
+     * // A game mechanic - levels, ranks, badges,...
+     * $gameMechanic  = "levels";
+     * 
+     * $progressBar   = new GamificationUserProgressBar($userPoints, $gameMechanic);
+     * $points        = $progressBar->getPointsCurrent();
+     *
+     * </code>
+     * 
+     * @return integer
      */
     public function getPointsCurrent() {
         return (!empty($this->currentUnit)) ? $this->currentUnit->getPoints() : null;
     }
     
     /**
-     * Return the points of the next unit.
+     * Return the number of points of the next unit.
+     * Those points are the value, needed to be reached from the user,
+     * to receive the unit.
+     * 
+     * <code>
+     *
+     * // Get user points
+     * $keys = array(
+     * 	   "user_id"   => 1,
+     * 	   "points_id" => 2
+     * );
+     * $userPoints    = GamificationUserPoints::getInstance($keys);
+     * 
+     * // A game mechanic - levels, ranks, badges,...
+     * $gameMechanic  = "levels";
+     * 
+     * $progressBar   = new GamificationUserProgressBar($userPoints, $gameMechanic);
+     * $points        = $progressBar->getPointsNext();
+     *
+     * </code>
+     * 
+     * @return integer
      */
     public function getPointsNext() {
         return (!empty($this->nextUnit)) ? $this->nextUnit->points : null;
     }
     
     /**
-     * Return flag true if next unit exists.
+     * Return true if a next unit exists.
+     * 
+     * <code>
+     *
+     * // Get user points
+     * $keys = array(
+     * 	   "user_id"   => 1,
+     * 	   "points_id" => 2
+     * );
+     * $userPoints    = GamificationUserPoints::getInstance($keys);
+     * 
+     * // A game mechanic - levels, ranks, badges,...
+     * $gameMechanic  = "levels";
+     * 
+     * $progressBar   = new GamificationUserProgressBar($userPoints, $gameMechanic);
+     * if(!$progressBar->hasNext()) {
+     *     // ...
+     * }
+     *
+     * </code>
      * 
      * @return boolean
      */
@@ -284,6 +501,28 @@ class GamificationUserProgressBar {
         return (!empty($this->nextUnit)) ? true : false;
     }
     
+    /**
+     * Return the name of the game mechanic, used in the process of calculation progress.
+     *
+     * <code>
+     *
+     * // Get user points
+     * $keys = array(
+     * 	   "user_id"   => 1,
+     * 	   "points_id" => 2
+     * );
+     * $userPoints    = GamificationUserPoints::getInstance($keys);
+     * 
+     * // A game mechanic - levels, ranks, badges,...
+     * $gameMechanic  = "levels";
+     * 
+     * $progressBar   = new GamificationUserProgressBar($userPoints, $gameMechanic);
+     * $gameMechanic  = $progressBar->getGameMechanic();
+     * 
+     * </code>
+     * 
+     * @return string
+     */
     public function getGameMechanic() {
         return $this->gameMechanic;
     }

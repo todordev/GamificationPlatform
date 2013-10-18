@@ -1,14 +1,10 @@
 <?php
 /**
- * @package		 Gamification Platform
- * @subpackage	 Gamification Library
+ * @package		 GamificationPlatform
+ * @subpackage	 GamificationLibrary
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2013 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * Gamification Library is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
  */
 
 defined('JPATH_PLATFORM') or die;
@@ -18,12 +14,30 @@ jimport("gamification.interface.leaderboard");
 /**
  * This class contains methods which creates leaderboard objects,
  * based on game mechanic.
+ * 
+ * @package		 GamificationPlatform
+ * @subpackage	 GamificationLibrary
  */
 abstract class GamificationLeaderboard {
 
     /**
-     * Create an object based on game mechanics.
+     * Create an object based on game mechanic.
      *
+     * <code>
+     * 
+     * $keys = array(
+     *     "group_id" => 1
+     * );
+     *  
+     * $options = array(
+     *     "sort_direction" => "DESC",
+     *     "limit"          => 10
+     * );
+     *  
+     * $leaderboard    = GamificationLeaderboard::factory("levels", $keys, $options);
+     * 
+     * </code>
+     * 
      * @param  string $mechanic This is the mechanic, on which is based the results.
      * @param  array  $keys     These are the keys, which will be used for loading leaderboard data.
      *  

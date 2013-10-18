@@ -1,14 +1,10 @@
 <?php
 /**
- * @package		 Gamification Platform
- * @subpackage	 Gamification Library
+ * @package		 GamificationPlatform
+ * @subpackage	 GamificationLibrary
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2013 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * Gamification Library is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
  */
 
 defined('JPATH_PLATFORM') or die;
@@ -20,6 +16,9 @@ jimport('gamification.userbadges');
 
 /**
  * This class contains methods that manage user badges based on points.
+ * 
+ * @package		 GamificationPlatform
+ * @subpackage	 GamificationLibrary
  */
 class GamificationUserBadgesPoints extends GamificationUserBadges {
 
@@ -33,10 +32,26 @@ class GamificationUserBadgesPoints extends GamificationUserBadges {
     public static $instances = array();
     
     /**
-     * Initialize user level
+     * Create and initialize user badges.
      *
-     * @param  mixed $keys
-     * @return multitype:
+     * <code>
+     *
+     * $keys = array(
+     * 	   "user_id" => 1,
+     * 	   "group_id" => 2
+     * );
+     * 
+     * // Get user points
+     * $userPoints  = GamificationUserPoints::getInstance($keys);
+     *
+     * // Get user badges.
+     * $badges      = GamificationUserBadgesPoints::getInstance($userPoints);
+     *
+     * </code>
+     * 
+     * @param  GamificationUserPoints $userPoints
+     * 
+     * @return null:GamificationUserBadgesPoints
      */
     public static function getInstance(GamificationUserPoints $userPoints)  {
     
@@ -64,8 +79,24 @@ class GamificationUserBadgesPoints extends GamificationUserBadges {
     }
     
     /**
-     * Set the object GamificationUserPoints to the variable.
+     * Set the user points to the object.
      *
+     * <code>
+     *
+     * $keys = array(
+     * 	   "user_id" => 1,
+     * 	   "group_id" => 2
+     * );
+     * 
+     * // Get user points
+     * $userPoints  = GamificationUserPoints::getInstance($keys);
+     * 
+     * // Create user badges points object
+     * $badges  = new GamificationUserBadgesPoints($keys);
+     * $badges->setUserPoints($userPoints);
+     * 
+     * </code>
+     * 
      * @param GamificationUserPoints $userPoints
      */
     public function setUserPoints($userPoints) {
@@ -75,9 +106,27 @@ class GamificationUserBadgesPoints extends GamificationUserBadges {
     /**
      * Give a new badge.
      * 
+     * <code>
+     *
+     * $keys = array(
+     * 	   "user_id" => 1,
+     * 	   "group_id" => 2
+     * );
+     * 
+     * // Get user points
+     * $userPoints  = GamificationUserPoints::getInstance($keys);
+     *
+     * // Get user badges.
+     * $badges  = GamificationUserBadgesPoints::getInstance($userPoints);
+     * 
+     * // Give a badge. If the badge is given, the object will return it.
+     * $badge   = $badges->giveBadge($note);
+     * 
+     * </code>
+     * 
      * @param  $note    A note about badge.   
      * 
-     * @return boolean TRUE if we are giving a new badge. FALSE if we do not giving a new badge.
+     * @return null:GamificationUserBadge
      */
     public function giveBadge($note = null) {
         
@@ -117,18 +166,19 @@ class GamificationUserBadgesPoints extends GamificationUserBadges {
     }
     
     /**
-     * Find a badge that actual have to be.
+     * Find a badge that has to be given to the user.
      * 
-     * @return mixed NULL or array
+     * @return null:object
      */
-    public function findActualBadge() {
+    protected function findActualBadge() {
         
         // Get all levels
         $query = $this->db->getQuery(true);
         
         $query
-            ->select("a.id AS badge_id, a.title, a.points, a.image, a.points_id, a.group_id, a.published")
-            ->from($this->db->quoteName("#__gfy_badges") . " AS a")
+            ->select("a.id AS badge_id, a.title, a.points, " .
+                     "a.image, a.points_id, a.group_id, a.published")
+            ->from($this->db->quoteName("#__gfy_badges", "a"))
             ->where("a.points_id = ". (int)$this->userPoints->points_id);
         
         $this->db->setQuery($query);

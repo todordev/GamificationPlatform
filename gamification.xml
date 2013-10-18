@@ -4,11 +4,16 @@
 	<author>Todor Iliev</author>
 	<authorEmail>todor@itprism.com</authorEmail>
 	<authorUrl>http://itprism.com</authorUrl>
-	<copyright>Copyright (C) 2010 Todor Iliev ( ITPrism.com )</copyright>
+	<copyright>Copyright (C) 2013 Todor Iliev ( ITPrism.com )</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html</license>
-	<version>1.1</version>
-	<creationDate>25 August, 2013</creationDate>
-	<description>COM_GAMIFICATION_DESCRIPTION</description>
+	<version>1.2</version>
+	<creationDate>18 October, 2013</creationDate>
+	<description><![CDATA[
+    <p><a href="http://itprism.com/free-joomla-extensions/ecommerce-gamification/game-mechanics-platform" target="_blank">Gamification Platform</a> is an extension that provides functionality, resources and API that can be used to gamify Joomla! extensions and websites.</p>
+    <p>Invest in the extension and help for its improvement. You can <a href="http://itprism.com/sponsorship" target="_blank">sponsor the extension via SMS, PayPal or Bitcoin</a>.</p>
+    <p><a href="http://itprism.com/" target="_blank">Subscribe for the newsletter</a> to receive <strong>gifts</strong>, <strong>discount codes</strong>, information about <strong>updates</strong> and information about <strong>new ITPrism extensions</strong>.</p>
+    <p>Please, <a href="http://extensions.joomla.org/extensions/e-commerce/credits-a-point-systems/23872" target="_blank">vote for the extension</a> on Joomla! Extensions Directory</p>
+    ]]></description>
 
 	<install>
         <sql>

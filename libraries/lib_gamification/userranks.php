@@ -1,20 +1,19 @@
 <?php
 /**
- * @package		 Gamification Platform
- * @subpackage	 Gamification Library
+ * @package		 GamificationPlatform
+ * @subpackage	 GamificationLibrary
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2013 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * Gamification Library is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
  */
 
 defined('JPATH_PLATFORM') or die;
 
 /**
  * This class contains methods that are used for managing user ranks.
+ * 
+ * @package		 GamificationPlatform
+ * @subpackage	 GamificationLibrary
  */
 class GamificationUserRanks {
 
@@ -35,6 +34,21 @@ class GamificationUserRanks {
     
     protected static $instances = array();
     
+    /**
+     * Initialize the object and load data.
+     *
+     * <code>
+     *
+     * $keys = array(
+     * 	   "user_id"  => 1,
+     * 	   "group_id" => 2
+     * );
+     * $userRanks    = new GamificationUserRanks($keys);
+     *
+     * </code>
+     *
+     * @param array $keys
+     */
     public function __construct($keys = array()) {
         
         $this->db = JFactory::getDbo();
@@ -45,10 +59,21 @@ class GamificationUserRanks {
     }
     
     /**
-     * Initialize user ranks
+     * Create an object and load user ranks.
+     *
+     * <code>
+     *
+     * $keys = array(
+     * 	   "user_id"  => 1,
+     * 	   "group_id" => 2
+     * );
+     * $userRanks    = GamificationUserRanks::getInstance($keys);
+     *
+     * </code>
      *
      * @param  array $keys
-     * @return mixed NULL or GamificationUserRanks
+     *
+     * @return null:GamificationUserRanks
      */
     public static function getInstance(array $keys)  {
     
@@ -69,7 +94,19 @@ class GamificationUserRanks {
      * Load all user ranks and set them to group index.
      * Every user can have only one rank for a group.
      * 
-     * @param array $userId  User Id
+     * <code>
+     *
+     * $keys = array(
+     * 	   "user_id"  => 1,
+     * 	   "group_id" => 2
+     * );
+     *
+     * $userRanks     = new GamificationUserRanks();
+     * $userRanks->load($keys);
+     *
+     * </code>
+     * 
+     * @param array $keys
      */
     public function load($keys) {
         
@@ -108,7 +145,19 @@ class GamificationUserRanks {
     }
 
     /**
-     * Return all ranks
+     * Return all ranks.
+     *
+     * <code>
+     *
+     * $keys = array(
+     * 	   "user_id"  => 1,
+     * 	   "group_id" => 2
+     * );
+     *
+     * $userRanks   = GamificationUserRanks::getInstance($keys);
+     * $ranks       = $userRanks->getRanks();
+     *
+     * </code>
      * 
      * @return array
      */
@@ -120,9 +169,24 @@ class GamificationUserRanks {
      * Get a rank by group ID.
      * Users can have only one rank in a group.
      * 
+     * <code>
+     *
+     * $keys = array(
+     * 	   "user_id"  => 1
+     * );
+     * 
+     * // Get all user ranks 
+     * $userRanks  = GamificationUserRanks::getInstance($keys);
+     * 
+     * // Get rank by group ID.
+     * $groupId    = 2;
+     * $rank       = $userRanks->getRank($groupId);
+     *
+     * </code>
+     * 
      * @param integer $groupId
      * 
-     * @return mixed  NULL or GamificationUserRank
+     * @return null:GamificationUserRank
      */
     public function getRank($groupId) {
         return (!isset($this->ranks[$groupId])) ? null : $this->ranks[$groupId];

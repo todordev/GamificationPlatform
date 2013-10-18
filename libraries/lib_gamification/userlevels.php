@@ -1,20 +1,19 @@
 <?php
 /**
- * @package		 Gamification Platform
- * @subpackage	 Gamification Library
+ * @package		 GamificationPlatform
+ * @subpackage	 GamificationLibrary
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2013 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * Gamification Library is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
  */
 
 defined('JPATH_PLATFORM') or die;
 
 /**
  * This class contains methods that are used for managing user levels.
+ * 
+ * @package		 GamificationPlatform
+ * @subpackage	 GamificationLibrary
  */
 class GamificationUserLevels {
 
@@ -34,6 +33,21 @@ class GamificationUserLevels {
     
     protected static $instances = array();
     
+    /**
+     * Initialize the object and load data.
+     *
+     * <code>
+     *
+     * $keys = array(
+     * 	   "user_id"  => 1,
+     * 	   "group_id" => 2
+     * );
+     * $userLevels    = new GamificationUserLevels($keys);
+     *
+     * </code>
+     *
+     * @param array $keys
+     */
     public function __construct($keys = array()) {
         
         $this->db = JFactory::getDbo();
@@ -44,10 +58,21 @@ class GamificationUserLevels {
     }
     
     /**
-     * Initialize user levels
+     * Create an object and load user levels.
+     *
+     * <code>
+     *
+     * $keys = array(
+     * 	   "user_id"  => 1,
+     * 	   "group_id" => 2
+     * );
+     * $userLevels    = GamificationUserLevels::getInstance($keys);
+     *
+     * </code>
      *
      * @param  array $keys
-     * @return mixed NULL or GamificationUserLevels
+     *
+     * @return null:GamificationUserLevels
      */
     public static function getInstance(array $keys)  {
     
@@ -64,12 +89,24 @@ class GamificationUserLevels {
         return self::$instances[$index];
     }
     
-    
     /**
      * Load all user levels and set them to group index.
      * Every user can have only one level for a group.
-     * 
-     * @param array $keys  
+     *
+     * <code>
+     *
+     * $keys = array(
+     * 	   "user_id"  => 1,
+     * 	   "group_id" => 2
+     * );
+     *
+     * $userLevels     = new GamificationUserLevels();
+     * $userLevels->load($keys);
+     *
+     * </code>
+     *
+     * @param $keys
+     *
      */
     public function load($keys) {
         
@@ -110,6 +147,18 @@ class GamificationUserLevels {
     /**
      * Return all levels.
      * 
+     * <code>
+     *
+     * $keys = array(
+     * 	   "user_id"  => 1,
+     * 	   "group_id" => 2
+     * );
+     *
+     * $userLevels  = GamificationUserLevels::getInstance($keys);
+     * $levels      = $userLevels->getLevels();
+     *
+     * </code>
+     * 
      * @return array
      */
     public function getLevels() {
@@ -119,6 +168,20 @@ class GamificationUserLevels {
     /**
      * Get a level by group ID. 
      * Users can have only one level in a group.
+     * 
+     * <code>
+     *
+     * $keys = array(
+     * 	   "user_id"  => 1,
+     * 	   "group_id" => 2
+     * );
+     *
+     * $groupId     = 1;
+     * 
+     * $userLevels  = GamificationUserLevels::getInstance($keys);
+     * $level       = $userLevels->getLevel($groupId);
+     *
+     * </code>
      * 
      * @param integer $groupId
      * 
