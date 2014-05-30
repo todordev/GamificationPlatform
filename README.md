@@ -7,13 +7,11 @@ Gamification Platform is a Joomla! extension that provides functionality, API an
 
 ##Documentation
 You can find documentation on following pages.
-[http://itprism.com/help/101-gamification-platform-documentation] (Documentation and FAQ)
-[#] (Quick start guide)
-[#] (Developers guide)
-[http://cdn.itprism.com/api/gamification/index.html] (API documentation)
+[Documentation and FAQ] (http://itprism.com/help/101-gamification-platform-documentation)
+[API documentation] (http://cdn.itprism.com/api/gamification/index.html)
 
 ##Download
-You can [http://itprism.com/free-joomla-extensions/ecommerce-gamification/game-mechanics-platform] (download Gamification Platform package) from the website of ITPrism.
+You can [download Gamification Platform package] (http://itprism.com/free-joomla-extensions/ecommerce-gamification/game-mechanics-platform) from the website of ITPrism.
 
 Changelog
 ---------
