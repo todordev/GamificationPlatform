@@ -1,63 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
-	<fieldset>
+    <fieldset>
 
-		<field name="title" type="text" class="inputbox" 
-			label="COM_GAMIFICATION_TITLE"
-			description="COM_GAMIFICATION_LEVEL_TITLE_DESC"
-			size="40"   
-			filter="trim" 
-			required="true" />
+        <field name="title" type="text"
+               label="COM_GAMIFICATION_TITLE"
+               description="COM_GAMIFICATION_LEVEL_TITLE_DESC"
+               size="40"
+               filter="trim"
+               required="true"/>
 
-        <field name="points" type="text" class="inputbox" 
-            label="COM_GAMIFICATION_POINTS"
-            description="COM_GAMIFICATION_LEVEL_POINTS_DESC"
-            filter="int" 
-        />
-        
-        <field name="points_id" type="gfypoints" class="inputbox" 
-            label="COM_GAMIFICATION_POINTS_TYPE"
-            description="COM_GAMIFICATION_LEVEL_POINTS_TYPE_DESC"
-            filter="int" 
-        />
-        
-        <field name="value" type="text" class="inputbox" 
-            label="COM_GAMIFICATION_VALUE"
-            description="COM_GAMIFICATION_LEVEL_VALUE_DESC"
-            filter="int" 
-        />
-            
-        <field name="rank_id" type="gfyranks" class="inputbox" 
-            label="COM_GAMIFICATION_RANK"
-            description="COM_GAMIFICATION_LEVEL_RANK_DESC"
-            filter="int" 
-        />
-        
-        <field name="group_id" type="gfygroups" class="inputbox" 
-            label="COM_GAMIFICATION_GROUP" 
-            description="COM_GAMIFICATION_LEVEL_GROUP_DESC" 
-            size="1" 
-            filter="intval" 
-            required="true"
-        />
-        
-        <field name="published" type="list" class="inputbox" 
-            label="JSTATUS" 
-            description="JFIELD_PUBLISHED_DESC" 
-            size="1" 
-            filter="intval" 
-            default="1"
-        >
+        <field name="points" type="text"
+               label="COM_GAMIFICATION_POINTS"
+               description="COM_GAMIFICATION_LEVEL_POINTS_DESC"
+               filter="int"
+                />
+
+        <field name="points_id" type="gfypoints"
+               label="COM_GAMIFICATION_POINTS_TYPE"
+               description="COM_GAMIFICATION_LEVEL_POINTS_TYPE_DESC"
+               filter="int"
+                >
+            <option value="0">COM_GAMIFICATION_SELECT_POINTS_TYPE</option>
+        </field>
+
+        <field name="value" type="text"
+               label="COM_GAMIFICATION_VALUE"
+               description="COM_GAMIFICATION_LEVEL_VALUE_DESC"
+               filter="int"
+                />
+
+        <field name="rank_id" type="gfyranks"
+               label="COM_GAMIFICATION_RANK"
+               description="COM_GAMIFICATION_LEVEL_RANK_DESC"
+               filter="int"
+                >
+            <option value="0">COM_GAMIFICATION_SELECT_RANK</option>
+        </field>
+
+        <field name="group_id" type="gfygroups"
+               label="COM_GAMIFICATION_GROUP"
+               description="COM_GAMIFICATION_LEVEL_GROUP_DESC"
+               size="1"
+               filter="intval"
+               required="true"
+                />
+
+        <field name="published" type="list"
+               label="JSTATUS"
+               description="JFIELD_PUBLISHED_DESC"
+               size="1"
+               filter="intval"
+               default="1"
+                >
             <option value="1">JPUBLISHED</option>
             <option value="0">JUNPUBLISHED</option>
         </field>
-        
-		<field name="id" type="text" class="readonly"
-		  label="JGLOBAL_FIELD_ID_LABEL"
-		  description="JGLOBAL_FIELD_ID_DESC" 
-          readonly="true" 
-          default="0" 
-        />
-            
-	</fieldset>
+
+        <field name="id" type="text" class="readonly"
+               label="JGLOBAL_FIELD_ID_LABEL"
+               description="JGLOBAL_FIELD_ID_DESC"
+               readonly="true"
+               default="0"
+                />
+
+    </fieldset>
 </form>

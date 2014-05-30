@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<view title="COM_GAMIFICATION_VIEW_NOTIFICATIONS">
-		<message><![CDATA[COM_GAMIFICATION_VIEW_NOTIFICATIONS]]></message>
-	</view>
+    <view title="COM_GAMIFICATION_VIEW_NOTIFICATIONS">
+        <message><![CDATA[COM_GAMIFICATION_VIEW_NOTIFICATIONS]]></message>
+    </view>
 </metadata>

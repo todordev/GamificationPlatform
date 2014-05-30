@@ -7,15 +7,13 @@
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 
+// no direct access
 defined('_JEXEC') or die;
 
-class GamificationTableActivity extends JTable
+jimport('joomla.application.component.model');
+
+class GamificationModelProfile extends JModelLegacy
 {
-    /**
-     * @param JDatabaseDriver $db
-     */
-    public function __construct($db)
-    {
-        parent::__construct('#__gfy_activities', 'id', $db);
-    }
+
+
 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
     <fieldset name="images" label="COM_GAMIFICATION_IMAGES" description="COM_GAMIFICATION_IMAGES_PARAMS">
-        <field name="images_directory" type="text" default="images/gamification" size="50" label="COM_GAMIFICATION_IMAGES_DIRECTORY" description="COM_GAMIFICATION_IMAGES_DIRECTORY_DESC" />
+        <field name="images_directory" type="text" default="images/gamification" size="50"
+               label="COM_GAMIFICATION_IMAGES_DIRECTORY" description="COM_GAMIFICATION_IMAGES_DIRECTORY_DESC"/>
     </fieldset>
 </config>

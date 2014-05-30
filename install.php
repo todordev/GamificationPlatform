@@ -1,14 +1,10 @@
 <?php
 /**
  * @package      Gamification Platform
- * @subpackage   Components
+ * @subpackage   Component
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * Gamification is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
  */
 
 // no direct access
@@ -17,187 +13,197 @@ defined('_JEXEC') or die;
 /**
  * Script file of the component
  */
-class pkg_gamificationInstallerScript {
-    
+class pkg_gamificationInstallerScript
+{
     /**
-     * method to install the component
+     * Method to install the component.
+     *
+     * @param object $parent
      *
      * @return void
      */
-    public function install($parent) {
+    public function install($parent)
+    {
     }
-    
+
     /**
-     * method to uninstall the component
+     * Method to uninstall the component.
+     *
+     * @param $parent
      *
      * @return void
      */
-    public function uninstall($parent) {
+    public function uninstall($parent)
+    {
     }
-    
+
     /**
-     * method to update the component
+     * Method to update the component.
+     *
+     * @param $parent
      *
      * @return void
      */
-    public function update($parent) {
+    public function update($parent)
+    {
     }
-    
+
     /**
-     * method to run before an install/update/uninstall method
+     * Method to run before an install/update/uninstall method.
+     *
+     * @param $type
+     * @param $parent
      *
      * @return void
      */
-    public function preflight($type, $parent) {
+    public function preflight($type, $parent)
+    {
     }
-    
+
     /**
-     * method to run after an install/update/uninstall method
+     * Method to run after an install/update/uninstall method.
+     *
+     * @param string $type
+     * @param string $parent
      *
      * @return void
      */
-    public function postflight($type, $parent) {
-        
-        if(!defined("COM_GAMIFICATION_PATH_COMPONENT_ADMINISTRATOR")) {
-            define("COM_GAMIFICATION_PATH_COMPONENT_ADMINISTRATOR", JPATH_ADMINISTRATOR . DIRECTORY_SEPARATOR . "components" . DIRECTORY_SEPARATOR ."com_gamification");
+    public function postflight($type, $parent)
+    {
+        if (!defined("COM_GAMIFICATION_PATH_COMPONENT_ADMINISTRATOR")) {
+            define("COM_GAMIFICATION_PATH_COMPONENT_ADMINISTRATOR", JPATH_ADMINISTRATOR . DIRECTORY_SEPARATOR . "components" . DIRECTORY_SEPARATOR . "com_gamification");
         }
-        
+
         // Register Component helpers
-        JLoader::register("GamificationInstallHelper", COM_GAMIFICATION_PATH_COMPONENT_ADMINISTRATOR.DIRECTORY_SEPARATOR."helpers".DIRECTORY_SEPARATOR."install.php");
-    
+        JLoader::register("GamificationInstallHelper", COM_GAMIFICATION_PATH_COMPONENT_ADMINISTRATOR . DIRECTORY_SEPARATOR . "helpers" . DIRECTORY_SEPARATOR . "install.php");
+
         jimport('joomla.filesystem.path');
         jimport('joomla.filesystem.folder');
         jimport('joomla.filesystem.file');
-        
-        $params             = JComponentHelper::getParams("com_gamification");
-        $this->imagesFolder = JFolder::makeSafe($params->get("images_directory", "images/gamification"));
-        $this->imagesPath   = JPath::clean( JPATH_SITE.DIRECTORY_SEPARATOR.$this->imagesFolder );
-        
+
+        $params       = JComponentHelper::getParams("com_gamification");
+        $imagesFolder = JFolder::makeSafe($params->get("images_directory", "images/gamification"));
+        $imagesPath   = JPath::clean(JPATH_SITE . DIRECTORY_SEPARATOR . $imagesFolder);
+
         // Create images folder
-        if(!is_dir($this->imagesPath)){
-            GamificationInstallHelper::createFolder($this->imagesPath);
+        if (!JFolder::exists($imagesPath)) {
+            GamificationInstallHelper::createFolder($imagesPath);
         }
-        
+
         // Start table with the information
         GamificationInstallHelper::startTable();
-    
+
         // Requirements
         GamificationInstallHelper::addRowHeading(JText::_("COM_GAMIFICATION_MINIMUM_REQUIREMENTS"));
-        
-        // Display result about verification for existing folder 
-        $title  = JText::_("COM_GAMIFICATION_IMAGE_FOLDER");
-        $info   = $this->imagesFolder;
-        if(!is_dir($this->imagesPath)) {
+
+        // Display result about verification for existing folder
+        $title = JText::_("COM_GAMIFICATION_IMAGE_FOLDER");
+        $info  = $imagesFolder;
+        if (!is_dir($imagesPath)) {
             $result = array("type" => "important", "text" => JText::_("JNO"));
         } else {
-            $result = array("type" => "success"  , "text" => JText::_("JYES"));
+            $result = array("type" => "success", "text" => JText::_("JYES"));
         }
         GamificationInstallHelper::addRow($title, $result, $info);
-        
-        // Display result about verification for writeable folder 
-        $title  = JText::_("COM_GAMIFICATION_WRITABLE_FOLDER");
-        $info   = $this->imagesFolder;
-        if(!is_writable($this->imagesPath)) {
+
+        // Display result about verification for writable folder
+        $title = JText::_("COM_GAMIFICATION_WRITABLE_FOLDER");
+        $info  = $imagesFolder;
+        if (!is_writable($imagesPath)) {
             $result = array("type" => "important", "text" => JText::_("JNO"));
         } else {
-            $result = array("type" => "success"  , "text" => JText::_("JYES"));
+            $result = array("type" => "success", "text" => JText::_("JYES"));
         }
         GamificationInstallHelper::addRow($title, $result, $info);
-        
+
         // Display result about verification for GD library
-        $title  = JText::_("COM_GAMIFICATION_GD_LIBRARY");
-        $info   = "";
-        if(!extension_loaded('gd') AND function_exists('gd_info')) {
+        $title = JText::_("COM_GAMIFICATION_GD_LIBRARY");
+        $info  = "";
+        if (!extension_loaded('gd') and function_exists('gd_info')) {
             $result = array("type" => "important", "text" => JText::_("COM_GAMIFICATION_WARNING"));
         } else {
-            $result = array("type" => "success"  , "text" => JText::_("JON"));
+            $result = array("type" => "success", "text" => JText::_("JON"));
         }
         GamificationInstallHelper::addRow($title, $result, $info);
-        
+
         // Display result about verification for cURL library
-        $title  = JText::_("COM_GAMIFICATION_CURL_LIBRARY");
-        $info   = "";
-        if( !extension_loaded('curl') ) {
+        $title = JText::_("COM_GAMIFICATION_CURL_LIBRARY");
+        $info  = "";
+        if (!extension_loaded('curl')) {
             $info   = JText::_("COM_GAMIFICATION_CURL_INFO");
             $result = array("type" => "important", "text" => JText::_("JOFF"));
         } else {
-            $result = array("type" => "success"  , "text" => JText::_("JON"));
+            $result = array("type" => "success", "text" => JText::_("JON"));
         }
         GamificationInstallHelper::addRow($title, $result, $info);
-        
+
         // Display result about verification Magic Quotes
-        $title  = JText::_("COM_GAMIFICATION_MAGIC_QUOTES");
-        $info   = "";
-        if( get_magic_quotes_gpc() ) {
+        $title = JText::_("COM_GAMIFICATION_MAGIC_QUOTES");
+        $info  = "";
+        if (get_magic_quotes_gpc()) {
             $info   = JText::_("COM_GAMIFICATION_MAGIC_QUOTES_INFO");
             $result = array("type" => "important", "text" => JText::_("JON"));
         } else {
-            $result = array("type" => "success"  , "text" => JText::_("JOFF"));
+            $result = array("type" => "success", "text" => JText::_("JOFF"));
         }
         GamificationInstallHelper::addRow($title, $result, $info);
-        
+
         // Display result about verification FileInfo
-        $title  = JText::_("COM_GAMIFICATION_FILEINFO");
-        $info   = "";
-        if( !function_exists('finfo_open') ) {
+        $title = JText::_("COM_GAMIFICATION_FILEINFO");
+        $info  = "";
+        if (!function_exists('finfo_open')) {
             $info   = JText::_("COM_GAMIFICATION_FILEINFO_INFO");
             $result = array("type" => "important", "text" => JText::_("JOFF"));
         } else {
             $result = array("type" => "success", "text" => JText::_("JON"));
         }
         GamificationInstallHelper::addRow($title, $result, $info);
-        
+
+        // Display result about PHP version
+        $title = JText::_("COM_GAMIFICATION_PHP_VERSION");
+        $info  = "";
+        if (version_compare(PHP_VERSION, '5.3.0') < 0) {
+            $result = array("type" => "important", "text" => JText::_("COM_GAMIFICATION_WARNING"));
+        } else {
+            $result = array("type" => "success", "text" => JText::_("JYES"));
+        }
+        GamificationInstallHelper::addRow($title, $result, $info);
+
         // Display result about verification of installed ITPrism Library
         jimport("itprism.version");
-        $title  = JText::_("COM_GAMIFICATION_ITPRISM_LIBRARY");
-        $info   = "";
-        if( !class_exists("ITPrismVersion") ) {
+        $title = JText::_("COM_GAMIFICATION_ITPRISM_LIBRARY");
+        $info  = "";
+        if (!class_exists("ITPrismVersion")) {
             $info   = JText::_("COM_GAMIFICATION_ITPRISM_LIBRARY_DOWNLOAD");
             $result = array("type" => "important", "text" => JText::_("JNO"));
         } else {
             $result = array("type" => "success", "text" => JText::_("JYES"));
         }
         GamificationInstallHelper::addRow($title, $result, $info);
-        
+
         // Installed extensions
-        
+
         GamificationInstallHelper::addRowHeading(JText::_("COM_GAMIFICATION_INSTALLED_EXTENSIONS"));
-        
+
         // Gamification Library
-        $result = array("type" => "success"  , "text" => JText::_("COM_GAMIFICATION_INSTALLED"));
+        $result = array("type" => "success", "text" => JText::_("COM_GAMIFICATION_INSTALLED"));
         GamificationInstallHelper::addRow(JText::_("COM_GAMIFICATION_GAMIFICATION_LIBRARY"), $result, JText::_("COM_GAMIFICATION_LIBRARY"));
-        
-        // Gamification Activities
-        $result = array("type" => "success"  , "text" => JText::_("COM_GAMIFICATION_INSTALLED"));
-        GamificationInstallHelper::addRow(JText::_("COM_GAMIFICATION_MODULE_ACTIVITIES"), $result, JText::_("COM_GAMIFICATION_MODULE"));
-        
-        // Gamification Bar
-        $result = array("type" => "success"  , "text" => JText::_("COM_GAMIFICATION_INSTALLED"));
-        GamificationInstallHelper::addRow(JText::_("COM_GAMIFICATION_MODULE_GAMIFICATION_BAR"), $result, JText::_("COM_GAMIFICATION_MODULE"));
-        
-        // Gamification Leaderboard
-        $result = array("type" => "success"  , "text" => JText::_("COM_GAMIFICATION_INSTALLED"));
-        GamificationInstallHelper::addRow(JText::_("COM_GAMIFICATION_MODULE_LEADERBOARD"), $result, JText::_("COM_GAMIFICATION_MODULE"));
-        
-        // Gamification Profile
-        $result = array("type" => "success"  , "text" => JText::_("COM_GAMIFICATION_INSTALLED"));
-        GamificationInstallHelper::addRow(JText::_("COM_GAMIFICATION_MODULE_GAMIFICATION_PROFILE"), $result, JText::_("COM_GAMIFICATION_MODULE"));
-        
+
         // Gamification User Gamification
-        $result = array("type" => "success"  , "text" => JText::_("COM_GAMIFICATION_INSTALLED"));
+        $result = array("type" => "success", "text" => JText::_("COM_GAMIFICATION_INSTALLED"));
         GamificationInstallHelper::addRow(JText::_("COM_GAMIFICATION_PLUGIN_USER_GAMIFICATION"), $result, JText::_("COM_GAMIFICATION_PLUGIN"));
-        
+
         // Gamification System Gamification
-        $result = array("type" => "success"  , "text" => JText::_("COM_GAMIFICATION_INSTALLED"));
+        $result = array("type" => "success", "text" => JText::_("COM_GAMIFICATION_INSTALLED"));
         GamificationInstallHelper::addRow(JText::_("COM_GAMIFICATION_PLUGIN_SYSTEM_GAMIFICATION"), $result, JText::_("COM_GAMIFICATION_PLUGIN"));
-        
+
         // End table
         GamificationInstallHelper::endTable();
-            
+
         echo JText::sprintf("COM_GAMIFICATION_MESSAGE_REVIEW_SAVE_SETTINGS", JRoute::_("index.php?option=com_gamification"));
-        
+
         jimport("itprism.version");
-        if(!class_exists("ITPrismVersion")) {
+        if (!class_exists("ITPrismVersion")) {
             echo JText::_("COM_GAMIFICATION_MESSAGE_INSTALL_ITPRISM_LIBRARY");
         }
     }

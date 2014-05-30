@@ -3,12 +3,8 @@
  * @package      Gamification Platform
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * Gamification is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
  */
 
 // No direct access
@@ -21,60 +17,61 @@ jimport('itprism.controller.form.backend');
  *
  * @package      Gamification Platform
  * @subpackage   Components
- * @since		1.6
+ * @since        1.6
  */
-class GamificationControllerPoint extends ITPrismControllerFormBackend {
-    
+class GamificationControllerPoint extends ITPrismControllerFormBackend
+{
     /**
      * Save an item
-     *
      */
-    public function save(){
-        
+    public function save($key = null, $urlVar = null)
+    {
         JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
-        
+
         $app = JFactory::getApplication();
-        /** @var $app JAdministrator **/
-        
-        $data    = $app->input->post->get('jform', array(), 'array');
-        $itemId  = JArrayHelper::getValue($data, "id");
-        
-        $redirectData = array(
+        /** @var $app JApplicationAdministrator * */
+
+        $data   = $app->input->post->get('jform', array(), 'array');
+        $itemId = JArrayHelper::getValue($data, "id");
+
+        $redirectOptions = array(
             "task" => $this->getTask(),
             "id"   => $itemId
         );
-        
-        $model   = $this->getModel();
-        /** @var $model GamificationModelPoint **/
-        
-        $form    = $model->getForm($data, false);
-        /** @var $form JForm **/
-        
-        if(!$form){
-            throw new Exception($model->getError(), 500);
+
+        $model = $this->getModel();
+        /** @var $model GamificationModelPoint * */
+
+        $form = $model->getForm($data, false);
+        /** @var $form JForm * */
+
+        if (!$form) {
+            throw new Exception(JText::_("COM_GAMIFICATION_ERROR_FORM_CANNOT_BE_LOADED"), 500);
         }
-            
+
         // Validate the form
         $validData = $model->validate($form, $data);
-        
+
         // Check for errors.
-        if($validData === false){
-            $this->displayNotice($form->getErrors(), $redirectData);
+        if ($validData === false) {
+            $this->displayNotice($form->getErrors(), $redirectOptions);
+
             return;
         }
-            
+
         try {
+
             $itemId = $model->save($validData);
+
+            $redirectOptions["id"] = $itemId;
+
         } catch (Exception $e) {
-            
+
             JLog::add($e->getMessage());
             throw new Exception(JText::_('COM_GAMIFICATION_ERROR_SYSTEM'));
-        
+
         }
-        
-        $this->displayMessage(JText::_('COM_GAMIFICATION_POINTS_SAVED'), $redirectData);
-    
+
+        $this->displayMessage(JText::_('COM_GAMIFICATION_POINTS_SAVED'), $redirectOptions);
     }
-    
-    
 }

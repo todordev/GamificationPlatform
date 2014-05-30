@@ -1,43 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
-	<fieldset>
+    <fieldset>
 
-		<field name="note" type="textarea" class="inputbox" 
-			label="COM_GAMIFICATION_NOTIFICATION" 
-			description="COM_GAMIFICATION_NOTIFICATION_DESC"
-			filter="trim" 
-			required="true"
-            cols="30" 
-            rows="5"
-         />
+        <field name="note" type="textarea"
+               label="COM_GAMIFICATION_NOTIFICATION"
+               description="COM_GAMIFICATION_NOTIFICATION_DESC"
+               filter="trim"
+               required="true"
+               cols="30"
+               rows="5"
+                />
 
-        <field name="url" type="text" class="inputbox" 
-            label="COM_GAMIFICATION_URL"
-            description="COM_GAMIFICATION_NOTIFICATION_URL_DESC"  
-            filter="trim"
-            size="80"
-        />
-        
-        <field name="image" type="text" class="inputbox" 
-            label="COM_GAMIFICATION_IMAGE"
-            description="COM_GAMIFICATION_NOTIFICATION_IMAGE_DESC"  
-            filter="trim"
-            size="80"
-        />
-        
-        <field name="read" type="radio" class="btn-group" 
-            label="COM_GAMIFICATION_READ" 
-            description="COM_GAMIFICATION_NOTIFICATION_READ_DESC" 
-            filter="intval" 
-            default="0"
-        >
+        <field name="url" type="text"
+               label="COM_GAMIFICATION_URL"
+               description="COM_GAMIFICATION_NOTIFICATION_URL_DESC"
+               filter="trim"
+               size="80"
+                />
+
+        <field name="image" type="text"
+               label="COM_GAMIFICATION_IMAGE"
+               description="COM_GAMIFICATION_NOTIFICATION_IMAGE_DESC"
+               filter="trim"
+               size="80"
+                />
+
+        <field name="read" type="radio" class="btn-group"
+               label="COM_GAMIFICATION_READ"
+               description="COM_GAMIFICATION_NOTIFICATION_READ_DESC"
+               filter="intval"
+               default="0"
+                >
             <option value="0">COM_GAMIFICATION_NOT_READ</option>
             <option value="1">COM_GAMIFICATION_READ</option>
         </field>
-        
-		<field name="id" type="text" default="0" label="JGLOBAL_FIELD_ID_LABEL" 
-            readonly="true" class="readonly"
-            description="JGLOBAL_FIELD_ID_DESC" />
-            
-	</fieldset>
+
+        <field name="id" type="text" default="0" label="JGLOBAL_FIELD_ID_LABEL"
+               readonly="true" class="readonly"
+               description="JGLOBAL_FIELD_ID_DESC"/>
+
+    </fieldset>
 </form>

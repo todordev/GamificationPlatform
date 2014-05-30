@@ -12,10 +12,8 @@
 	
 	<!-- destination directories -->
 	<property name="cfg.adminDestDir" location="${cfg.pkgDir}/admin" />
-	<property name="cfg.adminLanguageDestDir" location="${cfg.pkgDir}/admin/language" />
 	<property name="cfg.mediaDestDir" location="${cfg.pkgDir}/media" />
 	<property name="cfg.siteDestDir" location="${cfg.pkgDir}/site" />
-	<property name="cfg.siteLanguageFilesDir" location="${cfg.pkgDir}/site/language" />
 	<property name="cfg.librariesDestDir" location="${cfg.pkgDir}/libraries" />
 	
 	<property name="cfg.pluginsDestDir" location="${cfg.pkgDir}/plugins" />
@@ -27,10 +25,6 @@
 	<property name="cfg.mediaSourceDir" location="${cfg.sourceDir}/media" />
 	<property name="cfg.librariesSourceDir" location="${cfg.sourceDir}/libraries" />
 
-	<!-- language source -->
-	<property name="cfg.adminLanguageSourceDir" location="${cfg.sourceDir}/administrator/language/en-GB" />
-	<property name="cfg.siteLanguageSourceDir" location="${cfg.sourceDir}/language/en-GB" />
-
 	<!-- plugins source -->
     <property name="cfg.pluginsSourceDir" location="${cfg.sourceDir}/plugins" />
 	
@@ -39,12 +33,10 @@
 	
 	<target name="build" depends="init, build_component, info" />
 
-	<target name="init" description="creates nessecary directory to build with">
+	<target name="init" description="creates necessary directory to build with">
 		<mkdir dir="${cfg.pkgDir}/admin" />
-		<mkdir dir="${cfg.pkgDir}/admin/language" />
 		<mkdir dir="${cfg.pkgDir}/media" />
 		<mkdir dir="${cfg.pkgDir}/site" />
-		<mkdir dir="${cfg.pkgDir}/site/language" />
 		<mkdir dir="${cfg.pkgDir}/libraries" />
 		<mkdir dir="${cfg.pkgDir}/packages" />
 		<mkdir dir="${cfg.pkgDir}/modules" />
@@ -52,23 +44,11 @@
 		
 		<!-- plugins -->
 		<mkdir dir="${cfg.pkgDir}/plugins/system/plg_system_gamification" />
-		<mkdir dir="${cfg.pkgDir}/plugins/system/plg_system_gamification/language" />
 		<mkdir dir="${cfg.pkgDir}/plugins/user/plg_user_gamification" />
-		<mkdir dir="${cfg.pkgDir}/plugins/user/plg_user_gamification/language" />
-		
-		<!-- modules -->
-        <mkdir dir="${cfg.pkgDir}/modules/mod_gamificationbar" />
-        <mkdir dir="${cfg.pkgDir}/modules/mod_gamificationbar/language" />
-        <mkdir dir="${cfg.pkgDir}/modules/mod_gamificationprofile" />
-        <mkdir dir="${cfg.pkgDir}/modules/mod_gamificationprofile/language" />
-        <mkdir dir="${cfg.pkgDir}/modules/mod_gamificationactivities" />
-        <mkdir dir="${cfg.pkgDir}/modules/mod_gamificationactivities/language" />
-        <mkdir dir="${cfg.pkgDir}/modules/mod_gamificationleaderboard" />
-        <mkdir dir="${cfg.pkgDir}/modules/mod_gamificationleaderboard/language" />
 		
 	</target>
 
-	<!-- copy administration files of the componet -->
+	<!-- copy administration files of the component -->
 	<copy todir="${cfg.adminDestDir}">
 		<fileset dir="${cfg.adminSourceDir}/${cfg.comName}">
 			<exclude name="**/${cfg.pkgName}.xml" />
@@ -78,41 +58,30 @@
 		</fileset>
 	</copy>
 
-	<!-- copy install helper of the componet -->
+	<!-- copy install helper of the component -->
     <copy file="${cfg.adminSourceDir}/${cfg.comName}/helpers/install.php" todir="${cfg.adminDestDir}/helpers/" />
 	
-	<!-- copy site files of the componet -->
+	<!-- copy site files of the component -->
 	<copy todir="${cfg.siteDestDir}">
 		<fileset dir="${cfg.siteSourceDir}/${cfg.comName}">
 			<include name="**/*" />
 		</fileset>
 	</copy>
 
-	<!-- copy media files of the componet -->
+	<!-- copy media files of the component -->
 	<copy todir="${cfg.mediaDestDir}">
 		<fileset dir="${cfg.mediaSourceDir}/${cfg.comName}">
 			<include name="**/*" />
 		</fileset>
 	</copy>
 
-	<!-- copy admin language files of the componet -->
-	<copy file="${cfg.adminLanguageSourceDir}/en-GB.${cfg.comName}.ini" todir="${cfg.adminLanguageDestDir}/en-GB/" />
-	<copy file="${cfg.adminLanguageSourceDir}/en-GB.${cfg.comName}.sys.ini" todir="${cfg.adminLanguageDestDir}/en-GB/" />
-	<copy file="${cfg.adminLanguageSourceDir}/index.html" todir="${cfg.adminLanguageDestDir}/" />
-	<copy file="${cfg.adminLanguageSourceDir}/index.html" todir="${cfg.adminLanguageDestDir}/en-GB/" />
-
-	<!-- copy site language files of the componet -->
-	<copy file="${cfg.siteLanguageSourceDir}/en-GB.${cfg.comName}.ini" todir="${cfg.siteLanguageFilesDir}/en-GB/" />
-	<copy file="${cfg.siteLanguageSourceDir}/index.html" todir="${cfg.siteLanguageFilesDir}/" />
-	<copy file="${cfg.siteLanguageSourceDir}/index.html" todir="${cfg.siteLanguageFilesDir}/en-GB/" />
-
-	<!-- copy main files of the componet -->
+	<!-- copy main files of the component -->
     <copy file="${cfg.adminSourceDir}/${cfg.comName}/install.php" todir="${cfg.pkgDir}" />
     <copy file="${cfg.adminSourceDir}/${cfg.comName}/README.md" todir="${cfg.pkgDir}" />
     <copy file="${cfg.adminSourceDir}/${cfg.comName}/${cfg.pkgName}.xml" todir="${cfg.pkgDir}" />
     <copy file="${cfg.adminSourceDir}/${cfg.comName}/${cfg.name}.xml" todir="${cfg.pkgDir}" />
 
-	<!-- copy library files of the componet -->
+	<!-- copy library files of the component -->
     <copy todir="${cfg.librariesDestDir}/lib_${cfg.name}">
         <fileset dir="${cfg.librariesSourceDir}/${cfg.name}">
             <include name="**/*" />
@@ -130,12 +99,6 @@
         </fileset>
     </copy>
 	
-	<!-- copy plugin language files of system/gamification -->
-    <copy file="${cfg.adminLanguageSourceDir}/en-GB.plg_system_gamification.ini" todir="${cfg.pluginsDestDir}/system/plg_system_gamification/language/en-GB" />
-    <copy file="${cfg.adminLanguageSourceDir}/en-GB.plg_system_gamification.sys.ini" todir="${cfg.pluginsDestDir}/system/plg_system_gamification/language/en-GB" />
-    <copy file="${cfg.adminLanguageSourceDir}/index.html" todir="${cfg.pluginsDestDir}/system/plg_system_gamification/language" />
-    <copy file="${cfg.adminLanguageSourceDir}/index.html" todir="${cfg.pluginsDestDir}/system/plg_system_gamification/language/en-GB/" />
-	
 	<!-- USER/GAMIFICATION -->
 	
 	<!-- copy plugins files of user/gamification -->
@@ -144,79 +107,8 @@
             <include name="**/*" />
         </fileset>
     </copy>
-    
-    <!-- copy plugin language files of user/gamification -->
-    <copy file="${cfg.adminLanguageSourceDir}/en-GB.plg_user_gamification.ini" todir="${cfg.pluginsDestDir}/user/plg_user_gamification/language/en-GB" />
-    <copy file="${cfg.adminLanguageSourceDir}/en-GB.plg_user_gamification.sys.ini" todir="${cfg.pluginsDestDir}/user/plg_user_gamification/language/en-GB" />
-    <copy file="${cfg.adminLanguageSourceDir}/index.html" todir="${cfg.pluginsDestDir}/user/plg_user_gamification/language" />
-    <copy file="${cfg.adminLanguageSourceDir}/index.html" todir="${cfg.pluginsDestDir}/user/plg_user_gamification/language/en-GB/" />
 
 	<!-- END COPY PLUGINS -->
-	
-	<!-- COPY MODULES -->
-	    
-    <!-- MOD_GAMIFICATIONBAR -->
-        
-    <!-- copy module files of mod_gamificationbar -->
-    <copy todir="${cfg.modulesDestDir}/mod_gamificationbar">
-        <fileset dir="${cfg.modulesSourceDir}/mod_gamificationbar">
-            <include name="**/*" />
-        </fileset>
-    </copy>
-
-    <!-- copy module language files of mod_gamificationbar -->
-    <copy file="${cfg.siteLanguageSourceDir}/en-GB.mod_gamificationbar.ini" todir="${cfg.modulesDestDir}/mod_gamificationbar/language/en-GB" />
-    <copy file="${cfg.siteLanguageSourceDir}/en-GB.mod_gamificationbar.sys.ini" todir="${cfg.modulesDestDir}/mod_gamificationbar/language/en-GB" />
-    <copy file="${cfg.siteLanguageSourceDir}/index.html" todir="${cfg.modulesDestDir}/mod_gamificationbar/language" />
-    <copy file="${cfg.siteLanguageSourceDir}/index.html" todir="${cfg.modulesDestDir}/mod_gamificationbar/language/en-GB/" />
-	
-	
-	<!-- MOD_GAMIFICATIONPROFILE -->
-	        
-    <!-- copy module files of mod_gamificationprofile -->
-    <copy todir="${cfg.modulesDestDir}/mod_gamificationprofile">
-        <fileset dir="${cfg.modulesSourceDir}/mod_gamificationprofile">
-            <include name="**/*" />
-        </fileset>
-    </copy>
-
-    <!-- copy module language files of mod_gamificationprofile -->
-    <copy file="${cfg.siteLanguageSourceDir}/en-GB.mod_gamificationprofile.ini" todir="${cfg.modulesDestDir}/mod_gamificationprofile/language/en-GB" />
-    <copy file="${cfg.siteLanguageSourceDir}/en-GB.mod_gamificationprofile.sys.ini" todir="${cfg.modulesDestDir}/mod_gamificationprofile/language/en-GB" />
-    <copy file="${cfg.siteLanguageSourceDir}/index.html" todir="${cfg.modulesDestDir}/mod_gamificationprofile/language" />
-    <copy file="${cfg.siteLanguageSourceDir}/index.html" todir="${cfg.modulesDestDir}/mod_gamificationprofile/language/en-GB/" />
-    
-    <!-- MOD_GAMIFICATIONACTIVITIES -->
-                
-    <!-- copy module files of mod_gamificationactivities -->
-    <copy todir="${cfg.modulesDestDir}/mod_gamificationactivities">
-        <fileset dir="${cfg.modulesSourceDir}/mod_gamificationactivities">
-            <include name="**/*" />
-        </fileset>
-    </copy>
-
-    <!-- copy module language files of mod_gamificationactivities -->
-    <copy file="${cfg.siteLanguageSourceDir}/en-GB.mod_gamificationactivities.ini" todir="${cfg.modulesDestDir}/mod_gamificationactivities/language/en-GB" />
-    <copy file="${cfg.siteLanguageSourceDir}/en-GB.mod_gamificationactivities.sys.ini" todir="${cfg.modulesDestDir}/mod_gamificationactivities/language/en-GB" />
-    <copy file="${cfg.siteLanguageSourceDir}/index.html" todir="${cfg.modulesDestDir}/mod_gamificationactivities/language" />
-    <copy file="${cfg.siteLanguageSourceDir}/index.html" todir="${cfg.modulesDestDir}/mod_gamificationactivities/language/en-GB/" />
-    
-    <!-- MOD_GAMIFICATIONLEADERBOARD -->
-                    
-    <!-- copy module files of mod_gamificationleaderboard -->
-    <copy todir="${cfg.modulesDestDir}/mod_gamificationleaderboard">
-        <fileset dir="${cfg.modulesSourceDir}/mod_gamificationleaderboard">
-            <include name="**/*" />
-        </fileset>
-    </copy>
-
-    <!-- copy module language files of mod_gamificationleaderboard -->
-    <copy file="${cfg.siteLanguageSourceDir}/en-GB.mod_gamificationleaderboard.ini" todir="${cfg.modulesDestDir}/mod_gamificationleaderboard/language/en-GB" />
-    <copy file="${cfg.siteLanguageSourceDir}/en-GB.mod_gamificationleaderboard.sys.ini" todir="${cfg.modulesDestDir}/mod_gamificationleaderboard/language/en-GB" />
-    <copy file="${cfg.siteLanguageSourceDir}/index.html" todir="${cfg.modulesDestDir}/mod_gamificationleaderboard/language" />
-    <copy file="${cfg.siteLanguageSourceDir}/index.html" todir="${cfg.modulesDestDir}/mod_gamificationleaderboard/language/en-GB/" />
-
-	<!-- END COPY MODULES -->
 	
 	<target name="build_component" depends="init" description="packages the finaly component file">
 		
@@ -231,12 +123,6 @@
 		<zip destfile="${cfg.pkgDir}/packages/plg_system_gamification.zip" basedir="${cfg.pluginsDestDir}/system/plg_system_gamification" />
 		<zip destfile="${cfg.pkgDir}/packages/plg_user_gamification.zip" basedir="${cfg.pluginsDestDir}/user/plg_user_gamification" />
 		
-		<!-- build modules -->
-        <zip destfile="${cfg.pkgDir}/packages/mod_gamificationbar.zip" basedir="${cfg.modulesDestDir}/mod_gamificationbar" />
-        <zip destfile="${cfg.pkgDir}/packages/mod_gamificationprofile.zip" basedir="${cfg.modulesDestDir}/mod_gamificationprofile" />
-        <zip destfile="${cfg.pkgDir}/packages/mod_gamificationactivities.zip" basedir="${cfg.modulesDestDir}/mod_gamificationactivities" />
-        <zip destfile="${cfg.pkgDir}/packages/mod_gamificationleaderboard.zip" basedir="${cfg.modulesDestDir}/mod_gamificationleaderboard" />
-		
 		<!-- build package -->
 		<zip destfile="${cfg.pkgDir}/${cfg.pkgName}_${cfg.version}-${cfg.joomlaVersion}.zip" basedir="${cfg.pkgDir}" 
 			includes="packages/**,${cfg.pkgName}.xml,install.php,README.md" />
@@ -244,7 +130,7 @@
 	</target>
 
 	<target name="info" description="prints information">
-		<echo message="Project:                 ${cfg.name}" />
+		<echo message="Project: ${cfg.name}" />
 		<tstamp>
 			<format property="buildtime" pattern="yyyy-MM-dd'T'HH:mm:ss" />
 		</tstamp>

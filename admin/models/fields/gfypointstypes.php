@@ -3,12 +3,8 @@
  * @package      Gamification Platform
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * Gamification is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
  */
 defined('JPATH_BASE') or die;
 
@@ -22,9 +18,10 @@ JFormHelper::loadFieldClass('list');
  *
  * @package      Gamification Platform
  * @subpackage   Components
- * @since       1.6
+ * @since        1.6
  */
-class JFormFieldGfyPointsTypes extends JFormFieldList {
+class JFormFieldGfyPointsTypes extends JFormFieldList
+{
     /**
      * The form field type.
      *
@@ -32,95 +29,92 @@ class JFormFieldGfyPointsTypes extends JFormFieldList {
      * @since   1.6
      */
     protected $type = 'gfypointstypes';
-    
+
     /**
      * Method to get the field options.
      *
      * @return  array   The field option objects.
      * @since   1.6
      */
-    protected function getOptions(){
-        
-        // Initialize variables.
-        $options = array();
-        
-        $db     = JFactory::getDbo();
-        $query  = $db->getQuery(true);
-        
+    protected function getOptions()
+    {
+        $db    = JFactory::getDbo();
+        $query = $db->getQuery(true);
+
         $query
             ->select('a.id AS value, CONCAT(a.title, " [", a.abbr, "] ") AS text')
-            ->from('#__gfy_points AS a')
+            ->from($db->quoteName('#__gfy_points', 'a'))
             ->where('a.published = 1')
             ->order("a.title ASC");
-        
+
         // Get the options.
         $db->setQuery($query);
         $options = $db->loadObjectList();
-        
+
         // Merge any additional options in the XML definition.
         $options = array_merge(parent::getOptions(), $options);
-        
+
         return $options;
     }
-    
-    protected function getInput() {
 
+    protected function getInput()
+    {
         // Initialize variables.
         $html = array();
-        
+
         // Get the field options.
-        $options = (array) $this->getOptions();
+        $options = (array)$this->getOptions();
 
         $pointsTypes = array();
-        if(!empty($this->value)) {
+        if (!empty($this->value)) {
             $pointsTypes_ = (array)json_decode($this->value);
-            if(!empty($pointsTypes_)) {
-                foreach($pointsTypes_ as $type) {
+            if (!empty($pointsTypes_)) {
+                foreach ($pointsTypes_ as $type) {
                     $pointsTypes[$type->id] = $type->value;
                 }
-            }            
-        } 
-        
-        if(!empty($options)) {
-            
-            $html[] = '<div id="points-elements">';
-            
-            foreach($options as $option) {
-                
-                $attr = ' class="points-type';
-                
-                // Initialize some field attributes.
-                $attr .= $this->element['class'] ? ' '.(string) $this->element['class'] . '"' : '"';
-                
-                $attr .= $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';
-                
-                // Initialize JavaScript field attributes.
-                $attr .= $this->element['onchange'] ? ' onchange="' . (string) $this->element['onchange'] . '"' : '';
-                
-                
-                $elementId = substr(md5(uniqid(time() * rand(), true)), 0, 10);
-                
-                $value = JArrayHelper::getValue($pointsTypes, $option->value);
-                
-                $htmlInput  = '<label for="'.$elementId.'">'.$option->text.'</label>';
-                $htmlInput .= '<input type="text" value="' . $value . '" id="'.$elementId.'" data-id="'.$option->value.'" '.$attr.'/>';
-                
-                $html[]     = $htmlInput;
-                
             }
-            
-            $html[] = '</div>';
-            
         }
-        
-        $html[]     = '<input type="hidden" name="' . $this->name . '" value=\'' . $this->value . '\' id="'.$this->id.'" />';
-        
+
+        if (!empty($options)) {
+
+            $html[] = '<div id="points-elements">';
+
+            foreach ($options as $option) {
+
+                $attr = ' class="points-type';
+
+                // Initialize some field attributes.
+                $attr .= $this->element['class'] ? ' ' . (string)$this->element['class'] . '"' : '"';
+
+                $attr .= $this->element['size'] ? ' size="' . (int)$this->element['size'] . '"' : '';
+
+                // Initialize JavaScript field attributes.
+                $attr .= $this->element['onchange'] ? ' onchange="' . (string)$this->element['onchange'] . '"' : '';
+
+
+                $elementId = substr(md5(uniqid(time() * rand(), true)), 0, 10);
+
+                $value = JArrayHelper::getValue($pointsTypes, $option->value);
+
+                $htmlInput = '<label for="' . $elementId . '">' . $option->text . '</label>';
+                $htmlInput .= '<input type="text" value="' . $value . '" id="' . $elementId . '" data-id="' . $option->value . '" ' . $attr . '/>';
+
+                $html[] = $htmlInput;
+
+            }
+
+            $html[] = '</div>';
+
+        }
+
+        $html[] = '<input type="hidden" name="' . $this->name . '" value=\'' . $this->value . '\' id="' . $this->id . '" />';
+
         // Scripts
         JHtml::_("behavior.framework");
         $doc = JFactory::getDocument();
-        $doc->addScript(JURI::root()."media/com_gamification/js/admin/fields/pointstypes.js");
-        
+        $doc->addScript(JURI::root() . "media/com_gamification/js/admin/fields/pointstypes.js");
+
         return implode($html);
-        
+
     }
 }

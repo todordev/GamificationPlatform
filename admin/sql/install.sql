@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS `#__gfy_notifications` (
   `image` varchar(255) DEFAULT NULL COMMENT 'It is a URL to small image.',
   `url` varchar(255) DEFAULT NULL COMMENT 'It is a URL to page.',
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `read` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `user_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
@@ -56,6 +56,7 @@ CREATE TABLE IF NOT EXISTS `#__gfy_points` (
   `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(64) NOT NULL,
   `abbr` varchar(8) NOT NULL,
+  `note` varchar(255) DEFAULT NULL,
   `published` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `group_id` smallint(5) unsigned NOT NULL,
   PRIMARY KEY (`id`)
@@ -66,6 +67,7 @@ CREATE TABLE IF NOT EXISTS `#__gfy_ranks` (
   `title` varchar(64) NOT NULL,
   `points` int(10) unsigned NOT NULL DEFAULT '0',
   `image` varchar(64) NOT NULL DEFAULT '',
+  `note` varchar(255) DEFAULT NULL,
   `published` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `points_id` smallint(5) unsigned NOT NULL DEFAULT '0',
   `group_id` smallint(5) unsigned NOT NULL,

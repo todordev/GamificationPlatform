@@ -9,7 +9,7 @@ var GamificationHelper = {
 	        title: title,
 	        text: text,
 	        icon: "icon-ok",
-	        type: "success",
+	        type: "success"
         });
 	},
 	displayMessageFailure: function(title, text) {
@@ -18,7 +18,7 @@ var GamificationHelper = {
 	        title: title,
 	        text: text,
 	        icon: 'icon-warning-sign',
-	        type: "error",
+	        type: "error"
         });
 	}
-}
+};
