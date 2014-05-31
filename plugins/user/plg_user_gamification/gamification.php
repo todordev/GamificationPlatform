@@ -49,41 +49,6 @@ class plgUserGamification extends JPlugin
     }
 
     /**
-     * Method is called after user log in to the system.
-     *
-     * @param    array $user    An associative array of JAuthenticateResponse type.
-     * @param    array $options An associative array containing these keys: ["remember"] => bool, ["return"] => string, ["entry_url"] => string.
-     *
-     * @return    void
-     * @since    1.6
-     * @throws    Exception on error.
-     *
-     * @todo     Remove this method because it is used only for testing.
-     */
-    public function onUserLogin($user, $options)
-    {
-        // Get user id
-        $userName = JArrayHelper::getValue($user, 'username');
-
-        $db    = JFactory::getDbo();
-        $query = $db->getQuery(true);
-
-        $query
-            ->select("a.id, a.name, a.username, a.email, a.registerDate")
-            ->from($db->quoteName("#__users") . " AS a")
-            ->where("a.username = " . $db->quote($userName));
-
-        $db->setQuery($query, 0, 1);
-        $user = $db->loadAssoc();
-
-        // Give points
-        if ($this->params->get("points_give", 0)) {
-            $this->givePoints($user);
-        }
-
-    }
-
-    /**
      * Add points to user account after registration.
      *
      * @param array $user
