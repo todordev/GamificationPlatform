@@ -31,8 +31,29 @@
 	<!-- modules source -->
     <property name="cfg.modulesSourceDir" location="${cfg.sourceDir}/modules" />
 	
-	<target name="build" depends="init, build_component, info" />
+	<target name="build" depends="clean, init, copy, build_component, info" />
 
+	<!-- delete old files -->
+	<target name="clean" description="delete old files and folders">
+		<delete includeEmptyDirs="true">
+			<fileset dir="${cfg.adminDestDir}" includes="**/*" />
+			<fileset dir="${cfg.librariesDestDir}" includes="**/*" />
+			<fileset dir="${cfg.mediaDestDir}" includes="**/*" />
+			<fileset dir="${cfg.modulesDestDir}" includes="**/*" />
+			<fileset dir="${cfg.pluginsDestDir}" includes="**/*" />
+			<fileset dir="${cfg.siteDestDir}" includes="**/*" />
+			
+			<fileset dir="${cfg.pkgDir}/packages" includes="*"/>
+			
+			<fileset dir="${cfg.pkgDir}" includes="CHANGELOG.md"/>
+			<fileset dir="${cfg.pkgDir}" includes="LICENSE.txt"/>
+			<fileset dir="${cfg.pkgDir}" includes="${cfg.name}.xml"/>
+			<fileset dir="${cfg.pkgDir}" includes="install.php"/>
+			<fileset dir="${cfg.pkgDir}" includes="${cfg.pkgName}.xml"/>
+			<fileset dir="${cfg.pkgDir}" includes="README.md"/>
+		</delete>
+	</target>
+	
 	<target name="init" description="creates necessary directory to build with">
 		<mkdir dir="${cfg.pkgDir}/admin" />
 		<mkdir dir="${cfg.pkgDir}/media" />
@@ -44,77 +65,72 @@
 		
 		<!-- plugins -->
 		<mkdir dir="${cfg.pkgDir}/plugins/system/plg_system_gamification" />
-		<mkdir dir="${cfg.pkgDir}/plugins/user/plg_user_gamification" />
 		
 	</target>
 
-	<!-- copy administration files of the component -->
-	<copy todir="${cfg.adminDestDir}">
-		<fileset dir="${cfg.adminSourceDir}/${cfg.comName}">
-			<exclude name="**/${cfg.pkgName}.xml" />
-			<exclude name="**/${cfg.name}.xml" />
-			<exclude name="**/README.md" />
-			<exclude name="**/install.php" />
-		</fileset>
-	</copy>
+	<target name="copy" depends="init" description="copy necessary files and folders">
+		<!-- copy administration files of the component -->
+		<copy todir="${cfg.adminDestDir}">
+			<fileset dir="${cfg.adminSourceDir}/${cfg.comName}">
+				<exclude name="**/${cfg.pkgName}.xml" />
+				<exclude name="**/${cfg.name}.xml" />
+				<exclude name="**/README.md" />
+				<exclude name="**/CHANGELOG.md" />
+				<exclude name="**/LICENSE.txt" />
+				<exclude name="**/install.php" />
+			</fileset>
+		</copy>
 
-	<!-- copy install helper of the component -->
-    <copy file="${cfg.adminSourceDir}/${cfg.comName}/helpers/install.php" todir="${cfg.adminDestDir}/helpers/" />
-	
-	<!-- copy site files of the component -->
-	<copy todir="${cfg.siteDestDir}">
-		<fileset dir="${cfg.siteSourceDir}/${cfg.comName}">
-			<include name="**/*" />
-		</fileset>
-	</copy>
+		<!-- copy install helper of the component -->
+		<copy file="${cfg.adminSourceDir}/${cfg.comName}/helpers/install.php" todir="${cfg.adminDestDir}/helpers/" />
+		
+		<!-- copy site files of the component -->
+		<copy todir="${cfg.siteDestDir}">
+			<fileset dir="${cfg.siteSourceDir}/${cfg.comName}">
+				<include name="**/*" />
+			</fileset>
+		</copy>
 
-	<!-- copy media files of the component -->
-	<copy todir="${cfg.mediaDestDir}">
-		<fileset dir="${cfg.mediaSourceDir}/${cfg.comName}">
-			<include name="**/*" />
-		</fileset>
-	</copy>
+		<!-- copy media files of the component -->
+		<copy todir="${cfg.mediaDestDir}">
+			<fileset dir="${cfg.mediaSourceDir}/${cfg.comName}">
+				<include name="**/*" />
+			</fileset>
+		</copy>
 
-	<!-- copy main files of the component -->
-    <copy file="${cfg.adminSourceDir}/${cfg.comName}/install.php" todir="${cfg.pkgDir}" />
-    <copy file="${cfg.adminSourceDir}/${cfg.comName}/README.md" todir="${cfg.pkgDir}" />
-    <copy file="${cfg.adminSourceDir}/${cfg.comName}/${cfg.pkgName}.xml" todir="${cfg.pkgDir}" />
-    <copy file="${cfg.adminSourceDir}/${cfg.comName}/${cfg.name}.xml" todir="${cfg.pkgDir}" />
+		<!-- copy main files of the component -->
+		<copy file="${cfg.adminSourceDir}/${cfg.comName}/install.php" todir="${cfg.pkgDir}" />
+		<copy file="${cfg.adminSourceDir}/${cfg.comName}/README.md" todir="${cfg.pkgDir}" />
+		<copy file="${cfg.adminSourceDir}/${cfg.comName}/CHANGELOG.md" todir="${cfg.pkgDir}" />
+		<copy file="${cfg.adminSourceDir}/${cfg.comName}/LICENSE.txt" todir="${cfg.pkgDir}" />
+		<copy file="${cfg.adminSourceDir}/${cfg.comName}/${cfg.pkgName}.xml" todir="${cfg.pkgDir}" />
+		<copy file="${cfg.adminSourceDir}/${cfg.comName}/${cfg.name}.xml" todir="${cfg.pkgDir}" />
 
-	<!-- copy library files of the component -->
-    <copy todir="${cfg.librariesDestDir}/lib_${cfg.name}">
-        <fileset dir="${cfg.librariesSourceDir}/${cfg.name}">
-            <include name="**/*" />
-        </fileset>
-    </copy>
+		<!-- copy library files of the component -->
+		<copy todir="${cfg.librariesDestDir}/lib_${cfg.name}">
+			<fileset dir="${cfg.librariesSourceDir}/${cfg.name}">
+				<include name="**/*" />
+			</fileset>
+		</copy>
 
-	<!-- COPY PLUGINS -->
-	
-	<!-- SYSTEM/GAMIFICATION -->
-	
-	<!-- copy plugins files of system/gamification -->
-    <copy todir="${cfg.pluginsDestDir}/system/plg_system_gamification">
-        <fileset dir="${cfg.pluginsSourceDir}/system/gamification">
-            <include name="**/*" />
-        </fileset>
-    </copy>
-	
-	<!-- USER/GAMIFICATION -->
-	
-	<!-- copy plugins files of user/gamification -->
-    <copy todir="${cfg.pluginsDestDir}/user/plg_user_gamification">
-        <fileset dir="${cfg.pluginsSourceDir}/user/gamification">
-            <include name="**/*" />
-        </fileset>
-    </copy>
+		<!-- COPY PLUGINS -->
+		
+		<!-- SYSTEM/GAMIFICATION -->
+		
+		<!-- copy plugins files of system/gamification -->
+		<copy todir="${cfg.pluginsDestDir}/system/plg_system_gamification">
+			<fileset dir="${cfg.pluginsSourceDir}/system/gamification">
+				<include name="**/*" />
+			</fileset>
+		</copy>
 
-	<!-- END COPY PLUGINS -->
+		<!-- END COPY PLUGINS -->
+	</target>
 	
 	<target name="build_component" depends="init" description="packages the finaly component file">
 		
 		<!-- build component -->
-		<zip destfile="${cfg.pkgDir}/packages/${cfg.comName}.zip" basedir="${cfg.pkgDir}" 
-			includes="admin/**,media/**,site/**,${cfg.name}.xml" />
+		<zip destfile="${cfg.pkgDir}/packages/${cfg.comName}.zip" basedir="${cfg.pkgDir}" includes="admin/**,media/**,site/**,${cfg.name}.xml" />
 		
 		<!-- build library -->
 		<zip destfile="${cfg.pkgDir}/packages/lib_${cfg.name}.zip" basedir="${cfg.librariesDestDir}/lib_${cfg.name}" />
@@ -124,8 +140,7 @@
 		<zip destfile="${cfg.pkgDir}/packages/plg_user_gamification.zip" basedir="${cfg.pluginsDestDir}/user/plg_user_gamification" />
 		
 		<!-- build package -->
-		<zip destfile="${cfg.pkgDir}/${cfg.pkgName}_${cfg.version}-${cfg.joomlaVersion}.zip" basedir="${cfg.pkgDir}" 
-			includes="packages/**,${cfg.pkgName}.xml,install.php,README.md" />
+		<zip destfile="${cfg.pkgDir}/${cfg.pkgName}_${cfg.version}-${cfg.joomlaVersion}.zip" basedir="${cfg.pkgDir}" includes="packages/**,${cfg.pkgName}.xml,install.php,README.md,LICENSE.txt" />
 		
 	</target>
 
