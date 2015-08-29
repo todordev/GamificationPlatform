@@ -53,6 +53,12 @@
                filter="trim"
                 />
 
+        <field name="description" type="textarea"
+               label="COM_GAMIFICATION_DESCRIPTION"
+               description="COM_GAMIFICATION_DESCRIPTION_DESC"
+               filter="trim"
+                />
+
         <field name="id" type="text" class="readonly"
                label="JGLOBAL_FIELD_ID_LABEL"
                description="JGLOBAL_FIELD_ID_DESC"

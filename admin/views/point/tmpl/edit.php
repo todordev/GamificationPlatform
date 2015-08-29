@@ -3,43 +3,24 @@
  * @package      Gamification Platform
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // no direct access
 defined('_JEXEC') or die;
 ?>
 <div class="row-fluid">
-    <div class="span6 form-horizontal">
-        <form action="<?php echo JRoute::_('index.php?option=com_gamification'); ?>" method="post" name="adminForm"
-              id="adminForm" class="form-validate">
+    <div class="span6">
+        <form action="<?php echo JRoute::_('index.php?option=com_gamification'); ?>" method="post" name="adminForm" id="adminForm" class="form-validate form-horizontal">
 
-            <fieldset>
-                <div class="control-group">
-                    <div class="control-label"><?php echo $this->form->getLabel('title'); ?></div>
-                    <div class="controls"><?php echo $this->form->getInput('title'); ?></div>
-                </div>
-                <div class="control-group">
-                    <div class="control-label"><?php echo $this->form->getLabel('group_id'); ?></div>
-                    <div class="controls"><?php echo $this->form->getInput('group_id'); ?></div>
-                </div>
-                <div class="control-group">
-                    <div class="control-label"><?php echo $this->form->getLabel('abbr'); ?></div>
-                    <div class="controls"><?php echo $this->form->getInput('abbr'); ?></div>
-                </div>
-                <div class="control-group">
-                    <div class="control-label"><?php echo $this->form->getLabel('published'); ?></div>
-                    <div class="controls"><?php echo $this->form->getInput('published'); ?></div>
-                </div>
-                <div class="control-group">
-                    <div class="control-label"><?php echo $this->form->getLabel('note'); ?></div>
-                    <div class="controls"><?php echo $this->form->getInput('note'); ?></div>
-                </div>
-                <div class="control-group">
-                    <div class="control-label"><?php echo $this->form->getLabel('id'); ?></div>
-                    <div class="controls"><?php echo $this->form->getInput('id'); ?></div>
-                </div>
+            <fieldset class="adminform">
+                <?php echo $this->form->getControlGroup('title'); ?>
+                <?php echo $this->form->getControlGroup('group_id'); ?>
+                <?php echo $this->form->getControlGroup('abbr'); ?>
+                <?php echo $this->form->getControlGroup('published'); ?>
+                <?php echo $this->form->getControlGroup('note'); ?>
+                <?php echo $this->form->getControlGroup('id'); ?>
             </fieldset>
 
             <input type="hidden" name="task" value=""/>

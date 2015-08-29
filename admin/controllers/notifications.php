@@ -3,14 +3,15 @@
  * @package      Gamification Platform
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
+
+use Prism\Controller\Admin;
+use Joomla\Utilities\ArrayHelper;
 
 // no direct access
 defined('_JEXEC') or die;
-
-jimport('itprism.controller.admin');
 
 /**
  * Gamification notifications controller
@@ -18,16 +19,69 @@ jimport('itprism.controller.admin');
  * @package     Gamification
  * @package     Components
  */
-class GamificationControllerNotifications extends ITPrismControllerAdmin
+class GamificationControllerNotifications extends Admin
 {
-    /**
-     * Proxy for getModel.
-     * @since   1.6
-     */
+    public function __construct($config = array())
+    {
+        parent::__construct($config);
+
+        // Define task mappings.
+
+        // Value = 0
+        $this->registerTask('notread', 'read');
+    }
+
     public function getModel($name = 'Notification', $prefix = 'GamificationModel', $config = array('ignore_request' => true))
     {
         $model = parent::getModel($name, $prefix, $config);
-
         return $model;
+    }
+
+    public function read()
+    {
+        // Check for request forgeries
+        JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+
+        // Get items to publish from the request.
+        $cid  = $this->input->get('cid', array(), 'array');
+        $data = array(
+            'read'    => 1,
+            'notread' => 0
+        );
+
+        $task  = $this->getTask();
+        $value = ArrayHelper::getValue($data, $task, 0, 'int');
+
+        $redirectOptions = array(
+            "view" => "notifications"
+        );
+
+        // Make sure the item ids are integers
+        ArrayHelper::toInteger($cid);
+        if (empty($cid)) {
+            $this->displayNotice(JText::_($this->text_prefix . '_NO_ITEM_SELECTED'), $redirectOptions);
+            return;
+        }
+
+        try {
+
+            $model = $this->getModel();
+            $model->read($cid, $value);
+
+        } catch (RuntimeException $e) {
+            $this->displayWarning($e->getMessage(), $redirectOptions);
+            return;
+        } catch (Exception $e) {
+            JLog::add($e->getMessage());
+            throw new Exception(JText::_('COM_GAMIFICATION_ERROR_SYSTEM'));
+        }
+
+        if ($value == 1) {
+            $msg = $this->text_prefix . '_N_ITEMS_READ';
+        } else {
+            $msg = $this->text_prefix . '_N_ITEMS_NOT_READ';
+        }
+
+        $this->displayMessage(JText::plural($msg, count($cid)), $redirectOptions);
     }
 }

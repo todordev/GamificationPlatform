@@ -3,14 +3,12 @@
  * @package      Gamification
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // no direct access
 defined('_JEXEC') or die;
-
-jimport('joomla.application.component.view');
 
 class GamificationViewNotification extends JViewLegacy
 {
@@ -58,10 +56,12 @@ class GamificationViewNotification extends JViewLegacy
         $this->state  = $this->get('State');
         $this->params = $this->state->get('params');
 
-        // Set the item as read
-        $model->changeStatus($itemId, $userId, 1);
+        $notification = new Gamification\Notification\Notification(JFactory::getDbo());
+        $notification->load(array("id" => $itemId, "user_id" => $userId));
 
-        $this->version = new GamificationVersion();
+        if ($notification->getId() and !$notification->isRead()) {
+            $notification->updateStatus(Prism\Constants::READ);
+        }
 
         $this->prepareDocument();
 
@@ -119,7 +119,7 @@ class GamificationViewNotification extends JViewLegacy
     private function prepearePageTitle()
     {
         $app = JFactory::getApplication();
-        /** @var $app JSite * */
+        /** @var $app JApplicationSite */
 
         // Prepare page title
         $title = $this->params->get('page_title', '');

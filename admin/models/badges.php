@@ -3,14 +3,12 @@
  * @package      Gamification Platform
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // no direct access
 defined('_JEXEC') or die;
-
-jimport('joomla.application.component.modellist');
 
 class GamificationModelBadges extends JModelList
 {
@@ -41,6 +39,9 @@ class GamificationModelBadges extends JModelList
      * Method to auto-populate the model state.
      *
      * Note. Calling getState in this method will result in recursion.
+     *
+     * @param string $ordering
+     * @param string $direction
      *
      * @since   1.6
      */
@@ -81,6 +82,7 @@ class GamificationModelBadges extends JModelList
         // Compile the store id.
         $id .= ':' . $this->getState('filter.search');
         $id .= ':' . $this->getState('filter.state');
+        $id .= ':' . $this->getState('filter.group');
 
         return parent::getStoreId($id);
     }
@@ -94,7 +96,7 @@ class GamificationModelBadges extends JModelList
     protected function getListQuery()
     {
         $db = $this->getDbo();
-        /** @var $db JDatabaseMySQLi * */
+        /** @var $db JDatabaseDriver */
 
         // Create a new query object.
         $query = $db->getQuery(true);

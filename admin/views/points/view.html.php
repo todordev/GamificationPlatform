@@ -3,14 +3,15 @@
  * @package      Gamification Platform
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
+
+use Joomla\String\String;
+use Joomla\Registry\Registry;
 
 // no direct access
 defined('_JEXEC') or die;
-
-jimport('joomla.application.component.view');
 
 class GamificationViewPoints extends JViewLegacy
 {
@@ -20,7 +21,7 @@ class GamificationViewPoints extends JViewLegacy
     public $document;
 
     /**
-     * @var JRegistry
+     * @var Registry
      */
     protected $state;
 
@@ -33,7 +34,8 @@ class GamificationViewPoints extends JViewLegacy
     protected $listDirn;
     protected $saveOrder;
     protected $saveOrderingUrl;
-    protected $sortFields;
+
+    public $filterForm;
 
     protected $sidebar;
 
@@ -48,9 +50,6 @@ class GamificationViewPoints extends JViewLegacy
         $this->state      = $this->get('State');
         $this->items      = $this->get('Items');
         $this->pagination = $this->get('Pagination');
-
-        // Add submenu
-        GamificationHelper::addSubmenu($this->getName());
 
         // Prepare sorting data
         $this->prepareSorting();
@@ -73,32 +72,15 @@ class GamificationViewPoints extends JViewLegacy
         $this->listDirn  = $this->escape($this->state->get('list.direction'));
         $this->saveOrder = (strcmp($this->listOrder, 'a.ordering') != 0) ? false : true;
 
-        if ($this->saveOrder) {
-            $this->saveOrderingUrl = 'index.php?option=' . $this->option . '&task=' . $this->getName() . '.saveOrderAjax&format=raw';
-            JHtml::_('sortablelist.sortable', $this->getName() . 'List', 'adminForm', strtolower($this->listDirn), $this->saveOrderingUrl);
-        }
-
-        $this->sortFields = array(
-            'a.title'     => JText::_('COM_GAMIFICATION_TITLE'),
-            'a.published' => JText::_('JSTATUS'),
-            'b.title'     => JText::_('COM_GAMIFICATION_GROUP'),
-            'a.id'        => JText::_('JGRID_HEADING_ID')
-        );
+        $this->filterForm    = $this->get('FilterForm');
     }
 
     /**
-     * Add a menu on the sidebar of page
+     * Add a menu on the sidebar of page.
      */
     protected function addSidebar()
     {
-        JHtmlSidebar::setAction('index.php?option=' . $this->option . '&view=' . $this->getName());
-
-        JHtmlSidebar::addFilter(
-            JText::_('JOPTION_SELECT_PUBLISHED'),
-            'filter_state',
-            JHtml::_('select.options', JHtml::_('jgrid.publishedOptions', array("archived" => false, "trash" => false)), 'value', 'text', $this->state->get('filter.state'), true)
-        );
-
+        GamificationHelper::addSubmenu($this->getName());
         $this->sidebar = JHtmlSidebar::render();
     }
 
@@ -131,11 +113,15 @@ class GamificationViewPoints extends JViewLegacy
     {
         $this->document->setTitle(JText::_('COM_GAMIFICATION_POINTS_MANAGER'));
 
+        // Load language string in JavaScript
+        JText::script('COM_GAMIFICATION_SEARCH_IN_TITLE_TOOLTIP');
+
         // Scripts
         JHtml::_('behavior.multiselect');
-        JHtml::_('formbehavior.chosen', 'select');
         JHtml::_('bootstrap.tooltip');
 
-        $this->document->addScript('../media/' . $this->option . '/js/admin/list.js');
+        JHtml::_('formbehavior.chosen', 'select');
+
+        $this->document->addScript('../media/' . $this->option . '/js/admin/'.String::strtolower($this->getName()).'.js');
     }
 }

@@ -3,8 +3,8 @@
  * @package      Gamification Platform
  * @subpackage   Component
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // no direct access
@@ -70,16 +70,15 @@ class pkg_gamificationInstallerScript
      */
     public function postflight($type, $parent)
     {
-        if (!defined("COM_GAMIFICATION_PATH_COMPONENT_ADMINISTRATOR")) {
-            define("COM_GAMIFICATION_PATH_COMPONENT_ADMINISTRATOR", JPATH_ADMINISTRATOR . DIRECTORY_SEPARATOR . "components" . DIRECTORY_SEPARATOR . "com_gamification");
+        if (!defined("GAMIFICATION_PATH_COMPONENT_ADMINISTRATOR")) {
+            define("GAMIFICATION_PATH_COMPONENT_ADMINISTRATOR", JPATH_ADMINISTRATOR . "/components/com_gamification");
         }
 
         // Register Component helpers
-        JLoader::register("GamificationInstallHelper", COM_GAMIFICATION_PATH_COMPONENT_ADMINISTRATOR . DIRECTORY_SEPARATOR . "helpers" . DIRECTORY_SEPARATOR . "install.php");
+        JLoader::register("GamificationInstallHelper", GAMIFICATION_PATH_COMPONENT_ADMINISTRATOR . "/helpers/install.php");
 
-        jimport('joomla.filesystem.path');
-        jimport('joomla.filesystem.folder');
-        jimport('joomla.filesystem.file');
+        jimport('Prism.init');
+        jimport('Gamification.init');
 
         $params       = JComponentHelper::getParams("com_gamification");
         $imagesFolder = JFolder::makeSafe($params->get("images_directory", "images/gamification"));
@@ -169,12 +168,12 @@ class pkg_gamificationInstallerScript
         }
         GamificationInstallHelper::addRow($title, $result, $info);
 
-        // Display result about verification of installed ITPrism Library
+        // Display result about verification of installed Prism Library
         jimport("itprism.version");
-        $title = JText::_("COM_GAMIFICATION_ITPRISM_LIBRARY");
+        $title = JText::_("COM_GAMIFICATION_PRISM_LIBRARY");
         $info  = "";
-        if (!class_exists("ITPrismVersion")) {
-            $info   = JText::_("COM_GAMIFICATION_ITPRISM_LIBRARY_DOWNLOAD");
+        if (!class_exists("Prism\\Version")) {
+            $info   = JText::_("COM_GAMIFICATION_PRISM_LIBRARY_DOWNLOAD");
             $result = array("type" => "important", "text" => JText::_("JNO"));
         } else {
             $result = array("type" => "success", "text" => JText::_("JYES"));
@@ -189,10 +188,6 @@ class pkg_gamificationInstallerScript
         $result = array("type" => "success", "text" => JText::_("COM_GAMIFICATION_INSTALLED"));
         GamificationInstallHelper::addRow(JText::_("COM_GAMIFICATION_GAMIFICATION_LIBRARY"), $result, JText::_("COM_GAMIFICATION_LIBRARY"));
 
-        // Gamification User Gamification
-        $result = array("type" => "success", "text" => JText::_("COM_GAMIFICATION_INSTALLED"));
-        GamificationInstallHelper::addRow(JText::_("COM_GAMIFICATION_PLUGIN_USER_GAMIFICATION"), $result, JText::_("COM_GAMIFICATION_PLUGIN"));
-
         // Gamification System Gamification
         $result = array("type" => "success", "text" => JText::_("COM_GAMIFICATION_INSTALLED"));
         GamificationInstallHelper::addRow(JText::_("COM_GAMIFICATION_PLUGIN_SYSTEM_GAMIFICATION"), $result, JText::_("COM_GAMIFICATION_PLUGIN"));
@@ -202,9 +197,17 @@ class pkg_gamificationInstallerScript
 
         echo JText::sprintf("COM_GAMIFICATION_MESSAGE_REVIEW_SAVE_SETTINGS", JRoute::_("index.php?option=com_gamification"));
 
-        jimport("itprism.version");
-        if (!class_exists("ITPrismVersion")) {
-            echo JText::_("COM_GAMIFICATION_MESSAGE_INSTALL_ITPRISM_LIBRARY");
+        if (!class_exists("Prism\\Version")) {
+            echo JText::_("COM_GAMIFICATION_MESSAGE_INSTALL_PRISM_LIBRARY");
+        } else {
+
+            if (class_exists("Gamification\\Version")) {
+                $prismVersion     = new Prism\Version();
+                $componentVersion = new Gamification\Version();
+                if (version_compare($prismVersion->getShortVersion(), $componentVersion->requiredPrismVersion, "<")) {
+                    echo JText::_("COM_GAMIFICATION_MESSAGE_INSTALL_PRISM_LIBRARY");
+                }
+            }
         }
     }
 }

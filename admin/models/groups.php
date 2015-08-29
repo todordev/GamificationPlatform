@@ -3,14 +3,12 @@
  * @package      Gamification Platform
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // no direct access
 defined('_JEXEC') or die;
-
-jimport('joomla.application.component.modellist');
 
 class GamificationModelGroups extends JModelList
 {
@@ -27,29 +25,21 @@ class GamificationModelGroups extends JModelList
         if (empty($config['filter_fields'])) {
             $config['filter_fields'] = array(
                 'id', 'a.id',
-                'name', 'a.name'
+                'name', 'a.name',
+                'group_id', 'a.group'
             );
         }
 
         parent::__construct($config);
     }
 
-    /**
-     * Method to auto-populate the model state.
-     *
-     * Note. Calling getState in this method will result in recursion.
-     *
-     * @since   1.6
-     */
     protected function populateState($ordering = null, $direction = null)
     {
-        // Load the filter state.
-        $search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
-        $this->setState('filter.search', $search);
-
         // Load the component parameters.
-        $params = JComponentHelper::getParams($this->option);
-        $this->setState('params', $params);
+        $this->setState('params', JComponentHelper::getParams($this->option));
+
+        $value = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
+        $this->setState('filter.search', $value);
 
         // List state information.
         parent::populateState('a.name', 'asc');
@@ -69,8 +59,8 @@ class GamificationModelGroups extends JModelList
      */
     protected function getStoreId($id = '')
     {
-        // Compile the store id.
         $id .= ':' . $this->getState('filter.search');
+        $id .= ':' . $this->getState('filter.group');
 
         return parent::getStoreId($id);
     }
@@ -84,7 +74,7 @@ class GamificationModelGroups extends JModelList
     protected function getListQuery()
     {
         $db = $this->getDbo();
-        /** @var $db JDatabaseMySQLi * */
+        /** @var $db JDatabaseDriver */
 
         // Create a new query object.
         $query = $db->getQuery(true);
@@ -96,10 +86,10 @@ class GamificationModelGroups extends JModelList
                 'a.id, a.name, a.note'
             )
         );
-        $query->from($db->quoteName('#__gfy_groups') . ' AS a');
+        $query->from($db->quoteName('#__gfy_groups', 'a'));
 
         // Filter by search in title
-        $search = $this->getState('filter.search');
+        $search = $this->getState($this->context . 'filter.search');
         if (!empty($search)) {
             if (stripos($search, 'id:') === 0) {
                 $query->where('a.id = ' . (int)substr($search, 3));
@@ -119,7 +109,6 @@ class GamificationModelGroups extends JModelList
 
     protected function getOrderString()
     {
-
         $orderCol  = $this->getState('list.ordering');
         $orderDirn = $this->getState('list.direction');
 

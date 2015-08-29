@@ -3,14 +3,15 @@
  * @package      Gamification Platform
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
+
+use Prism\Controller\Form\Backend;
+use Joomla\Utilities\ArrayHelper;
 
 // No direct access
 defined('_JEXEC') or die;
-
-jimport('itprism.controller.form.backend');
 
 /**
  * Gamification badge controller class.
@@ -19,37 +20,21 @@ jimport('itprism.controller.form.backend');
  * @subpackage   Components
  * @since        1.6
  */
-class GamificationControllerBadge extends ITPrismControllerFormBackend
+class GamificationControllerBadge extends Backend
 {
-    /**
-     * Proxy for getModel.
-     * @since   1.6
-     */
     public function getModel($name = 'Badge', $prefix = 'GamificationModel', $config = array('ignore_request' => true))
     {
         $model = parent::getModel($name, $prefix, $config);
-
-        // Load the component parameters.
-        $params = JComponentHelper::getParams($this->option);
-
-        // Extension parameters
-        $model->imagesFolder = JPath::clean(JPATH_SITE . DIRECTORY_SEPARATOR . $params->get("images_directory", "images/gamification"));
-
         return $model;
     }
 
-    /**
-     * Save an item
-     */
     public function save($key = null, $urlVar = null)
     {
         JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
         $data = $this->input->post->get('jform', array(), 'array');
-        $file = $this->input->files->get('jform', array(), 'array');
-        $file = JArrayHelper::getValue($file, "image");
 
-        $itemId = JArrayHelper::getValue($data, "id");
+        $itemId = ArrayHelper::getValue($data, "id");
 
         $redirectOptions = array(
             "task" => $this->getTask(),
@@ -57,10 +42,10 @@ class GamificationControllerBadge extends ITPrismControllerFormBackend
         );
 
         $model = $this->getModel();
-        /** @var $model GamificationModelBadge * */
+        /** @var $model GamificationModelBadge */
 
         $form = $model->getForm($data, false);
-        /** @var $form JForm * */
+        /** @var $form JForm */
 
         if (!$form) {
             throw new Exception(JText::_("COM_GAMIFICATION_ERROR_FORM_CANNOT_BE_LOADED"), 500);
@@ -78,6 +63,9 @@ class GamificationControllerBadge extends ITPrismControllerFormBackend
 
         try {
 
+            $file = $this->input->files->get('jform', array(), 'array');
+            $file = ArrayHelper::getValue($file, "image");
+
             // Upload picture
             if (!empty($file['name'])) {
 
@@ -93,10 +81,8 @@ class GamificationControllerBadge extends ITPrismControllerFormBackend
             $redirectOptions["id"] = $itemId;
 
         } catch (Exception $e) {
-
             JLog::add($e->getMessage());
             throw new Exception(JText::_('COM_GAMIFICATION_ERROR_SYSTEM'));
-
         }
 
         $this->displayMessage(JText::_('COM_GAMIFICATION_BADGE_SAVED'), $redirectOptions);
@@ -115,19 +101,15 @@ class GamificationControllerBadge extends ITPrismControllerFormBackend
         );
 
         $model = $this->getModel();
-        /** @var $model GamificationModelBadge * */
+        /** @var $model GamificationModelBadge */
 
         // Check for errors
         if (!$itemId) {
             $this->displayNotice(JText::_("COM_GAMIFICATION_INVALID_ITEM"), $redirectOptions);
-
             return;
         }
 
         try {
-
-            jimport("joomla.filesystem.file");
-            jimport("joomla.filesystem.path");
 
             $model->removeImage($itemId);
 
@@ -139,6 +121,5 @@ class GamificationControllerBadge extends ITPrismControllerFormBackend
         }
 
         $this->displayMessage(JText::_('COM_GAMIFICATION_IMAGE_DELETED'), $redirectOptions);
-
     }
 }

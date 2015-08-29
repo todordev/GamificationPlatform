@@ -3,14 +3,12 @@
  * @package      Gamification Platform
  * @subpackage   Component
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // No direct access
 defined('_JEXEC') or die;
-
-jimport('joomla.application.component.controller');
 
 class GamificationController extends JControllerLegacy
 {
@@ -32,6 +30,8 @@ class GamificationController extends JControllerLegacy
         // Frontend is a bit messier than the backend.
         $viewName = $this->input->getCmd('view', 'notifications');
         $this->input->set('view', $viewName);
+
+        JHtml::stylesheet("com_gamification/frontend.style.css", false, true, false);
 
         // Cache some views.
         if (in_array($viewName, $this->cacheableViews)) {

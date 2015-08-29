@@ -3,21 +3,19 @@
  * @package      Gamification Platform
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // no direct access
 defined('_JEXEC') or die;
-
-jimport('joomla.application.component.modellist');
 
 class GamificationModelPoints extends JModelList
 {
     /**
      * Constructor.
      *
-     * @param   array   An optional associative array of configuration settings.
+     * @param   array $config An optional associative array of configuration settings.
      *
      * @see     JController
      * @since   1.6
@@ -28,6 +26,8 @@ class GamificationModelPoints extends JModelList
             $config['filter_fields'] = array(
                 'id', 'a.id',
                 'title', 'a.title',
+                'group_id', 'a.group_id',
+                'group_name', 'b.name',
                 'published', 'a.published',
             );
         }
@@ -40,20 +40,24 @@ class GamificationModelPoints extends JModelList
      *
      * Note. Calling getState in this method will result in recursion.
      *
+     * @param mixed $ordering
+     * @param mixed $direction
+     *
      * @since   1.6
      */
     protected function populateState($ordering = null, $direction = null)
     {
-        // Load the component parameters.
-        $params = JComponentHelper::getParams($this->option);
-        $this->setState('params', $params);
+        $this->setState('params', JComponentHelper::getParams($this->option));
 
-        // Load the filter state.
         $value = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
         $this->setState('filter.search', $value);
 
         $value = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state');
         $this->setState('filter.state', $value);
+
+        // Load the filter group.
+        $value = $this->getUserStateFromRequest($this->context . '.filter.group', 'filter_group');
+        $this->setState('filter.group', $value);
 
         // List state information.
         parent::populateState('a.id', 'asc');
@@ -74,8 +78,9 @@ class GamificationModelPoints extends JModelList
     protected function getStoreId($id = '')
     {
         // Compile the store id.
-        $id .= ':' . $this->getState('filter.search');
+        $id .= ':' . $this->getState('filter.group');
         $id .= ':' . $this->getState('filter.state');
+        $id .= ':' . $this->getState('filter.search');
 
         return parent::getStoreId($id);
     }
@@ -89,7 +94,7 @@ class GamificationModelPoints extends JModelList
     protected function getListQuery()
     {
         $db = $this->getDbo();
-        /** @var $db JDatabaseMySQLi * */
+        /** @var $db JDatabaseDriver*/
 
         // Create a new query object.
         $query = $db->getQuery(true);
@@ -104,6 +109,12 @@ class GamificationModelPoints extends JModelList
         );
         $query->from($db->quoteName('#__gfy_points', 'a'));
         $query->leftJoin($db->quoteName('#__gfy_groups', 'b') . ' ON a.group_id = b.id');
+
+        // Filter by group.
+        $groupId = $this->getState('filter.group');
+        if (!empty($groupId)) {
+            $query->where('a.group_id = ' . (int)$groupId);
+        }
 
         // Filter by state
         $state = $this->getState('filter.state');

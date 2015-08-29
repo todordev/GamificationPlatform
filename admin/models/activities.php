@@ -3,14 +3,12 @@
  * @package      Gamification Platform
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // no direct access
 defined('_JEXEC') or die;
-
-jimport('joomla.application.component.modellist');
 
 class GamificationModelActivities extends JModelList
 {
@@ -35,13 +33,6 @@ class GamificationModelActivities extends JModelList
         parent::__construct($config);
     }
 
-    /**
-     * Method to auto-populate the model state.
-     *
-     * Note. Calling getState in this method will result in recursion.
-     *
-     * @since   1.6
-     */
     protected function populateState($ordering = null, $direction = null)
     {
         // Load the component parameters.
@@ -85,7 +76,7 @@ class GamificationModelActivities extends JModelList
     protected function getListQuery()
     {
         $db = $this->getDbo();
-        /** @var $db JDatabaseMySQLi * */
+        /** @var $db JDatabaseDriver */
 
         // Create a new query object.
         $query = $db->getQuery(true);
@@ -94,13 +85,13 @@ class GamificationModelActivities extends JModelList
         $query->select(
             $this->getState(
                 'list.select',
-                'a.id, a.info, a.image, a.url, ' .
+                'a.id, a.title, a.content, a.image, a.url, ' .
                 'a.created, a.user_id, ' .
                 'b.name'
             )
         );
-        $query->from($db->quoteName('#__gfy_activities') . ' AS a');
-        $query->innerJoin($db->quoteName('#__users') . ' AS b ON a.user_id = b.id');
+        $query->from($db->quoteName('#__gfy_activities', 'a'));
+        $query->innerJoin($db->quoteName('#__users', 'b') . ' ON a.user_id = b.id');
 
         // Filter by search in title
         $search = $this->getState('filter.search');

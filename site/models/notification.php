@@ -3,14 +3,14 @@
  * @package      Gamification Platform
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
+
+use Joomla\Utilities\ArrayHelper;
 
 // no direct access
 defined('_JEXEC') or die;
-
-jimport('joomla.application.component.modelitem');
 
 class GamificationModelNotification extends JModelItem
 {
@@ -63,7 +63,7 @@ class GamificationModelNotification extends JModelItem
             if ($table->load($keys)) {
 
                 $properties = $table->getProperties();
-                $properties = JArrayHelper::toObject($properties);
+                $properties = ArrayHelper::toObject($properties);
 
                 $this->item[$storedId] = $properties;
             }
@@ -71,56 +71,5 @@ class GamificationModelNotification extends JModelItem
         }
 
         return (!isset($this->item[$storedId])) ? null : $this->item[$storedId];
-    }
-
-    /**
-     * Set notification as read.
-     *
-     * @param integer $id
-     * @param integer $userId
-     * @param int $status
-     *
-     * @todo fix this. Use GamificationNotification object.
-     */
-    public function changeStatus($id, $userId, $status)
-    {
-        $status = (!$status) ? 0 : 1;
-
-        $db = $this->getDbo();
-
-        $query = $db->getQuery(true);
-
-        $query
-            ->update($db->quoteName("#__gfy_notifications"))
-            ->set($db->quoteName("status") . "=" . (int)$status)
-            ->where($db->quoteName("id") . "=" . (int)$id)
-            ->where($db->quoteName("user_id") . "=" . (int)$userId);
-
-        $db->setQuery($query);
-        $db->execute();
-    }
-
-    /**
-     * @param null $id
-     * @param null $userId
-     *
-     * @return bool
-     *
-     * @todo Remove this. Use Validator objects.
-     */
-    public function isValid($id = null, $userId = null)
-    {
-        $db    = JFactory::getDbo();
-        $query = $db->getQuery(true);
-        $query
-            ->select("COUNT(*)")
-            ->from($db->quoteName("#__gfy_notifications", "a"))
-            ->where("a.id      = " . (int)$id)
-            ->where("a.user_id = " . (int)$userId);
-
-        $db->setQuery($query);
-        $result = $db->loadResult();
-
-        return (!$result) ? false : true;
     }
 }

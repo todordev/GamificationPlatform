@@ -3,8 +3,8 @@
  * @package      Gamification Platform
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // no direct access
@@ -85,43 +85,5 @@ class GamificationHelper
             'index.php?option=com_plugins&view=plugins&filter_search=gamification',
             $vName == 'plugins'
         );
-    }
-
-    public static function getGroupsOptions()
-    {
-        $db    = JFactory::getDbo();
-        $query = $db->getQuery(true);
-
-        $query
-            ->select("a.id AS value, a.name AS text")
-            ->from($db->quoteName("#__gfy_groups", "a"));
-
-        $db->setQuery($query);
-        $results = $db->loadAssocList();
-
-        if (!$results) {
-            $results = array();
-        }
-
-        return $results;
-    }
-
-    public static function getRanksOptions()
-    {
-        $db    = JFactory::getDbo();
-        $query = $db->getQuery(true);
-
-        $query
-            ->select("a.id AS value, a.title AS text")
-            ->from($db->quoteName("#__gfy_ranks", "a"));
-
-        $db->setQuery($query);
-        $results = $db->loadAssocList();
-
-        if (!$results) {
-            $results = array();
-        }
-
-        return $results;
     }
 }

@@ -3,14 +3,15 @@
  * @package      Gamification Platform
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
+
+use Joomla\String\String;
+use Joomla\Registry\Registry;
 
 // no direct access
 defined('_JEXEC') or die;
-
-jimport('joomla.application.component.view');
 
 class GamificationViewPoint extends JViewLegacy
 {
@@ -20,7 +21,7 @@ class GamificationViewPoint extends JViewLegacy
     public $document;
 
     /**
-     * @var JRegistry
+     * @var Registry
      */
     protected $state;
 
@@ -45,7 +46,7 @@ class GamificationViewPoint extends JViewLegacy
         $this->item  = $this->get('Item');
         $this->form  = $this->get('Form');
 
-        // Prepare actions, behaviors, scritps and document
+        // Prepare actions, behaviors, scripts and document.
         $this->addToolbar();
         $this->setDocument();
 
@@ -62,8 +63,7 @@ class GamificationViewPoint extends JViewLegacy
         JFactory::getApplication()->input->set('hidemainmenu', true);
         $isNew = ($this->item->id == 0);
 
-        $this->documentTitle = $isNew ? JText::_('COM_GAMIFICATION_NEW_POINTS')
-            : JText::_('COM_GAMIFICATION_EDIT_POINTS');
+        $this->documentTitle = $isNew ? JText::_('COM_GAMIFICATION_NEW_POINTS') : JText::_('COM_GAMIFICATION_EDIT_POINTS');
 
         JToolbarHelper::title($this->documentTitle);
 
@@ -92,6 +92,6 @@ class GamificationViewPoint extends JViewLegacy
         JHtml::_('behavior.formvalidation');
 
         // Add scripts
-        $this->document->addScript('../media/' . $this->option . '/js/admin/' . JString::strtolower($this->getName()) . '.js');
+        $this->document->addScript('../media/' . $this->option . '/js/admin/' . String::strtolower($this->getName()) . '.js');
     }
 }

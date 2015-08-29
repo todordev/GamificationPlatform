@@ -3,8 +3,8 @@
  * @package      Gamification
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // no direct access
@@ -15,15 +15,14 @@ defined('_JEXEC') or die;?>
         $notReadClass = "gfy-note-notread";
     }
     ?>
-    <div class="row-fluid gfy-note-tiny <?php echo $notReadClass; ?>">
-        <div class="span11">
+    <div class="row gfy-note-tiny <?php echo $notReadClass; ?>">
+        <div class="col-xs-10">
             <a href="<?php echo JRoute::_(GamificationHelperRoute::getNotificationRoute($item->id)); ?>">
-                <?php echo $this->escape($item->note); ?>
+                <?php echo $this->escape($item->content); ?>
             </a>
         </div>
-        <div class="span1">
-            <img
-                src="<?php echo (!$item->status) ? "media/com_gamification/images/status_active.png" : "media/com_gamification/images/status_inactive.png"; ?>"/>
+        <div class="col-xs-2">
+            <img src="<?php echo (!$item->status) ? "media/com_gamification/images/status_active.png" : "media/com_gamification/images/status_inactive.png"; ?>"/>
         </div>
     </div>
 <?php } ?>

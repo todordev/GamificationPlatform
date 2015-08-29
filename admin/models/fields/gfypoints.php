@@ -3,14 +3,14 @@
  * @package      Gamification Platform
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 defined('JPATH_BASE') or die;
 
-jimport('joomla.html.html');
-jimport('joomla.form.formfield');
-jimport('joomla.form.helper');
+jimport("Prism.init");
+jimport("Gamification.init");
+
 JFormHelper::loadFieldClass('list');
 
 /**
@@ -38,18 +38,10 @@ class JFormFieldGfyPoints extends JFormFieldList
      */
     protected function getOptions()
     {
-        $db    = JFactory::getDbo();
-        $query = $db->getQuery(true);
+        $pointsItems = new Gamification\Points\PointsItems(JFactory::getDbo());
+        $pointsItems->load();
 
-        $query
-            ->select('a.id AS value, CONCAT(a.title, " [", a.abbr, "] ") AS text')
-            ->from($db->quoteName('#__gfy_points', 'a'))
-            ->order("a.title ASC");
-
-        // Get the options.
-        $db->setQuery($query);
-        $options = $db->loadObjectList();
-
+        $options = $pointsItems->toOptions("id", "title", "abbr");
 
         $displayRoot = (!empty($this->element["display_root"])) ? true : false;
         if ($displayRoot) {

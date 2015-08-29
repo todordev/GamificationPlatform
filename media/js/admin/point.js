@@ -1,10 +1,10 @@
-window.addEvent('domready', function(){ 
+jQuery(document).ready(function() {
 	
 	// Validation script
     Joomla.submitbutton = function(task){
-        if (task == 'point.cancel' || document.formvalidator.isValid(document.id('adminForm'))) {
+        if (task == 'point.cancel' || document.formvalidator.isValid(document.getElementById('adminForm'))) {
             Joomla.submitform(task, document.getElementById('adminForm'));
         }
     };
     
-})
+});

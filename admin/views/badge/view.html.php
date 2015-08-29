@@ -3,14 +3,15 @@
  * @package      Gamification Platform
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
+
+use Joomla\String\String;
+use Joomla\Registry\Registry;
 
 // no direct access
 defined('_JEXEC') or die;
-
-jimport('joomla.application.component.view');
 
 class GamificationViewBadge extends JViewLegacy
 {
@@ -20,7 +21,7 @@ class GamificationViewBadge extends JViewLegacy
     public $document;
 
     /**
-     * @var JRegistry
+     * @var Registry
      */
     protected $state;
 
@@ -38,9 +39,6 @@ class GamificationViewBadge extends JViewLegacy
         $this->option = JFactory::getApplication()->input->get("option");
     }
 
-    /**
-     * Display the view
-     */
     public function display($tpl = null)
     {
         $this->state = $this->get('State');
@@ -51,7 +49,7 @@ class GamificationViewBadge extends JViewLegacy
         $params             = JComponentHelper::getParams($this->option);
         $this->imagesFolder = $params->get("images_directory", "images/gamification");
 
-        // Prepare actions, behaviors, scritps and document
+        // Prepare actions, behaviors, scripts and document
         $this->addToolbar();
         $this->setDocument();
 
@@ -68,8 +66,7 @@ class GamificationViewBadge extends JViewLegacy
         JFactory::getApplication()->input->set('hidemainmenu', true);
         $isNew = ($this->item->id == 0);
 
-        $this->documentTitle = $isNew ? JText::_('COM_GAMIFICATION_NEW_BADGE')
-            : JText::_('COM_GAMIFICATION_EDIT_BADGE');
+        $this->documentTitle = $isNew ? JText::_('COM_GAMIFICATION_NEW_BADGE') : JText::_('COM_GAMIFICATION_EDIT_BADGE');
 
         JToolbarHelper::title($this->documentTitle);
 
@@ -93,10 +90,13 @@ class GamificationViewBadge extends JViewLegacy
     {
         $this->document->setTitle($this->documentTitle);
 
+        // Load language string in JavaScript
+        JText::script('COM_GAMIFICATION_DELETE_IMAGE_QUESTION');
+
         // Add scripts
         JHtml::_('behavior.tooltip');
         JHtml::_('behavior.formvalidation');
 
-        $this->document->addScript('../media/' . $this->option . '/js/admin/' . JString::strtolower($this->getName()) . '.js');
+        $this->document->addScript('../media/' . $this->option . '/js/admin/' . String::strtolower($this->getName()) . '.js');
     }
 }

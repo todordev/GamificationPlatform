@@ -2,7 +2,7 @@
 <form>
     <fieldset>
 
-        <field name="note" type="textarea"
+        <field name="content" type="textarea" class="input-xxlarge"
                label="COM_GAMIFICATION_NOTIFICATION"
                description="COM_GAMIFICATION_NOTIFICATION_DESC"
                filter="trim"
@@ -11,21 +11,21 @@
                rows="5"
                 />
 
-        <field name="url" type="text"
+        <field name="url" type="text" class="input-xxlarge"
                label="COM_GAMIFICATION_URL"
                description="COM_GAMIFICATION_NOTIFICATION_URL_DESC"
                filter="trim"
                size="80"
                 />
 
-        <field name="image" type="text"
+        <field name="image" type="text" class="input-xxlarge"
                label="COM_GAMIFICATION_IMAGE"
                description="COM_GAMIFICATION_NOTIFICATION_IMAGE_DESC"
                filter="trim"
                size="80"
                 />
 
-        <field name="read" type="radio" class="btn-group"
+        <field name="status" type="radio" class="btn-group"
                label="COM_GAMIFICATION_READ"
                description="COM_GAMIFICATION_NOTIFICATION_READ_DESC"
                filter="intval"

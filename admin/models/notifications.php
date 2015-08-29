@@ -3,14 +3,12 @@
  * @package      Gamification Platform
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // no direct access
 defined('_JEXEC') or die;
-
-jimport('joomla.application.component.modellist');
 
 class GamificationModelNotifications extends JModelList
 {
@@ -36,13 +34,6 @@ class GamificationModelNotifications extends JModelList
         parent::__construct($config);
     }
 
-    /**
-     * Method to auto-populate the model state.
-     *
-     * Note. Calling getState in this method will result in recursion.
-     *
-     * @since   1.6
-     */
     protected function populateState($ordering = null, $direction = null)
     {
         // Load the component parameters.
@@ -99,13 +90,13 @@ class GamificationModelNotifications extends JModelList
         $query->select(
             $this->getState(
                 'list.select',
-                'a.id, a.note, a.image, a.url, ' .
+                'a.id, a.title, a.content, a.image, a.url, ' .
                 'a.created, a.status, a.user_id, ' .
                 'b.name'
             )
         );
-        $query->from($db->quoteName('#__gfy_notifications') . ' AS a');
-        $query->innerJoin($db->quoteName('#__users') . ' AS b ON a.user_id = b.id');
+        $query->from($db->quoteName('#__gfy_notifications', 'a'));
+        $query->innerJoin($db->quoteName('#__users', 'b') . ' ON a.user_id = b.id');
 
         // Filter by status
         $status = $this->getState('filter.status');

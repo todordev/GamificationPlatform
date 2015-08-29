@@ -137,7 +137,6 @@
 		
 		<!-- build plugins -->
 		<zip destfile="${cfg.pkgDir}/packages/plg_system_gamification.zip" basedir="${cfg.pluginsDestDir}/system/plg_system_gamification" />
-		<zip destfile="${cfg.pkgDir}/packages/plg_user_gamification.zip" basedir="${cfg.pluginsDestDir}/user/plg_user_gamification" />
 		
 		<!-- build package -->
 		<zip destfile="${cfg.pkgDir}/${cfg.pkgName}_${cfg.version}-${cfg.joomlaVersion}.zip" basedir="${cfg.pkgDir}" includes="packages/**,${cfg.pkgName}.xml,install.php,README.md,LICENSE.txt" />

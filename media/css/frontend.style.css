@@ -1,0 +1,15 @@
+@CHARSET "UTF-8";
+
+/* Notifications */
+.gfy-notification {
+	border-bottom: thin solid #eaeaea;
+}
+
+.gfy-notification-view .gfy-notification, .gfy-notifications .gfy-notification  {
+	padding: 10px;
+	font-size: medium;
+}
+
+.gfy-note-notread {
+	background: #fffaf0;
+}

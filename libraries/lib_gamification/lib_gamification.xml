@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<extension type="library" version="3.4" method="upgrade">
+    <name>Gamification Library</name>
+    <libraryname>gamification</libraryname>
+    <author>Todor Iliev</author>
+    <authorEmail>todor@itprism.com</authorEmail>
+    <authorUrl>http://itprism.com</authorUrl>
+    <copyright>Copyright (C) 2015 Todor Iliev ( ITPrism.com ). All rights reserved.</copyright>
+    <license>http://www.gnu.org/licenses/gpl-3.0.en.html</license>
+    <packager>ITPrism</packager>
+    <packagerurl>http://itprism.com</packagerurl>
+    <version>2.0</version>
+    <creationDate>31 August, 2015</creationDate>
+    <description>Gamification Library</description>
+
+    <files>
+        <folder>language</folder>
+
+        <folder>Activity</folder>
+        <folder>Badge</folder>
+        <folder>Group</folder>
+        <folder>Leaderboard</folder>
+        <folder>Level</folder>
+        <folder>Mechanic</folder>
+        <folder>Notification</folder>
+        <folder>Observer</folder>
+        <folder>Points</folder>
+        <folder>Profile</folder>
+        <folder>Rank</folder>
+        <folder>User</folder>
+        <folder>Validator</folder>
+
+        <file>Helper.php</file>
+        <file>init.php</file>
+        <file>Version.php</file>
+    </files>
+</extension>

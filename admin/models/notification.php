@@ -3,14 +3,12 @@
  * @package      Gamification Platform
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // no direct access
 defined('_JEXEC') or die;
-
-jimport('joomla.application.component.modeladmin');
 
 class GamificationModelNotification extends JModelAdmin
 {
@@ -75,23 +73,46 @@ class GamificationModelNotification extends JModelAdmin
      */
     public function save($data)
     {
-        $id    = JArrayHelper::getValue($data, "id");
-        $note  = JArrayHelper::getValue($data, "note");
-        $url   = JArrayHelper::getValue($data, "url");
-        $image = JArrayHelper::getValue($data, "image");
-        $read  = JArrayHelper::getValue($data, "read", 0, "int");
+        $id         = Joomla\Utilities\ArrayHelper::getValue($data, "id");
+        $content    = Joomla\Utilities\ArrayHelper::getValue($data, "content");
+        $url        = Joomla\Utilities\ArrayHelper::getValue($data, "url");
+        $image      = Joomla\Utilities\ArrayHelper::getValue($data, "image");
+        $status     = Joomla\Utilities\ArrayHelper::getValue($data, "status", 0, "int");
 
         // Load a record from the database
         $row = $this->getTable();
         $row->load($id);
 
-        $row->set("note", $note);
+        $row->set("content", $content);
         $row->set("url", (!$url) ? null : $url);
         $row->set("image", (!$image) ? null : $image);
-        $row->set("read", $read);
+        $row->set("status", $status);
 
         $row->store(true);
 
         return $row->get("id");
+    }
+
+    /**
+     * Change state of notification to read or not read.
+     *
+     * @param array $ids
+     * @param int $value
+     */
+    public function read(array $ids, $value)
+    {
+        if (!empty($ids)) {
+            $db = $this->getDbo();
+
+            $query = $db->getQuery(true);
+
+            $query
+                ->update($db->quoteName("#__gfy_notifications"))
+                ->set($db->quoteName("status") . "=" . (int)$value)
+                ->where($db->quoteName("id") . " IN (" . implode(",", $ids) . ")");
+
+            $db->setQuery($query);
+            $db->execute();
+        }
     }
 }

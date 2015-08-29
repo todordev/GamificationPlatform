@@ -55,9 +55,15 @@
             <option value="0">JUNPUBLISHED</option>
         </field>
 
+        <field name="description" type="textarea"
+               label="COM_GAMIFICATION_DESCRIPTION"
+               description="COM_GAMIFICATION_DESCRIPTION_DESC"
+               filter="trim"
+               />
+
         <field name="note" type="textarea"
                label="COM_GAMIFICATION_NOTE"
-               description="COM_GAMIFICATION_BADGE_NOTE_DESC"
+               description="COM_GAMIFICATION_NOTE_DESC"
                filter="trim"
                 />
 

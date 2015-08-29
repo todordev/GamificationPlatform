@@ -3,14 +3,12 @@
  * @package      Gamification Platform
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // no direct access
 defined('_JEXEC') or die;
-
-jimport('joomla.application.component.controller');
 
 /**
  * Gamification notification controller.
@@ -36,7 +34,6 @@ class GamificationControllerNotification extends JControllerLegacy
         return $model;
     }
 
-
     /**
      * This method remove a notification.
      */
@@ -45,14 +42,10 @@ class GamificationControllerNotification extends JControllerLegacy
         $itemId = $this->input->getUint("id");
         $userId = JFactory::getUser()->get("id");
 
-        jimport("itprism.response.json");
-        $response = new ITPrismResponseJson();
+        $response = new Prism\Response\Json();
 
-        // Get the model
-        $model = $this->getModel();
-        /** @var $model GamificationModelNotification */
-
-        if (!$model->isValid($itemId, $userId)) {
+        $validatorOwner = new Gamification\Validator\Notification\Owner(JFactory::getDbo(), $itemId, $userId);
+        if (!$validatorOwner->isValid()) {
             $response
                 ->setTitle(JText::_('COM_GAMIFICATION_FAIL'))
                 ->setText(JText::_('COM_GAMIFICATION_INVALID_NOTIFICATION'))
@@ -64,8 +57,8 @@ class GamificationControllerNotification extends JControllerLegacy
 
         try {
 
-            jimport("gamification.notification");
-            $notification = new GamificationNotification($itemId);
+            $notification = new Gamification\Notification\Notification(JFactory::getDbo());
+            $notification->load($itemId);
             $notification->remove();
 
         } catch (Exception $e) {

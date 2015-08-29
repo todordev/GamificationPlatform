@@ -3,15 +3,15 @@
  * @package      Gamification Platform
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
+
+use Joomla\String\String;
+use Joomla\Registry\Registry;
 
 // no direct access
 defined('_JEXEC') or die;
-
-jimport('joomla.application.component.view');
-jimport('joomla.application.categories');
 
 class GamificationViewProfiles extends JViewLegacy
 {
@@ -21,7 +21,7 @@ class GamificationViewProfiles extends JViewLegacy
     public $document;
 
     /**
-     * @var JRegistry
+     * @var Registry
      */
     protected $state;
 
@@ -33,10 +33,10 @@ class GamificationViewProfiles extends JViewLegacy
     protected $listOrder;
     protected $listDirn;
     protected $saveOrder;
-    protected $saveOrderingUrl;
-    protected $sortFields;
 
     protected $sidebar;
+
+    public $filterForm;
 
     public function __construct($config)
     {
@@ -49,11 +49,6 @@ class GamificationViewProfiles extends JViewLegacy
         $this->state      = $this->get('State');
         $this->items      = $this->get('Items');
         $this->pagination = $this->get('Pagination');
-
-        JHtml::addIncludePath(JPATH_COMPONENT_SITE . '/helpers/html');
-
-        // Add submenu
-        GamificationHelper::addSubmenu($this->getName());
 
         // Prepare sorting data
         $this->prepareSorting();
@@ -76,18 +71,7 @@ class GamificationViewProfiles extends JViewLegacy
         $this->listDirn  = $this->escape($this->state->get('list.direction'));
         $this->saveOrder = (strcmp($this->listOrder, 'a.ordering') != 0) ? false : true;
 
-        if ($this->saveOrder) {
-            $this->saveOrderingUrl = 'index.php?option=' . $this->option . '&task=' . $this->getName() . '.saveOrderAjax&format=raw';
-            JHtml::_('sortablelist.sortable', $this->getName() . 'List', 'adminForm', strtolower($this->listDirn), $this->saveOrderingUrl);
-        }
-
-        $this->sortFields = array(
-            'a.name'         => JText::_('COM_GAMIFICATION_NAME'),
-            'a.registerDate' => JText::_('COM_GAMIFICATION_REGISTERED_DATE'),
-            'a.block'        => JText::_('COM_GAMIFICATION_STATE'),
-            'a.id'           => JText::_('JGRID_HEADING_ID')
-        );
-
+        $this->filterForm    = $this->get('FilterForm');
     }
 
     /**
@@ -95,19 +79,7 @@ class GamificationViewProfiles extends JViewLegacy
      */
     protected function addSidebar()
     {
-        JHtmlSidebar::setAction('index.php?option=' . $this->option . '&view=' . $this->getName());
-
-        $states = array(
-            JHtml::_("select.option", "0", JText::_("COM_GAMIFICATION_ENABLED")),
-            JHtml::_("select.option", "1", JText::_("COM_GAMIFICATION_BLOCKED"))
-        );
-
-        JHtmlSidebar::addFilter(
-            JText::_('COM_GAMIFICATION_SELECT_STATE'),
-            'filter_state',
-            JHtml::_('select.options', $states, 'value', 'text', $this->state->get('filter.state'), true)
-        );
-
+        GamificationHelper::addSubmenu($this->getName());
         $this->sidebar = JHtmlSidebar::render();
     }
 
@@ -133,11 +105,15 @@ class GamificationViewProfiles extends JViewLegacy
     {
         $this->document->setTitle(JText::_('COM_GAMIFICATION_PROFILES'));
 
-        // Scripts
-        JHtml::_('behavior.multiselect');
-        JHtml::_('formbehavior.chosen', 'select');
-        JHtml::_('bootstrap.tooltip');
+        // Load language string in JavaScript
+        JText::script('COM_GAMIFICATION_SEARCH_IN_TITLE_TOOLTIP');
 
-        $this->document->addScript('../media/' . $this->option . '/js/admin/list.js');
+        // Scripts
+        JHtml::_('bootstrap.tooltip');
+        JHtml::_('behavior.multiselect');
+
+        JHtml::_('formbehavior.chosen', 'select');
+
+        $this->document->addScript('../media/' . $this->option . '/js/admin/'.String::strtolower($this->getName()).'.js');
     }
 }

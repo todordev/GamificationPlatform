@@ -3,14 +3,15 @@
  * @package      Gamification Platform
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
+
+use Joomla\String\String;
+use Joomla\Registry\Registry;
 
 // no direct access
 defined('_JEXEC') or die;
-
-jimport('joomla.application.component.view');
 
 class GamificationViewLevel extends JViewLegacy
 {
@@ -20,7 +21,7 @@ class GamificationViewLevel extends JViewLegacy
     public $document;
 
     /**
-     * @var JRegistry
+     * @var Registry
      */
     protected $state;
 
@@ -91,6 +92,6 @@ class GamificationViewLevel extends JViewLegacy
         JHtml::_('behavior.tooltip');
         JHtml::_('behavior.formvalidation');
 
-        $this->document->addScript('../media/' . $this->option . '/js/admin/' . JString::strtolower($this->getName()) . '.js');
+        $this->document->addScript('../media/' . $this->option . '/js/admin/' . String::strtolower($this->getName()) . '.js');
     }
 }

@@ -3,14 +3,14 @@
  * @package      Gamification Platform
  * @subpackage   Components Platform
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
+
+use Prism\Controller\Admin;
 
 // No direct access
 defined('_JEXEC') or die;
-
-jimport('itprism.controller.admin');
 
 /**
  * Gamification Platform profile Controller
@@ -18,7 +18,7 @@ jimport('itprism.controller.admin');
  * @package     Gamification
  * @package     Components Platform
  */
-class GamificationControllerProfiles extends ITPrismControllerAdmin
+class GamificationControllerProfiles extends Admin
 {
     /**
      * Proxy for getModel.
@@ -36,7 +36,6 @@ class GamificationControllerProfiles extends ITPrismControllerAdmin
     public function getModel($name = 'Profile', $prefix = 'GamificationModel', $config = array('ignore_request' => true))
     {
         $model = parent::getModel($name, $prefix, $config);
-
         return $model;
     }
 

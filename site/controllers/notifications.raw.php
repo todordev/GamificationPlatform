@@ -3,14 +3,12 @@
  * @package      Gamification Platform
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // no direct access
 defined('_JEXEC') or die;
-
-jimport('joomla.application.component.controller');
 
 /**
  * Gamification notifications controller.
@@ -42,17 +40,18 @@ class GamificationControllerNotifications extends JControllerLegacy
      */
     public function getNumber()
     {
-        jimport("itprism.response.json");
-        $response = new ITPrismResponseJson();
-
-        // Get the model
-        $model = $this->getModel();
-        /** @var $model GamificationModelNotifications */
+        $response = new Prism\Response\Json();
 
         try {
 
-            $items   = $model->getItems();
-            $notRead = $model->countNotRead($items);
+            $notifications = new Gamification\Notification\Notifications(JFactory::getDbo());
+
+            $options = array(
+                "user_id" => JFactory::getUser()->get("id"),
+                "status"  => Prism\Constants::NOT_READ
+            );
+
+            $notRead = $notifications->getNumber($options);
 
         } catch (Exception $e) {
             JLog::add($e->getMessage());

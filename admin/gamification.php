@@ -3,18 +3,15 @@
  * @package      Gamification Platform
  * @subpackage   Component
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // no direct access
 defined('_JEXEC') or die;
 
-jimport("itprism.init");
-jimport("gamification.init");
-
-// Include dependencies
-jimport('joomla.application.component.controller');
+jimport("Prism.init");
+jimport("Gamification.init");
 
 // Get an instance of the controller prefixed by HelloWorld
 $controller = JControllerLegacy::getInstance("Gamification");

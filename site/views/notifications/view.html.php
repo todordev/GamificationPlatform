@@ -3,14 +3,14 @@
  * @package      Gamification Platform
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
+
+use Joomla\String\String;
 
 // no direct access
 defined('_JEXEC') or die;
-
-jimport('joomla.application.component.view');
 
 class GamificationViewNotifications extends JViewLegacy
 {
@@ -52,8 +52,6 @@ class GamificationViewNotifications extends JViewLegacy
         $this->params     = $this->state->get('params');
         $this->pagination = $this->get('Pagination');
 
-        $this->version = new GamificationVersion();
-
         $this->prepareDocument();
 
         parent::display($tpl);
@@ -87,13 +85,10 @@ class GamificationViewNotifications extends JViewLegacy
             $this->document->setMetadata('robots', $this->params->get('robots'));
         }
 
-        // Head styles
-        $this->document->addStyleSheet('media/' . $this->option . '/css/site/style.css');
-
         // Scripts
         JHtml::_('behavior.tooltip');
 
-        $this->document->addScript('media/' . $this->option . '/js/site/' . JString::strtolower($this->getName()) . '.js');
+        $this->document->addScript('media/' . $this->option . '/js/site/' . String::strtolower($this->getName()) . '.js');
     }
 
     private function prepearePageHeading()

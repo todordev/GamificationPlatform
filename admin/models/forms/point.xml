@@ -10,8 +10,8 @@
                required="true"/>
 
         <field name="abbr" type="text"
-               label="COM_GAMIFICATION_ABBR"
-               description="COM_GAMIFICATION_ABBR_DESC"
+               label="COM_GAMIFICATION_ABBREVIATION"
+               description="COM_GAMIFICATION_ABBREVIATION_DESC"
                filter="trim"
                 />
 

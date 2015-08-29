@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="component" version="3.2" method="upgrade">
+<extension type="component" version="3.4" method="upgrade">
     <name>COM_GAMIFICATION</name>
     <author>Todor Iliev</author>
     <authorEmail>todor@itprism.com</authorEmail>
     <authorUrl>http://itprism.com</authorUrl>
-    <copyright>Copyright (C) 2014 Todor Iliev ( ITPrism.com )</copyright>
-    <license>http://www.gnu.org/copyleft/gpl.html</license>
-    <version>1.3</version>
-    <creationDate>30 May, 2014</creationDate>
+    <copyright>Copyright (C) 2015 Todor Iliev ( ITPrism.com )</copyright>
+    <license>http://www.gnu.org/licenses/gpl-3.0.en.html</license>
+    <version>2.0</version>
+    <creationDate>31 August, 2015</creationDate>
     <description><![CDATA[
     <p><a href="http://itprism.com/free-joomla-extensions/ecommerce-gamification/game-mechanics-platform" target="_blank">Gamification Platform</a> is an extension that provides functionality, resources and API that can be used to gamify Joomla! extensions and websites.</p>
-    <p>Invest in the extension and help for its improvement. You can <a href="http://itprism.com/sponsorship" target="_blank">sponsor the extension via SMS, PayPal or Bitcoin</a>.</p>
     <p><a href="http://itprism.com/" target="_blank">Subscribe for the newsletter</a> to receive <strong>gifts</strong>, <strong>discount codes</strong>, information about <strong>updates</strong> and information about <strong>new ITPrism extensions</strong>.</p>
-    <p>Please, <a href="http://extensions.joomla.org/extensions/e-commerce/credits-a-point-systems/23872" target="_blank">vote for the extension</a> on Joomla! Extensions Directory</p>
+    <p>Please, <a href="http://extensions.joomla.org/extensions/extension/e-commerce/credits-a-point-systems/gamification-platform" target="_blank">vote for the extension</a> on Joomla! Extensions Directory</p>
     ]]></description>
 
     <install>
@@ -34,7 +33,6 @@
     </update>
 
     <media destination="com_gamification" folder="media">
-        <filename>index.html</filename>
         <folder>css</folder>
         <folder>images</folder>
         <folder>js</folder>
@@ -49,7 +47,6 @@
         <folder>views</folder>
         <filename>controller.php</filename>
         <filename>gamification.php</filename>
-        <filename>index.html</filename>
         <filename>router.php</filename>
     </files>
 
@@ -60,13 +57,11 @@
             <folder>controllers</folder>
             <folder>helpers</folder>
             <folder>language</folder>
-            <folder>libraries</folder>
             <folder>models</folder>
             <folder>tables</folder>
             <folder>sql</folder>
             <folder>views</folder>
             <filename>controller.php</filename>
-            <filename>index.html</filename>
             <filename>config.xml</filename>
             <filename>gamification.php</filename>
         </files>

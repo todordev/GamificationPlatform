@@ -3,14 +3,12 @@
  * @package      Gamification
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // no direct access
 defined('_JEXEC') or die;
-
-jimport('joomla.application.component.helper');
 
 /**
  * Component Route Helper that help to find a menu item.
@@ -29,6 +27,10 @@ abstract class GamificationHelperRoute
 
     /**
      * This method routes ordering.
+     *
+     * @param int $id
+     *
+     * @return string
      */
     public static function getNotificationRoute($id)
     {

@@ -1,24 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="3.2" type="plugin" group="system" method="upgrade">
+<extension version="3.4" type="plugin" group="system" method="upgrade">
     <name>PLG_SYSTEM_GAMIFICATION</name>
     <author>Todor Iliev</author>
-    <copyright>Copyright (C) 2014 Todor Iliev ( ITPrism.com ). All rights reserved.</copyright>
-    <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+    <copyright>Copyright (C) 2015 Todor Iliev ( ITPrism.com ). All rights reserved.</copyright>
+    <license>http://www.gnu.org/licenses/gpl-3.0.en.html</license>
     <authorEmail>todor@itprism.com</authorEmail>
     <authorUrl>http://itprism.com</authorUrl>
-    <version>1.3</version>
-    <creationDate>30 May, 2014</creationDate>
+    <version>2.0</version>
+    <creationDate>31 August, 2015</creationDate>
 	<description><![CDATA[
     <p>System - Gamification is a plugin that updates some gamification mechanics of the user. This plugin updates levels, badges, ranks,...</p>
-    <p>Invest in the extension and help for its improvement. You can <a href="http://itprism.com/sponsorship" target="_blank">sponsor the extension via SMS, PayPal or Bitcoin</a>.</p>
     <p><a href="http://itprism.com/" target="_blank">Subscribe for the newsletter</a> to receive information about updates and new ITPrism extensions.</p>
-    <p>Please, <a href="http://extensions.joomla.org/extensions/e-commerce/credits-a-point-systems/23872" target="_blank">vote for the extension</a> on Joomla! Extensions Directory</p>
+    <p>Please, <a href="http://extensions.joomla.org/extensions/extension/e-commerce/credits-a-point-systems/gamification-platform" target="_blank">vote for the extension</a> on Joomla! Extensions Directory</p>
     ]]></description>
 	
 	<files>
 		<filename plugin="gamification">gamification.php</filename>
-		<filename>index.html</filename>
-
 		<folder>language</folder>
 	</files>
 	
@@ -50,17 +47,29 @@
             </fieldset>
             
             <fieldset name="integration" label="PLG_SYSTEM_GAMIFICATION_INTEGRATION">
-                <field name="notification_integration" type="list" default="" label="PLG_SYSTEM_GAMIFICATION_NOTIFICATION_INTEGRATION" description="PLG_SYSTEM_GAMIFICATION_NOTIFICATION_INTEGRATION_DESC">
-                    <option value="">PLG_SYSTEM_GAMIFICATION_NONE</option>
-                    <option value="gamification">PLG_SYSTEM_GAMIFICATION_GAMIFICATION_PLATFORM</option>
-                    <option value="socialcommunity">PLG_SYSTEM_GAMIFICATION_SOCIAL_COMMUNITY</option>
-                    <option value="jomsocial">PLG_SYSTEM_GAMIFICATION_JOM_SOCIAL</option>
+                <field name="leveling_send_notification" type="radio" default="0" label="PLG_SYSTEM_GAMIFICATION_LEVELING_SEND_NOTIFICATION" description="PLG_SYSTEM_GAMIFICATION_LEVELING_SEND_NOTIFICATION_DESC" class="btn-group">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
                 </field>
-                <field name="activity_integration" type="list" default="" label="PLG_SYSTEM_GAMIFICATION_ACTIVITY_INTEGRATION" description="PLG_SYSTEM_GAMIFICATION_ACTIVITY_INTEGRATION_DESC">
-                    <option value="">PLG_SYSTEM_GAMIFICATION_NONE</option>
-                    <option value="gamification">PLG_SYSTEM_GAMIFICATION_GAMIFICATION_PLATFORM</option>
-                    <option value="socialcommunity">PLG_SYSTEM_GAMIFICATION_SOCIAL_COMMUNITY</option>
-                    <option value="jomsocial">PLG_SYSTEM_GAMIFICATION_JOM_SOCIAL</option>
+                <field name="leveling_store_activity" type="radio" default="0" label="PLG_SYSTEM_GAMIFICATION_LEVELING_STORE_ACTIVITY" description="PLG_SYSTEM_GAMIFICATION_LEVELING_STORE_ACTIVITY_DESC" class="btn-group">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field name="badging_send_notification" type="radio" default="0" label="PLG_SYSTEM_GAMIFICATION_BADGING_SEND_NOTIFICATION" description="PLG_SYSTEM_GAMIFICATION_BADGING_SEND_NOTIFICATION_DESC" class="btn-group">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field name="badging_store_activity" type="radio" default="0" label="PLG_SYSTEM_GAMIFICATION_BADGING_STORE_ACTIVITY" description="PLG_SYSTEM_GAMIFICATION_BADGING_STORE_ACTIVITY_DESC" class="btn-group">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field name="ranking_send_notification" type="radio" default="0" label="PLG_SYSTEM_GAMIFICATION_RANKING_SEND_NOTIFICATION" description="PLG_SYSTEM_GAMIFICATION_RANKING_SEND_NOTIFICATION_DESC" class="btn-group">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field name="ranking_store_activity" type="radio" default="0" label="PLG_SYSTEM_GAMIFICATION_RANKING_STORE_ACTIVITY" description="PLG_SYSTEM_GAMIFICATION_RANKING_STORE_ACTIVITY_DESC" class="btn-group">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
                 </field>
             </fieldset>
             

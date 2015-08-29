@@ -3,8 +3,8 @@
  * @package      Gamification Platform
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // no direct access
@@ -40,13 +40,6 @@ class GamificationModelNotifications extends JModelList
         parent::__construct($config);
     }
 
-    /**
-     * Method to auto-populate the model state.
-     *
-     * Note. Calling getState in this method will result in recursion.
-     *
-     * @since   1.6
-     */
     protected function populateState($ordering = null, $direction = null)
     {
         $app = JFactory::getApplication();
@@ -109,7 +102,7 @@ class GamificationModelNotifications extends JModelList
         $query->select(
             $this->getState(
                 'list.select',
-                'a.id, a.note, a.image, a.url, a.created, a.status, a.user_id '
+                'a.id, a.content, a.image, a.url, a.created, a.status, a.user_id '
             )
         );
         $query->from($db->quoteName('#__gfy_notifications', "a"));
@@ -123,24 +116,6 @@ class GamificationModelNotifications extends JModelList
         $query->order($db->escape($orderString));
 
         return $query;
-    }
-
-    /**
-     * @param $items
-     *
-     * @return int
-     * @todo remove this. Use GamificationNotifications.
-     */
-    public function countNotRead($items)
-    {
-        $number = 0;
-        foreach ($items as $item) {
-            if (!$item->status) {
-                $number++;
-            }
-        }
-
-        return $number;
     }
 
     protected function getOrderString()

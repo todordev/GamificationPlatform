@@ -3,14 +3,14 @@
  * @package      Gamification Platform
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
+
+use Joomla\Registry\Registry;
 
 // no direct access
 defined('_JEXEC') or die;
-
-jimport('joomla.application.component.view');
 
 class GamificationViewGroups extends JViewLegacy
 {
@@ -20,7 +20,7 @@ class GamificationViewGroups extends JViewLegacy
     public $document;
 
     /**
-     * @var JRegistry
+     * @var Registry
      */
     protected $state;
 
@@ -48,9 +48,6 @@ class GamificationViewGroups extends JViewLegacy
         $this->state      = $this->get('State');
         $this->items      = $this->get('Items');
         $this->pagination = $this->get('Pagination');
-
-        // Add submenu
-        GamificationHelper::addSubmenu($this->getName());
 
         // Prepare sorting data
         $this->prepareSorting();
@@ -89,7 +86,7 @@ class GamificationViewGroups extends JViewLegacy
      */
     protected function addSidebar()
     {
-
+        GamificationHelper::addSubmenu($this->getName());
         $this->sidebar = JHtmlSidebar::render();
 
     }
@@ -120,10 +117,11 @@ class GamificationViewGroups extends JViewLegacy
         $this->document->setTitle(JText::_('COM_GAMIFICATION_GROUPS_MANAGER'));
 
         // Scripts
-        JHtml::_('behavior.multiselect');
-        JHtml::_('formbehavior.chosen', 'select');
         JHtml::_('bootstrap.tooltip');
+        JHtml::_('behavior.multiselect');
 
-        $this->document->addScript('../media/' . $this->option . '/js/admin/list.js');
+        JHtml::_('formbehavior.chosen', 'select');
+
+        JHtml::_('prism.ui.joomlaList');
     }
 }

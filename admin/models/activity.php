@@ -3,14 +3,12 @@
  * @package      Gamification Platform
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // no direct access
 defined('_JEXEC') or die;
-
-jimport('joomla.application.component.modeladmin');
 
 class GamificationModelActivity extends JModelAdmin
 {
@@ -75,16 +73,16 @@ class GamificationModelActivity extends JModelAdmin
      */
     public function save($data)
     {
-        $id    = JArrayHelper::getValue($data, "id");
-        $info  = JArrayHelper::getValue($data, "info");
-        $url   = JArrayHelper::getValue($data, "url");
-        $image = JArrayHelper::getValue($data, "image");
+        $id         = Joomla\Utilities\ArrayHelper::getValue($data, "id");
+        $content    = Joomla\Utilities\ArrayHelper::getValue($data, "content");
+        $url        = Joomla\Utilities\ArrayHelper::getValue($data, "url");
+        $image      = Joomla\Utilities\ArrayHelper::getValue($data, "image");
 
         // Load a record from the database
         $row = $this->getTable();
         $row->load($id);
 
-        $row->set("info", $info);
+        $row->set("content", $content);
         $row->set("url", (!$url) ? null : $url);
         $row->set("image", (!$image) ? null : $image);
 

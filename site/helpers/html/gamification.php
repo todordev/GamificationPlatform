@@ -3,8 +3,8 @@
  * @package      Gamification
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // no direct access
@@ -34,26 +34,26 @@ abstract class JHtmlGamification
     {
         $html = "";
         if (!empty($note)) {
-            $html = '<a class="btn hasTooltip" href="javascript: void(0);" title="' . htmlspecialchars($note, ENT_QUOTES, "UTF-8") . '"><i class="icon-question-sign"></i></a>';
+            $html = '<a class="btn btn-mini hasTooltip" href="javascript: void(0);" title="' . htmlspecialchars($note, ENT_QUOTES, "UTF-8") . '"><i class="icon-question-sign"></i></a>';
         }
 
         return $html;
     }
 
-    public static function badge($image, $alt, $tip = false, $note = "")
+    public static function rank(Gamification\User\Rank $rank, $mediaPath, $tip = false, $placeholders = array())
     {
         $title   = "";
         $class   = "";
         $classes = array();
 
-        if (!empty($tip) and !empty($note)) {
+        if (!empty($tip) and $rank->getDescription()) {
 
             JHtml::_("bootstrap.tooltip");
 
             $classes[] = "hasTooltip";
 
-            $note  = strip_tags(JString::trim($note));
-            $title = ' title="' . htmlspecialchars($note, ENT_QUOTES, "UTF-8") . '"';
+            $description  = strip_tags(Joomla\String\String::trim($rank->getDescription($placeholders)));
+            $title = ' title="' . htmlspecialchars($description, ENT_QUOTES, "UTF-8") . '"';
 
         }
 
@@ -63,25 +63,57 @@ abstract class JHtmlGamification
         }
 
         // Prepare alt property
-        $alt = strip_tags(JString::trim($alt));
+        $alt = strip_tags(Joomla\String\String::trim($rank->getTitle()));
         if (!empty($alt)) {
             $alt = ' alt="' . htmlspecialchars($alt, ENT_QUOTES, "UTF-8") . '"';
         }
 
-        $html = '<img src="' . $image . '"' . $class . $alt . $title . ' />';
+        $html = '<img src="' . $mediaPath."/".$rank->getImage() . '"' . $class . $alt . $title . ' />';
+
+        return $html;
+    }
+
+    public static function badge(Gamification\User\Badge $badge, $mediaPath, $tip = false, $placeholders = array())
+    {
+        $title   = "";
+        $class   = "";
+        $classes = array();
+
+        if (!empty($tip) and $badge->getDescription()) {
+
+            JHtml::_("bootstrap.tooltip");
+
+            $classes[] = "hasTooltip";
+
+            $description  = strip_tags(Joomla\String\String::trim($badge->getDescription($placeholders)));
+            $title = ' title="' . htmlspecialchars($description, ENT_QUOTES, "UTF-8") . '"';
+
+        }
+
+        // Prepare class property
+        if (!empty($classes)) {
+            $class = ' class="' . implode(" ", $classes) . '"';
+        }
+
+        // Prepare alt property
+        $alt = strip_tags(Joomla\String\String::trim($badge->getTitle()));
+        if (!empty($alt)) {
+            $alt = ' alt="' . htmlspecialchars($alt, ENT_QUOTES, "UTF-8") . '"';
+        }
+
+        $html = '<img src="' . $mediaPath."/".$badge->getImage() . '"' . $class . $alt . $title . ' />';
 
         return $html;
     }
 
     /**
-     * @param      $progress
+     * @param Gamification\User\ProgressBar     $progress
+     * @param string $name User name
      * @param bool $tip
      *
      * @return string
-     *
-     * @todo fix doc or remove this method
      */
-    public static function progress($progress, $tip = false)
+    public static function progress($progress, $name = "", $tip = false)
     {
         $titleCurrent = "";
         $titleNext    = "";
@@ -94,11 +126,9 @@ abstract class JHtmlGamification
 
         // Prepare current level
         if (!empty($tip)) {
-
             JHtml::_("bootstrap.tooltip");
-
             $classes[]    = "hasTooltip";
-            $titleCurrent = ' title="' . JText::sprintf("MOD_GAMIFICATIONPROFILE_POINTS_INFORMATION", $userPoints) . '"';
+            $titleCurrent = ' title="' . JText::sprintf("MOD_GAMIFICATIONPROFILE_POINTS_INFORMATION", $name, $userPoints) . '"';
         }
 
         // START Labels
@@ -111,28 +141,30 @@ abstract class JHtmlGamification
         // Prepare next level
         if ($progress->hasNext()) {
 
-            $titleNext = htmlspecialchars($progress->getTitleNext(), ENT_QUOTES, "UTF-8");
+            $nextUnit       = $progress->getNextUnit();
+            $nextUnitTitle  = htmlspecialchars($nextUnit->getTitle(), ENT_QUOTES, "UTF-8");
 
             $html[] = '<div class="gfy-prgss-lbl-next">';
-            $html[] = $titleNext;
+            $html[] = $nextUnitTitle;
             $html[] = '</div>';
 
             if (!empty($tip)) {
-                $pointsNext   = $progress->getPointsNext();
-                $neededPoints = abs($pointsNext - $userPoints);
+
+                $nextUnitPoints = $nextUnit->getPoints();
+                $neededPoints   = abs($nextUnitPoints - $userPoints);
 
                 switch ($gameMechanic) {
 
                     case "badges":
-                        $titleNext = ' title="' . JText::sprintf("MOD_GAMIFICATIONPROFILE_POINTS_BADGES_INFORMATION_REACH", $neededPoints, $titleNext) . '"';
+                        $titleNext = ' title="' . JText::sprintf("MOD_GAMIFICATIONPROFILE_POINTS_BADGES_INFORMATION_REACH", $neededPoints, $nextUnitTitle) . '"';
                         break;
 
                     case "ranks":
-                        $titleNext = ' title="' . JText::sprintf("MOD_GAMIFICATIONPROFILE_POINTS_RANKS_INFORMATION_REACH", $neededPoints, $titleNext) . '"';
+                        $titleNext = ' title="' . JText::sprintf("MOD_GAMIFICATIONPROFILE_POINTS_RANKS_INFORMATION_REACH", $neededPoints, $nextUnitTitle) . '"';
                         break;
 
-                    default:
-                        $titleNext = ' title="' . JText::sprintf("MOD_GAMIFICATIONPROFILE_POINTS_LEVELS_INFORMATION_REACH", $neededPoints, $titleNext) . '"';
+                    default: // Levels
+                        $titleNext = ' title="' . JText::sprintf("MOD_GAMIFICATIONPROFILE_POINTS_LEVELS_INFORMATION_REACH", $neededPoints, $nextUnitTitle) . '"';
                         break;
                 }
             }
@@ -144,10 +176,10 @@ abstract class JHtmlGamification
 
         $html[] = '<div class="clearfix"></div>';
         $html[] = '<div class="progress">';
-        $html[] = '<div class="bar bar-success ' . implode(" ", $classes) . '" ' . $titleCurrent . ' style="width: ' . $progress->getPercent() . '%;"></div>';
+        $html[] = '<div class="progress-bar progress-bar-success ' . implode(" ", $classes) . '" ' . $titleCurrent . ' style="width: ' . $progress->getPercentage() . '%;" role="progressbar" aria-valuenow="'.$progress->getPercentage().'" aria-valuemin="0" aria-valuemax="100" ></div>';
 
         if ($progress->hasNext()) {
-            $html[] = '<div class="bar bar-warning ' . implode(" ", $classes) . '" ' . $titleNext . ' style="width: ' . $progress->getPercentNext() . '%;"></div>';
+            $html[] = '<div class="progress-bar progress-bar-danger ' . implode(" ", $classes) . '" ' . $titleNext . ' style="width: ' . $progress->getPercentNext() . '%;" role="progressbar" aria-valuenow="'.$progress->getPercentNext().'" aria-valuemin="0" aria-valuemax="100"></div>';
         }
 
         $html[] = '</div>';
@@ -155,24 +187,51 @@ abstract class JHtmlGamification
         return implode("\n", $html);
     }
 
-    public static function boolean($value, $title = "")
+    public static function iconLink($url, $title = "")
     {
-        $title = addslashes(htmlspecialchars(JString::trim($title), ENT_COMPAT, 'UTF-8'));
+        $html = array();
 
-        if (!$value) { // unpublished
-            $class = "unpublish";
-        } else {
-            $class = "ok";
+        if (!empty($url)) {
+
+            $hasTooltip = "";
+            if (!empty($title)) {
+                $hasTooltip = " hasTooltip";
+                $title = 'title="'. htmlentities($title, ENT_QUOTES, "UTF-8").'"';
+            }
+
+            $html[] = '<a class="btn btn-mini btn-link'.$hasTooltip.'" href="' . $url . '" target="_blank" '.$title.'>';
+            $html[] = '<i class="icon-link"></i>';
+            $html[] = '</a>';
         }
 
-        if (!empty($title)) {
-            $title = ' title="' . $title . '"';
+        return implode($html);
+    }
+
+    public static function iconPicture($url)
+    {
+        if (!$url) {
+            return "";
         }
 
-        $html[] = '<a class="btn btn-micro" rel="tooltip" ';
-        $html[] = ' href="javascript:void(0);" ' . $title . '">';
-        $html[] = '<i class="icon-' . $class . '"></i>';
+        $html[] = '<a class="btn btn-mini btn-link" href="' . $url . '" target="_blank">';
+        $html[] = '<i class="icon-picture"></i>';
         $html[] = '</a>';
+
+        return implode($html);
+    }
+
+    public static function link($url, $title, $attributes = array())
+    {
+        $html = array();
+
+        if (!empty($url) and !empty($title)) {
+
+            $class = (isset($attributes["class"])) ? 'class="'.$attributes["class"].'"' : "";
+
+            $html[] = '<a '.$class.' href="' . $url . '" rel="nofollow">';
+            $html[] = htmlentities($title, ENT_QUOTES, "UTF-8");
+            $html[] = '</a>';
+        }
 
         return implode($html);
     }

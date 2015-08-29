@@ -3,14 +3,12 @@
  * @package      Gamification Platform
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // no direct access
 defined('_JEXEC') or die;
-
-jimport('joomla.application.component.modeladmin');
 
 class GamificationModelLevel extends JModelAdmin
 {
@@ -85,14 +83,14 @@ class GamificationModelLevel extends JModelAdmin
      */
     public function save($data)
     {
-        $id        = JArrayHelper::getValue($data, "id");
-        $title     = JArrayHelper::getValue($data, "title");
-        $points    = JArrayHelper::getValue($data, "points");
-        $pointsId  = JArrayHelper::getValue($data, "points_id");
-        $value     = JArrayHelper::getValue($data, "value");
-        $rankId    = JArrayHelper::getValue($data, "rank_id");
-        $groupId   = JArrayHelper::getValue($data, "group_id");
-        $published = JArrayHelper::getValue($data, "published");
+        $id        = Joomla\Utilities\ArrayHelper::getValue($data, "id");
+        $title     = Joomla\Utilities\ArrayHelper::getValue($data, "title");
+        $points    = Joomla\Utilities\ArrayHelper::getValue($data, "points");
+        $pointsId  = Joomla\Utilities\ArrayHelper::getValue($data, "points_id");
+        $value     = Joomla\Utilities\ArrayHelper::getValue($data, "value");
+        $rankId    = Joomla\Utilities\ArrayHelper::getValue($data, "rank_id");
+        $groupId   = Joomla\Utilities\ArrayHelper::getValue($data, "group_id");
+        $published = Joomla\Utilities\ArrayHelper::getValue($data, "published");
 
         // Load a record from the database
         $row = $this->getTable();

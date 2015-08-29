@@ -3,14 +3,12 @@
  * @package      Gamification Platform
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // no direct access
 defined('_JEXEC') or die;
-
-jimport('joomla.application.component.modeladmin');
 
 class GamificationModelPoint extends JModelAdmin
 {
@@ -32,7 +30,7 @@ class GamificationModelPoint extends JModelAdmin
     /**
      * Method to get the record form.
      *
-     * @param   array   $data     An optional array of data for the form to interogate.
+     * @param   array   $data     An optional array of data for the form to interrogate.
      * @param   boolean $loadData True if the form is to load its own data (default case), false if not.
      *
      * @return  JForm   A JForm object on success, false on failure
@@ -75,13 +73,13 @@ class GamificationModelPoint extends JModelAdmin
      */
     public function save($data)
     {
-        $id        = JArrayHelper::getValue($data, "id");
-        $title     = JArrayHelper::getValue($data, "title");
-        $abbr      = JArrayHelper::getValue($data, "abbr");
-        $groupId   = JArrayHelper::getValue($data, "group_id");
-        $published = JArrayHelper::getValue($data, "published");
+        $id        = Joomla\Utilities\ArrayHelper::getValue($data, "id");
+        $title     = Joomla\Utilities\ArrayHelper::getValue($data, "title");
+        $abbr      = Joomla\Utilities\ArrayHelper::getValue($data, "abbr");
+        $groupId   = Joomla\Utilities\ArrayHelper::getValue($data, "group_id");
+        $published = Joomla\Utilities\ArrayHelper::getValue($data, "published");
 
-        $note = JArrayHelper::getValue($data, "note");
+        $note = Joomla\Utilities\ArrayHelper::getValue($data, "note");
         if (!$note) {
             $note = null;
         }

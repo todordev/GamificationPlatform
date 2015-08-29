@@ -3,14 +3,15 @@
  * @package      Gamification Platform
  * @subpackage   Components Platform
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
+
+use Prism\Controller\Form;
+use Joomla\Utilities\ArrayHelper;
 
 // No direct access
 defined('_JEXEC') or die;
-
-jimport('itprism.controller.form');
 
 /**
  * Gamification Platform Profile controller class.
@@ -21,16 +22,11 @@ jimport('itprism.controller.form');
  * @todo         Fix this controller
  * @since        1.6
  */
-class GamificationControllerProfile extends ITPrismControllerForm
+class GamificationControllerProfile extends Form
 {
-    /**
-     * Proxy for getModel.
-     * @since   1.6
-     */
     public function getModel($name = 'Profile', $prefix = 'GamificationModel', $config = array('ignore_request' => true))
     {
         $model = parent::getModel($name, $prefix, $config);
-
         return $model;
     }
 
@@ -44,17 +40,17 @@ class GamificationControllerProfile extends ITPrismControllerForm
         // Get form data
         $data  = $this->input->post->get('jform', array(), 'array');
         $model = $this->getModel();
-        /** @var $model GamificationModelProfile * */
+        /** @var $model GamificationModelProfile */
 
         $form = $model->getForm($data, false);
-        /** @var $form JForm * */
+        /** @var $form JForm */
 
         if (!$form) {
             throw new Exception(JText::_("COM_GAMIFICATION_ERROR_FORM_CANNOT_BE_LOADED"), 500);
         }
 
         // Get item ID
-        $itemId = JArrayHelper::getValue($data, "id");
+        $itemId = ArrayHelper::getValue($data, "id");
 
         // Validate form data
         $validData = $model->validate($form, $data);

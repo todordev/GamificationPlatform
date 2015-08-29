@@ -3,14 +3,14 @@
  * @package      Gamification Platform
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 defined('JPATH_BASE') or die;
 
-jimport('joomla.html.html');
-jimport('joomla.form.formfield');
-jimport('joomla.form.helper');
+jimport("Prism.init");
+jimport("Gamification.init");
+
 JFormHelper::loadFieldClass('list');
 
 /**
@@ -44,7 +44,7 @@ class JFormFieldGfyPointsTypes extends JFormFieldList
         $query
             ->select('a.id AS value, CONCAT(a.title, " [", a.abbr, "] ") AS text')
             ->from($db->quoteName('#__gfy_points', 'a'))
-            ->where('a.published = 1')
+            ->where('a.published = ' . (int)Prism\Constants::PUBLISHED)
             ->order("a.title ASC");
 
         // Get the options.
@@ -94,12 +94,10 @@ class JFormFieldGfyPointsTypes extends JFormFieldList
 
                 $elementId = substr(md5(uniqid(time() * rand(), true)), 0, 10);
 
-                $value = JArrayHelper::getValue($pointsTypes, $option->value);
+                $value = Joomla\Utilities\ArrayHelper::getValue($pointsTypes, $option->value);
 
-                $htmlInput = '<label for="' . $elementId . '">' . $option->text . '</label>';
-                $htmlInput .= '<input type="text" value="' . $value . '" id="' . $elementId . '" data-id="' . $option->value . '" ' . $attr . '/>';
-
-                $html[] = $htmlInput;
+                $html[] = '<label for="' . $elementId . '">' . $option->text . '</label>';
+                $html[] = '<input type="text" value="' . $value . '" id="' . $elementId . '" data-id="' . $option->value . '" ' . $attr . ' style="margin-bottom: 15px;"/>';
 
             }
 

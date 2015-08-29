@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fields name="filter">
+        <field
+        name="search"
+        type="text"
+        label="COM_CONTENT_FILTER_SEARCH_DESC"
+        hint="JSEARCH_FILTER"
+        />
+
+        <field
+            name="state"
+            type="status"
+            label="COM_CONTENT_FILTER_PUBLISHED"
+            description="COM_CONTENT_FILTER_PUBLISHED_DESC"
+            onchange="this.form.submit();"
+            filter="0,1,*"
+            >
+            <option value="">JOPTION_SELECT_PUBLISHED</option>
+        </field>
+
+        <field
+            name="group"
+            type="gfygroups"
+            label="COM_GAMIFICATION_GROUP"
+            description="COM_GAMIFICATION_FILTER_GROUP_DESC"
+            onchange="this.form.submit();"
+            >
+            <option value="">COM_GAMIFICATION_SELECT_GROUP</option>
+        </field>
+
+    </fields>
+    <fields name="list">
+        <field
+            name="fullordering"
+            type="list"
+            onchange="this.form.submit();"
+            default="a.id DESC"
+            >
+            <option value="">JGLOBAL_SORT_BY</option>
+            <option value="a.title ASC">JGLOBAL_TITLE_ASC</option>
+            <option value="a.title DESC">JGLOBAL_TITLE_DESC</option>
+            <option value="a.published ASC">JSTATUS_ASC</option>
+            <option value="a.published DESC">JSTATUS_DESC</option>
+            <option value="b.name ASC">COM_GAMIFICATION_GROUP_ASCENDING</option>
+            <option value="b.name DESC">COM_GAMIFICATION_GROUP_DESCENDING</option>
+            <option value="a.id ASC">JGRID_HEADING_ID_ASC</option>
+            <option value="a.id DESC">JGRID_HEADING_ID_DESC</option>
+        </field>
+        <field
+            name="limit"
+            type="limitbox"
+            class="input-mini"
+            default="25"
+            onchange="this.form.submit();"
+            />
+    </fields>
+</form>
