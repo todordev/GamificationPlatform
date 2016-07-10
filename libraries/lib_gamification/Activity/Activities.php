@@ -3,14 +3,13 @@
  * @package         Gamification
  * @subpackage      Activities
  * @author          Todor Iliev
- * @copyright       Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright       Copyright (C) 2016 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license         GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 namespace Gamification\Activity;
 
-use Prism\Database\ArrayObject;
-use Joomla\Utilities\ArrayHelper;
+use Prism\Database\Collection;
 
 defined('JPATH_PLATFORM') or die;
 
@@ -20,52 +19,119 @@ defined('JPATH_PLATFORM') or die;
  * @package         Gamification
  * @subpackage      Activities
  */
-class Activities extends ArrayObject
+class Activities extends Collection
 {
     /**
-     * Load all user activities.
+     * Load user activities.
      *
      * <code>
-     *
      * $options = array(
-     *        "user_id"       => 1,
-     *        "limit"         => 10,
-     *        "sort_direction" => "DESC"
+     *        "user_id"         => 1,
+     *        "limit"           => 10,
+     *        "order_column"    => "a.created"
+     *        "order_direction" => "DESC"
      * );
      *
      * $activities = new Gamification\Activity\Activities(JFactory::getDbo());
      * $activities->load($options);
-     *
      * </code>
+     *
+     * @throws \RuntimeException
      *
      * @param array $options  Options that will be used for filtering results.
      */
-    public function load($options = array())
+    public function load(array $options = array())
     {
-        $userId  = ArrayHelper::getValue($options, "user_id", 0, "integer");
-
-        $sortDir = ArrayHelper::getValue($options, "sort_direction", "DESC");
-        $sortDir = (strcmp("DESC", $sortDir) == 0) ? "DESC" : "ASC";
-
-        $limit = ArrayHelper::getValue($options, "limit", 10, "int");
+        $userId         = $this->getOptionId($options, 'user_id');
+        $orderColumn    = $this->getOptionOrderColumn($options, 'a.created');
+        $orderDirection = $this->getOptionOrderDirection($options);
+        $limit          = $this->getOptionLimit($options);
 
         // Create a new query object.
         $query = $this->db->getQuery(true);
         $query
             ->select(
-                "a.title, a.content, a.image, a.url, a.created, a.user_id, " .
-                "b.name"
+                'a.title, a.content, a.image, a.url, a.created, a.user_id, ' .
+                'b.name'
             )
-            ->from($this->db->quoteName("#__gfy_activities", "a"))
-            ->innerJoin($this->db->quoteName("#__users", "b") . ' ON a.user_id = b.id');
+            ->from($this->db->quoteName('#__gfy_activities', 'a'))
+            ->innerJoin($this->db->quoteName('#__users', 'b') . ' ON a.user_id = b.id');
 
-        if (!empty($userId)) {
-            $query->where("a.user_id = " . (int)$userId);
+        if ($userId > 0) {
+            $query->where('a.user_id = ' . (int)$userId);
         }
 
-        $query->order("a.created " . $sortDir);
+        $query->order($this->db->quoteName($orderColumn) . $orderDirection);
 
         $this->db->setQuery($query, 0, $limit);
         $this->items = (array)$this->db->loadAssocList();
+    }
+
+    /**
+     * Create a activity object and return it.
+     *
+     * <code>
+     * $options = array(
+     *     "ids" => array(1,2,3,4,5)
+     * );
+     *
+     * $activities   = new Gamification\Activity\Activities(\JFactory::getDbo());
+     * $activities->load($options);
+     *
+     * $activityId = 1;
+     * $activity   = $activities->getActivity($activityId);
+     * </code>
+     *
+     * @param int|string $id Activity ID
+     *
+     * @throws \UnexpectedValueException
+     *
+     * @return null|Activity
+     */
+    public function getActivity($id)
+    {
+        $activity = null;
+
+        foreach ($this->items as $item) {
+            if ((int)$item['id'] === (int)$id) {
+                $activity = new Activity($this->db);
+                $activity->bind($item);
+                break;
+            }
+        }
+
+        return $activity;
+    }
+
+    /**
+     * Return the activities as array with objects.
+     *
+     * <code>
+     * $options = array(
+     *     "ids" => array(1,2,3,4,5)
+     * );
+     *
+     * $activities   = new Gamification\Activity\Activities(\JFactory::getDbo());
+     * $activities->load($options);
+     *
+     * $activities = $activities->getActivities();
+     * </code>
+     *
+     * @return array
+     */
+    public function getActivities()
+    {
+        $results = array();
+
+        $i = 0;
+        foreach ($this->items as $item) {
+            $activity = new Activity($this->db);
+            $activity->bind($item);
+
+            $results[$i] = $activity;
+            $i++;
+        }
+
+        return $results;
     }
 }

@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
-    <fieldset name="images" label="COM_GAMIFICATION_IMAGES" description="COM_GAMIFICATION_IMAGES_PARAMS">
-        <field name="images_directory" type="text" default="images/gamification" size="50" label="COM_GAMIFICATION_IMAGES_DIRECTORY" description="COM_GAMIFICATION_IMAGES_DIRECTORY_DESC"/>
+    <fieldset name="media" label="COM_GAMIFICATION_MEDIA" description="COM_GAMIFICATION_MEDIA_PARAMS">
+        <field name="local_media_folder" type="text" default="media/gamification" label="COM_GAMIFICATION_MEDIA_FOLDER" description="COM_GAMIFICATION_MEDIA_FOLDER_DESC" class="input-xxlarge"/>
+        <field name="image_width" type="text" default="200" label="COM_GAMIFICATION_IMAGE_WIDTH" description="COM_GAMIFICATION_IMAGE_WIDTH_DESC"/>
+        <field name="image_height" type="text" default="200" label="COM_GAMIFICATION_IMAGE_HEIGHT" description="COM_GAMIFICATION_IMAGE_HEIGHT_DESC"/>
+        <field name="image_small_width" type="text" default="100" label="COM_GAMIFICATION_IMAGE_SMALL_WIDTH" description="COM_GAMIFICATION_IMAGE_SMALL_WIDTH_DESC"/>
+        <field name="image_small_height" type="text" default="100" label="COM_GAMIFICATION_IMAGE_SMALL_HEIGHT" description="COM_GAMIFICATION_IMAGE_SMALL_HEIGHT_DESC"/>
+        <field name="image_square_width" type="text" default="50" label="COM_GAMIFICATION_SQUARE_WIDTH" description="COM_GAMIFICATION_IMAGE_SQUARE_WIDTH_DESC"/>
+        <field name="image_square_height" type="text" default="50" label="COM_GAMIFICATION_SQUARE_HEIGHT" description="COM_GAMIFICATION_IMAGE_SQUARE_HEIGHT_DESC"/>
+        <field name="image_resizing_scale" type="list" default="2" label="COM_GAMIFICATION_IMAGES_SCALE" description="COM_GAMIFICATION_IMAGES_SCALE_DESC" class="btn-group">
+            <option value="1">COM_GAMIFICATION_FILL</option>
+            <option value="2">COM_GAMIFICATION_INSIDE</option>
+            <option value="3">COM_GAMIFICATION_OUTSIDE</option>
+            <option value="6">COM_GAMIFICATION_FIT</option>
+        </field>
     </fieldset>
 
     <fieldset name="integration" label="COM_GAMIFICATION_INTEGRATION" description="COM_GAMIFICATION_INTEGRATION_PARAMS">
-        <field name="integration_social_platform" type="list" default="" label="COM_GAMIFICATION_PROFILE" description="COM_GAMIFICATION_INTEGRATION_SOCIAL_PLATFORM_DESC">
+        <field name="integration_social_platform" type="list" default="" label="COM_GAMIFICATION_COMMUNITY_PROFILE" description="COM_GAMIFICATION_COMMUNITY_PROFILE_DESC">
             <option value="">COM_GAMIFICATION_NONE</option>
             <option value="socialcommunity">COM_GAMIFICATION_SOCIAL_COMMUNITY</option>
             <option value="gravatar">COM_GAMIFICATION_GRAVATAR</option>
@@ -13,6 +25,7 @@
             <option value="easysocial">COM_GAMIFICATION_EASYSOCIAL</option>
             <option value="kunena">COM_GAMIFICATION_KUNENA</option>
             <option value="easyprofile">COM_GAMIFICATION_EASYPROFILE</option>
+            <option value="communitybuilder">COM_GAMIFICATION_COMMUNITY_BUILDER</option>
         </field>
         <field name="integration_avatars_size" type="list" default="small" label="COM_GAMIFICATION_AVATARS_SIZE" description="COM_GAMIFICATION_AVATARS_SIZE_DESC" >
             <option value="icon">COM_GAMIFICATION_ICON</option>
@@ -20,7 +33,7 @@
             <option value="medium">COM_GAMIFICATION_MEDIUM</option>
             <option value="large">COM_GAMIFICATION_LARGE</option>
         </field>
-        <field name="integration_avatars_default" type="text" default="/media/com_gamification/images/no-profile.png" label="COM_GAMIFICATION_AVATARS_DEFAULT" description="COM_GAMIFICATION_AVATARS_DEFAULT_DESC" class="span6"/>
+        <field name="integration_avatars_default" type="text" default="/media/com_gamification/images/profile_50x50.png" label="COM_GAMIFICATION_AVATARS_DEFAULT" description="COM_GAMIFICATION_AVATARS_DEFAULT_DESC" class="input-xxlarge"/>
 
         <field name="integration_notifications" type="list" default="" label="COM_GAMIFICATION_NOTIFICATIONS" description="COM_GAMIFICATION_INTEGRATION_NOTIFICATIONS_DESC">
             <option value="">COM_GAMIFICATION_NONE</option>

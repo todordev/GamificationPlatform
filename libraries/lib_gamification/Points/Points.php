@@ -3,7 +3,7 @@
  * @package         Gamification
  * @subpackage      Points
  * @author          Todor Iliev
- * @copyright       Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright       Copyright (C) 2016 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license         GNU General Public License version 3 or later; see LICENSE.txt
  */
 
@@ -29,55 +29,13 @@ class Points extends Table
     protected $published;
     protected $group_id;
 
-    protected static $instances = array();
-
-    /**
-     * Create an instance of the object and load data.
-     *
-     * <code>
-     * // create object points by ID
-     * $pointsId   = 1;
-     * $points     = Gamification\Points\Points::getInstance(\JFactory::getDbo(), $pointsId);
-     *
-     * // create object points by abbreviation
-     * $keys = array(
-     *    "abbr" => "P"
-     * );
-     * $points     = Gamification\Points\Points::getInstance(\JFactory::getDbo(), $keys);
-     * </code>
-     *
-     * @param \JDatabaseDriver $db
-     * @param int|array $keys
-     *
-     * @return null|self
-     */
-    public static function getInstance($db, $keys)
-    {
-        if (is_array($keys)) {
-            $index = ArrayHelper::getValue($keys, "abbr");
-        } else {
-            $index = (int)$keys;
-        }
-
-        $index = \JApplicationHelper::getHash($index);
-
-        if (!isset(self::$instances[$index])) {
-            $item   = new Points($db);
-            $item->load($keys);
-            
-            self::$instances[$index] = $item;
-        }
-
-        return self::$instances[$index];
-    }
-
     /**
      * Load points data using the table object.
      *
      * <code>
      * $keys = array(
-     *    "group_id" => 1,
-     *    "published" => Prism\Constants::PUBLISHED
+     *    'group_id' => 1,
+     *    'published' => Prism\Constants::PUBLISHED
      * );
      *
      * $points     = new Gamification\Points\Points(\JFactory::getDbo());
@@ -86,31 +44,31 @@ class Points extends Table
      *
      * @param int|array $keys
      * @param array $options
+     *
+     * @throws \RuntimeException
      */
-    public function load($keys, $options = array())
+    public function load($keys, array $options = array())
     {
         // Create a new query object.
         $query = $this->db->getQuery(true);
 
         $query
-            ->select("a.id, a.title, a.abbr, a.note, a.published, a.group_id")
-            ->from($this->db->quoteName("#__gfy_points", "a"));
+            ->select('a.id, a.title, a.abbr, a.note, a.published, a.group_id')
+            ->from($this->db->quoteName('#__gfy_points', 'a'));
 
         // Prepare keys.
         if (is_array($keys)) {
             foreach ($keys as $column => $value) {
-                $query->where($this->db->quoteName("a.".$column) . " = " . $this->db->quote($value));
+                $query->where($this->db->quoteName('a.'.$column) . ' = ' . $this->db->quote($value));
             }
         } else {
-            $query->where("a.id = " . (int)$keys);
+            $query->where('a.id = ' . (int)$keys);
         }
 
         $this->db->setQuery($query);
         $result = (array)$this->db->loadAssoc();
 
-        if (!empty($result)) {
-            $this->bind($result);
-        }
+        $this->bind($result);
     }
 
     /**
@@ -118,10 +76,10 @@ class Points extends Table
      *
      * <code>
      * $data = array(
-     *        "title"    => "Points",
-     *        "abbr"    => "P",
-     *        "published" => 1,
-     *        "group_id"  => 4
+     *        'title'    => 'Points',
+     *        'abbr'    => 'P',
+     *        'published' => 1,
+     *        'group_id'  => 4
      * );
      *
      * $points   = new Gamification\Points\Points(\JFactory::getDbo());
@@ -147,13 +105,13 @@ class Points extends Table
         $query = $this->db->getQuery(true);
 
         $query
-            ->update($this->db->quoteName("#__gfy_points"))
-            ->set($this->db->quoteName("title") . "  = " . $this->db->quote($this->title))
-            ->set($this->db->quoteName("abbr") . "  = " . $this->db->quote($this->abbr))
-            ->set($this->db->quoteName("note") . "  = " . $note)
-            ->set($this->db->quoteName("published") . "  = " . (int)$this->published)
-            ->set($this->db->quoteName("group_id") . "  = " . (int)$this->group_id)
-            ->where($this->db->quoteName("id") . "  = " . (int)$this->id);
+            ->update($this->db->quoteName('#__gfy_points'))
+            ->set($this->db->quoteName('title') . '  = ' . $this->db->quote($this->title))
+            ->set($this->db->quoteName('abbr') . '  = ' . $this->db->quote($this->abbr))
+            ->set($this->db->quoteName('note') . '  = ' . $note)
+            ->set($this->db->quoteName('published') . '  = ' . (int)$this->published)
+            ->set($this->db->quoteName('group_id') . '  = ' . (int)$this->group_id)
+            ->where($this->db->quoteName('id') . '  = ' . (int)$this->id);
 
         $this->db->setQuery($query);
         $this->db->execute();
@@ -165,14 +123,14 @@ class Points extends Table
         $query = $this->db->getQuery(true);
 
         $query
-            ->insert($this->db->quoteName("#__gfy_points"))
-            ->set($this->db->quoteName("title") . "  = " . $this->db->quote($this->title))
-            ->set($this->db->quoteName("abbr") . "  = " . $this->db->quote($this->abbr))
-            ->set($this->db->quoteName("published") . "  = " . (int)$this->published)
-            ->set($this->db->quoteName("group_id") . "  = " . (int)$this->group_id);
+            ->insert($this->db->quoteName('#__gfy_points'))
+            ->set($this->db->quoteName('title') . '  = ' . $this->db->quote($this->title))
+            ->set($this->db->quoteName('abbr') . '  = ' . $this->db->quote($this->abbr))
+            ->set($this->db->quoteName('published') . '  = ' . (int)$this->published)
+            ->set($this->db->quoteName('group_id') . '  = ' . (int)$this->group_id);
 
-        if (!empty($this->note)) {
-            $query->set($this->db->quoteName("note") . "  = " . $this->db->quote($this->note));
+        if ($this->note !== null and $this->note !== '') {
+            $query->set($this->db->quoteName('note') . '  = ' . $this->db->quote($this->note));
         }
         
         $this->db->setQuery($query);
@@ -187,22 +145,22 @@ class Points extends Table
      * <code>
      * // create object points by abbreviation.
      * $keys = array(
-     *    "abbr" => "P"
+     *    'abbr' => 'P'
      * );
-     * 
+     *
      * $points     = new Gamification\Points\Points(\JFactory::getDbo());
      * $points->load($keys);
-     * 
+     *
      * if (!$points->getId()) {
      * ....
      * }
      * </code>
      *
-     * @return null|integer
+     * @return int
      */
     public function getId()
     {
-        return $this->id;
+        return (int)$this->id;
     }
 
     /**
@@ -211,7 +169,7 @@ class Points extends Table
      * <code>
      * // create object points by abbreviation.
      * $keys = array(
-     *    "abbr" => "P"
+     *    'abbr' => 'P'
      * );
      *
      * $points  = new Gamification\Points\Points(\JFactory::getDbo());
@@ -284,7 +242,7 @@ class Points extends Table
      */
     public function getGroupId()
     {
-        return $this->group_id;
+        return (int)$this->group_id;
     }
 
     /**
@@ -292,10 +250,10 @@ class Points extends Table
      *
      * <code>
      * $pointsId    = 1;
-     * 
+     *
      * $points      = new Gamification\Points\Points(\JFactory::getDbo());
      * $points->load($pointsId);
-     * 
+     *
      * if(!$points->isPublished()) {
      * .....
      * }
@@ -305,6 +263,6 @@ class Points extends Table
      */
     public function isPublished()
     {
-        return (!$this->published) ? false : true;
+        return (bool)$this->published;
     }
 }

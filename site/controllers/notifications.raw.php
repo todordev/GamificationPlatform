@@ -3,7 +3,7 @@
  * @package      Gamification Platform
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2016 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
@@ -25,7 +25,7 @@ class GamificationControllerNotifications extends JControllerLegacy
      * @param    string $prefix The class prefix. Optional.
      * @param    array  $config Configuration array for model. Optional.
      *
-     * @return    object    The model.
+     * @return    GamificationModelNotifications    The model.
      * @since    1.5
      */
     public function getModel($name = 'Notifications', $prefix = 'GamificationModel', $config = array('ignore_request' => false))
@@ -43,22 +43,21 @@ class GamificationControllerNotifications extends JControllerLegacy
         $response = new Prism\Response\Json();
 
         try {
-
             $notifications = new Gamification\Notification\Notifications(JFactory::getDbo());
 
             $options = array(
-                "user_id" => JFactory::getUser()->get("id"),
-                "status"  => Prism\Constants::NOT_READ
+                'user_id' => JFactory::getUser()->get('id'),
+                'status'  => Prism\Constants::NOT_READ
             );
 
             $notRead = $notifications->getNumber($options);
 
         } catch (Exception $e) {
-            JLog::add($e->getMessage());
+            JLog::add($e->getMessage(), JLog::ERROR, 'com_gamification');
             throw new Exception(JText::_('COM_CROWDFUNDING_ERROR_SYSTEM'));
         }
 
-        $data = array("results" => $notRead);
+        $data = array('results' => $notRead);
 
         $response
             ->setData($data)

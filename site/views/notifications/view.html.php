@@ -3,11 +3,9 @@
  * @package      Gamification Platform
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2016 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
-
-use Joomla\String\String;
 
 // no direct access
 defined('_JEXEC') or die;
@@ -38,15 +36,10 @@ class GamificationViewNotifications extends JViewLegacy
 
     protected $pageclass_sfx;
 
-    public function __construct($config)
-    {
-        parent::__construct($config);
-        $this->option = JFactory::getApplication()->input->get("option");
-    }
-
     public function display($tpl = null)
     {
-        // Initialise variables
+        $this->option     = JFactory::getApplication()->input->get('option');
+        
         $this->items      = $this->get('Items');
         $this->state      = $this->get('State');
         $this->params     = $this->state->get('params');
@@ -78,17 +71,17 @@ class GamificationViewNotifications extends JViewLegacy
 
         // Meta keywords
         if ($this->params->get('menu-meta_keywords')) {
-            $this->document->setMetadata('keywords', $this->params->get('menu-meta_keywords'));
+            $this->document->setMetaData('keywords', $this->params->get('menu-meta_keywords'));
         }
 
         if ($this->params->get('robots')) {
-            $this->document->setMetadata('robots', $this->params->get('robots'));
+            $this->document->setMetaData('robots', $this->params->get('robots'));
         }
 
         // Scripts
         JHtml::_('behavior.tooltip');
 
-        $this->document->addScript('media/' . $this->option . '/js/site/' . String::strtolower($this->getName()) . '.js');
+        $this->document->addScript('media/' . $this->option . '/js/site/' . JString::strtolower($this->getName()) . '.js');
     }
 
     private function prepearePageHeading()
@@ -120,9 +113,9 @@ class GamificationViewNotifications extends JViewLegacy
         // Add title before or after Site Name
         if (!$title) {
             $title = $app->get('sitename');
-        } elseif ($app->get('sitename_pagetitles', 0) == 1) {
+        } elseif ((int)$app->get('sitename_pagetitles', 0) === 1) {
             $title = JText::sprintf('JPAGETITLE', $app->get('sitename'), $title);
-        } elseif ($app->get('sitename_pagetitles', 0) == 2) {
+        } elseif ((int)$app->get('sitename_pagetitles', 0) === 2) {
             $title = JText::sprintf('JPAGETITLE', $title, $app->get('sitename'));
         }
 

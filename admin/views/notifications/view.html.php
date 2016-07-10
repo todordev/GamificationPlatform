@@ -3,11 +3,10 @@
  * @package      Gamification Platform
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2016 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
-use Joomla\String\String;
 use Joomla\Registry\Registry;
 
 // no direct access
@@ -39,15 +38,12 @@ class GamificationViewNotifications extends JViewLegacy
     protected $sidebar;
 
     public $filterForm;
-
-    public function __construct($config)
-    {
-        parent::__construct($config);
-        $this->option = JFactory::getApplication()->input->get("option");
-    }
+    public $activeFilters;
 
     public function display($tpl = null)
     {
+        $this->option    = JFactory::getApplication()->input->get('option');
+        
         $this->state      = $this->get('State');
         $this->items      = $this->get('Items');
         $this->pagination = $this->get('Pagination');
@@ -71,9 +67,10 @@ class GamificationViewNotifications extends JViewLegacy
         // Prepare filters
         $this->listOrder = $this->escape($this->state->get('list.ordering'));
         $this->listDirn  = $this->escape($this->state->get('list.direction'));
-        $this->saveOrder = (strcmp($this->listOrder, 'a.ordering') != 0) ? false : true;
+        $this->saveOrder = (strcmp($this->listOrder, 'a.ordering') === 0);
 
         $this->filterForm    = $this->get('FilterForm');
+        $this->activeFilters = $this->get('ActiveFilters');
     }
 
     /**
@@ -96,9 +93,9 @@ class GamificationViewNotifications extends JViewLegacy
         JToolbarHelper::title(JText::_('COM_GAMIFICATION_NOTIFICATIONS_MANAGER'));
         JToolbarHelper::editList('notification.edit');
         JToolbarHelper::divider();
-        JToolbarHelper::deleteList(JText::_("COM_GAMIFICATION_DELETE_ITEMS_QUESTION"), "notifications.delete");
+        JToolbarHelper::deleteList(JText::_('COM_GAMIFICATION_DELETE_ITEMS_QUESTION'), 'notifications.delete');
         JToolbarHelper::divider();
-        JToolbarHelper::custom('notifications.backToDashboard', "dashboard", "", JText::_("COM_GAMIFICATION_DASHBOARD"), false);
+        JToolbarHelper::custom('notifications.backToDashboard', 'dashboard', '', JText::_('COM_GAMIFICATION_DASHBOARD'), false);
     }
 
     /**
@@ -118,6 +115,6 @@ class GamificationViewNotifications extends JViewLegacy
         JHtml::_('behavior.multiselect');
         JHtml::_('formbehavior.chosen', 'select');
 
-        $this->document->addScript('../media/' . $this->option . '/js/admin/'.String::strtolower($this->getName()).'.js');
+        $this->document->addScript('../media/' . $this->option . '/js/admin/'.strtolower($this->getName()).'.js');
     }
 }

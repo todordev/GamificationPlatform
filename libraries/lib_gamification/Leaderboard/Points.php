@@ -3,14 +3,14 @@
  * @package         Gamification
  * @subpackage      Leaderboards
  * @author          Todor Iliev
- * @copyright       Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright       Copyright (C) 2016 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license         GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 namespace Gamification\Leaderboard;
 
 use Joomla\Utilities\ArrayHelper;
-use Prism\Database\ArrayObject;
+use Prism\Database\Collection;
 
 defined('JPATH_PLATFORM') or die;
 
@@ -21,58 +21,49 @@ defined('JPATH_PLATFORM') or die;
  * @package         Gamification
  * @subpackage      Leaderboards
  */
-class Points extends ArrayObject
+class Points extends Collection
 {
     /**
      * Load the data that will be displayed on the leaderboard.
      *
      * <code>
-     *
-     * $keys = array(
-     *
-     * );
-     *
      * $options = array(
      *      "points_id" => 2,
-     *      "sort_direction" => "DESC",
+     *      "order_column" => "a.points",
+     *      "order_direction" => "DESC",
      *      "limit"          => 10
      * );
      *
      * $leaderboard = new Gamification\Leaderboard\Points(JFactory::getDbo());
      * $leaderboard->load($options);
-     *
      * </code>
      *
      * @param array $options
+     *
+     * @throws \RuntimeException
      */
-    public function load($options = array())
+    public function load(array $options = array())
     {
-        $pointsId = ArrayHelper::getValue($options, "points_id");
-
-        $sortDir  = ArrayHelper::getValue($options, "sort_direction", "DESC");
-        $sortDir  = (strcmp("DESC", $sortDir) == 0) ? "DESC" : "ASC";
-
-        $limit = ArrayHelper::getValue($options, "limit", 10, "int");
+        $pointsId       = $this->getOptionId($options, 'points_id');
+        $orderColumn    = $this->getOptionOrderColumn($options, 'a.points_number');
+        $orderDirection = $this->getOptionOrderDirection($options);
+        $limit          = $this->getOptionLimit($options);
 
         // Create a new query object.
         $query = $this->db->getQuery(true);
         $query
             ->select(
-                "a.points, a.user_id, " .
-                "b.title, b.abbr, " .
-                "c.name "
+                'a.points_number, a.user_id, ' .
+                'b.title, b.abbr, ' .
+                'c.name '
             )
-            ->from($this->db->quoteName("#__gfy_userpoints") . ' AS a')
-            ->innerJoin($this->db->quoteName("#__gfy_points") . ' AS b ON a.points_id = b.id')
-            ->innerJoin($this->db->quoteName("#__users") . ' AS c ON a.user_id = c.id')
-            ->where("a.points_id = " . (int)$pointsId)
-            ->order("a.points " . $sortDir);
+            ->from($this->db->quoteName('#__gfy_userpoints', 'a'))
+            ->innerJoin($this->db->quoteName('#__gfy_points', 'b') . ' ON a.points_id = b.id')
+            ->innerJoin($this->db->quoteName('#__users', 'c') . ' ON a.user_id = c.id')
+            ->where('a.points_id = ' . (int)$pointsId)
+            ->order($this->db->quoteName($orderColumn) . ' ' . $orderDirection);
 
         $this->db->setQuery($query, 0, $limit);
-        $results = $this->db->loadObjectList();
-
-        if (!empty($results)) {
-            $this->items = $results;
-        }
+        $this->items = (array)$this->db->loadObjectList();
     }
 }

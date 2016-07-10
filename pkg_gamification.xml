@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<extension type="package" version="3.4" method="upgrade">
+<extension type="package" version="3.5" method="upgrade">
     <name>Gamification Platform Package</name>
     <packagename>gamification</packagename>
     <author>Todor Iliev</author>
     <authorEmail>todor@itprism.com</authorEmail>
     <authorUrl>http://itprism.com</authorUrl>
-    <copyright>Copyright (C) 2015 Todor Iliev ( ITPrism.com )</copyright>
-    <license>http://www.gnu.org/licenses/gpl-3.0.en.html</license>
-    <version>2.0</version>
-    <creationDate>31 August, 2015</creationDate>
+    <copyright>Copyright (C) 2016 Todor Iliev ( ITPrism.com )</copyright>
+    <license>http://www.gnu.org/licenses/gpl-3.0.en.html GNU/GPLv3</license>
+    <version>2.1</version>
+    <creationDate>10 July, 2016</creationDate>
     <url>http://itprism.com</url>
     <packager>Todor Iliev</packager>
     <packagerurl>http://itprism.com</packagerurl>

@@ -3,7 +3,7 @@
  * @package      Gamification Platform
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2016 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
@@ -46,7 +46,7 @@ class GamificationModelGroup extends JModelAdmin
     {
         // Get the form.
         $form = $this->loadForm($this->option . '.group', 'group', array('control' => 'jform', 'load_data' => $loadData));
-        if (empty($form)) {
+        if (!$form) {
             return false;
         }
 
@@ -63,7 +63,7 @@ class GamificationModelGroup extends JModelAdmin
     {
         // Check the session for previously entered form data.
         $data = JFactory::getApplication()->getUserState($this->option . '.edit.group.data', array());
-        if (empty($data)) {
+        if (!$data) {
             $data = $this->getItem();
         }
 
@@ -79,19 +79,19 @@ class GamificationModelGroup extends JModelAdmin
      */
     public function save($data)
     {
-        $id   = Joomla\Utilities\ArrayHelper::getValue($data, "id");
-        $name = Joomla\Utilities\ArrayHelper::getValue($data, "name");
-        $note = Joomla\Utilities\ArrayHelper::getValue($data, "note");
+        $id   = Joomla\Utilities\ArrayHelper::getValue($data, 'id');
+        $name = Joomla\Utilities\ArrayHelper::getValue($data, 'name');
+        $note = Joomla\Utilities\ArrayHelper::getValue($data, 'note');
 
         // Load a record from the database
         $row = $this->getTable();
         $row->load($id);
 
-        $row->set("name", $name);
-        $row->set("note", $note);
+        $row->set('name', $name);
+        $row->set('note', $note);
 
         $row->store();
 
-        return $row->get("id");
+        return $row->get('id');
     }
 }

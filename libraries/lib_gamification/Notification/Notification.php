@@ -3,7 +3,7 @@
  * @package         Gamification
  * @subpackage      Notifications
  * @author          Todor Iliev
- * @copyright       Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright       Copyright (C) 2016 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license         GNU General Public License version 3 or later; see LICENSE.txt
  */
 
@@ -30,7 +30,7 @@ class Notification extends Table
     protected $id;
 
     protected $title;
-    protected $content = "";
+    protected $content = '';
     protected $image;
     protected $url;
     protected $created;
@@ -48,29 +48,31 @@ class Notification extends Table
      *
      * @param int|array $keys
      * @param array $options
+     *
+     * @throws \RuntimeException
      */
-    public function load($keys, $options = array())
+    public function load($keys, array $options = array())
     {
         // Create a new query object.
         $query = $this->db->getQuery(true);
 
         $query
-            ->select("a.id, a.title, a.content, a.image, a.url, a.created, a.status, a.user_id")
-            ->from($this->db->quoteName("#__gfy_notifications", "a"));
+            ->select('a.id, a.title, a.content, a.image, a.url, a.created, a.status, a.user_id')
+            ->from($this->db->quoteName('#__gfy_notifications', 'a'));
 
         // Prepare keys.
         if (is_array($keys)) {
             foreach ($keys as $column => $value) {
-                $query->where($this->db->quoteName("a.".$column) . " = " . $this->db->quote($value));
+                $query->where($this->db->quoteName('a.'.$column) . ' = ' . $this->db->quote($value));
             }
         } else {
-            $query->where("a.id = " . (int)$keys);
+            $query->where('a.id = ' . (int)$keys);
         }
 
         $this->db->setQuery($query);
-        $result = $this->db->loadAssoc();
+        $result = (array)$this->db->loadAssoc();
 
-        if (!empty($result)) { // Set values to variables
+        if (count($result) > 0) {
             $this->bind($result);
         } else {
             $this->init();
@@ -82,22 +84,24 @@ class Notification extends Table
      *
      * <code>
      * $data = array(
-     *        "title" => "...",
-     *        "content" => "...",
-     *        "image"   => "picture.png",
-     *        "url"     => "http://itprism.com/",
-     *        "user_id" => 1
+     *        'title' => '...',
+     *        'content' => '...',
+     *        'image'   => 'picture.png',
+     *        'url'     => 'http://itprism.com/',
+     *        'user_id' => 1
      * );
      *
      * $notification   = new Gamification\Notification\Notification(\JFactory::getDbo());
      * $notification->bind($data);
      * $notification->store();
      * </code>
+     *
+     * @throws \InvalidArgumentException
      */
     public function store()
     {
         if (!$this->user_id) {
-            throw new \InvalidArgumentException("Invalid user id");
+            throw new \InvalidArgumentException('Invalid user id');
         }
 
         if (!$this->id) {
@@ -117,14 +121,14 @@ class Notification extends Table
         $query = $this->db->getQuery(true);
 
         $query
-            ->update($this->db->quoteName("#__gfy_notifications"))
-            ->set($this->db->quoteName("content") . " = " . $this->db->quote($this->content))
-            ->set($this->db->quoteName("title") . " = " . $title)
-            ->set($this->db->quoteName("image") . " = " . $image)
-            ->set($this->db->quoteName("url") . " = " . $url)
-            ->set($this->db->quoteName("status") . " = " . (int)$this->status)
-            ->set($this->db->quoteName("user_id") . " = " . (int)$this->user_id)
-            ->where($this->db->quoteName("id") . " = " . (int)$this->id);
+            ->update($this->db->quoteName('#__gfy_notifications'))
+            ->set($this->db->quoteName('content') . ' = ' . $this->db->quote($this->content))
+            ->set($this->db->quoteName('title') . ' = ' . $title)
+            ->set($this->db->quoteName('image') . ' = ' . $image)
+            ->set($this->db->quoteName('url') . ' = ' . $url)
+            ->set($this->db->quoteName('status') . ' = ' . (int)$this->status)
+            ->set($this->db->quoteName('user_id') . ' = ' . (int)$this->user_id)
+            ->where($this->db->quoteName('id') . ' = ' . (int)$this->id);
 
         $this->db->setQuery($query);
         $this->db->execute();
@@ -142,22 +146,22 @@ class Notification extends Table
         $query = $this->db->getQuery(true);
 
         $query
-            ->insert($this->db->quoteName("#__gfy_notifications"))
-            ->set($this->db->quoteName("content") . " = " . $this->db->quote($this->content))
-            ->set($this->db->quoteName("created") . " = " . $this->db->quote($this->created))
-            ->set($this->db->quoteName("status") . " = " . (int)$this->status)
-            ->set($this->db->quoteName("user_id") . " = " . (int)$this->user_id);
+            ->insert($this->db->quoteName('#__gfy_notifications'))
+            ->set($this->db->quoteName('content') . ' = ' . $this->db->quote($this->content))
+            ->set($this->db->quoteName('created') . ' = ' . $this->db->quote($this->created))
+            ->set($this->db->quoteName('status') . ' = ' . (int)$this->status)
+            ->set($this->db->quoteName('user_id') . ' = ' . (int)$this->user_id);
 
-        if (!empty($this->title)) {
-            $query->set($this->db->quoteName("title") . " = " . $this->db->quote($this->title));
+        if ($this->title !== null and $this->title !== '') {
+            $query->set($this->db->quoteName('title') . ' = ' . $this->db->quote($this->title));
         }
 
-        if (!empty($this->image)) {
-            $query->set($this->db->quoteName("image") . " = " . $this->db->quote($this->image));
+        if ($this->image !== null and $this->image !== '') {
+            $query->set($this->db->quoteName('image') . ' = ' . $this->db->quote($this->image));
         }
 
-        if (!empty($this->url)) {
-            $query->set($this->db->quoteName("url") . " = " . $this->db->quote($this->url));
+        if ($this->url !== null and $this->url !== '') {
+            $query->set($this->db->quoteName('url') . ' = ' . $this->db->quote($this->url));
         }
 
         $this->db->setQuery($query);
@@ -177,14 +181,16 @@ class Notification extends Table
      *
      * $notification->remove();
      * </code>
+     *
+     * @throws \RuntimeException
      */
     public function remove()
     {
-        if (!empty($this->id)) {
+        if (is_numeric($this->id) and $this->id > 0) {
             $query = $this->db->getQuery(true);
             $query
-                ->delete($this->db->quoteName("#__gfy_notifications"))
-                ->where($this->db->quoteName("id") . " = " . (int)$this->id);
+                ->delete($this->db->quoteName('#__gfy_notifications'))
+                ->where($this->db->quoteName('id') . ' = ' . (int)$this->id);
 
             $this->db->setQuery($query);
             $this->db->execute();
@@ -198,7 +204,7 @@ class Notification extends Table
      * and send it to user.
      *
      * <code>
-     * $content   = "......";
+     * $content   = '......';
      * $userId = 1;
      *
      * $notification   = new Gamification\Notification\Notification(\JFactory::getDbo());
@@ -206,14 +212,16 @@ class Notification extends Table
      * </code>
      *
      * @param string $content The message, that will be send to a user.
-     * @param integer $userId This is the receiver of the message.
+     * @param int $userId This is the receiver of the message.
+     *
+     * @throws \InvalidArgumentException
      */
     public function send($content = null, $userId = null)
     {
-        if (!empty($content)) {
+        if ($content !== null) {
             $this->setContent($content);
         }
-        if (!empty($userId)) {
+        if ($userId !== null and is_numeric($userId)) {
             $this->setUserId($userId);
         }
 
@@ -258,7 +266,7 @@ class Notification extends Table
      */
     public function setId($id)
     {
-        $this->id = $id;
+        $this->id = (int)$id;
     }
 
     /**
@@ -285,7 +293,7 @@ class Notification extends Table
      * Set the title of the object where the URL points.
      *
      * <code>
-     * $title = "....";
+     * $title = '....';
      *
      * $notification   = new Gamification\Notification\Notification(\JFactory::getDbo());
      * $notification->setTitle($title);
@@ -302,7 +310,7 @@ class Notification extends Table
      * Set the content of the notification.
      *
      * <code>
-     * $content = "....";
+     * $content = '....';
      *
      * $notification   = new Gamification\Notification\Notification(\JFactory::getDbo());
      * $notification->setContent($content);
@@ -358,7 +366,7 @@ class Notification extends Table
      *
      * <code>
      * $notification   = new Gamification\Notification\Notification(\JFactory::getDbo());
-     * $notification->setImage("http://mydomain.com/images/picture.png");
+     * $notification->setImage('http://mydomain.com/images/picture.png');
      * </code>
      *
      * @param string $image
@@ -392,7 +400,7 @@ class Notification extends Table
      *
      * <code>
      * $notification   = new Gamification\Notification\Notification(\JFactory::getDbo());
-     * $notification->setUrl("http://mydomain.com/");
+     * $notification->setUrl('http://mydomain.com/');
      * </code>
      *
      * @param string $url
@@ -436,7 +444,7 @@ class Notification extends Table
      */
     public function setUserId($userId)
     {
-        $this->user_id = $userId;
+        $this->user_id = (int)$userId;
     }
 
     /**
@@ -492,11 +500,14 @@ class Notification extends Table
      * </code>
      *
      * @param int $status Status of a notification (0 - Not Read, 1 - Read, -2 - trashed )
+     *
+     * @throws \InvalidArgumentException
+     * @throws \RuntimeException
      */
     public function updateStatus($status)
     {
         if (!$this->id or !$this->user_id) {
-            throw new InvalidArgumentException(\JText::_("LIB_GAMIFICATION_ERROR_INVALID_PARAMETER_ID_OR_USER_ID"));
+            throw new \InvalidArgumentException(\JText::_('LIB_GAMIFICATION_ERROR_INVALID_PARAMETER_ID_OR_USER_ID'));
         }
 
         $this->status = (int)$status;
@@ -504,10 +515,10 @@ class Notification extends Table
         $query = $this->db->getQuery(true);
 
         $query
-            ->update($this->db->quoteName("#__gfy_notifications"))
-            ->set($this->db->quoteName("status") . "=" . (int)$this->status)
-            ->where($this->db->quoteName("id") . "=" . (int)$this->id)
-            ->where($this->db->quoteName("user_id") . "=" . (int)$this->user_id);
+            ->update($this->db->quoteName('#__gfy_notifications'))
+            ->set($this->db->quoteName('status') . '=' . (int)$this->status)
+            ->where($this->db->quoteName('id') . '=' . (int)$this->id)
+            ->where($this->db->quoteName('user_id') . '=' . (int)$this->user_id);
 
         $this->db->setQuery($query);
         $this->db->execute();
@@ -516,7 +527,7 @@ class Notification extends Table
     protected function init()
     {
         $date          = new \JDate();
-        $this->created = $date->format("Y-m-d H:i:s");
+        $this->created = $date->format('Y-m-d H:i:s');
         $this->status  = 0;
         $this->id      = null;
     }

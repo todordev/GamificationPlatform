@@ -3,7 +3,7 @@
  * @package      Gamification Platform
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2016 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
@@ -22,6 +22,13 @@ defined('_JEXEC') or die;
  */
 class GamificationControllerLevel extends Backend
 {
+    /**
+     * @param string $name
+     * @param string $prefix
+     * @param array  $config
+     *
+     * @return GamificationModelLevel
+     */
     public function getModel($name = 'Level', $prefix = 'GamificationModel', $config = array('ignore_request' => true))
     {
         $model = parent::getModel($name, $prefix, $config);
@@ -33,11 +40,11 @@ class GamificationControllerLevel extends Backend
         JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
         $data   = $this->input->post->get('jform', array(), 'array');
-        $itemId = ArrayHelper::getValue($data, "id");
+        $itemId = ArrayHelper::getValue($data, 'id');
 
         $redirectData = array(
-            "task" => $this->getTask(),
-            "id"   => $itemId
+            'task' => $this->getTask(),
+            'id'   => $itemId
         );
 
         $model = $this->getModel();
@@ -47,7 +54,7 @@ class GamificationControllerLevel extends Backend
         /** @var $form JForm */
 
         if (!$form) {
-            throw new Exception(JText::_("COM_GAMIFICATION_ERROR_FORM_CANNOT_BE_LOADED"), 500);
+            throw new Exception(JText::_('COM_GAMIFICATION_ERROR_FORM_CANNOT_BE_LOADED'));
         }
 
         // Validate the form
@@ -61,13 +68,11 @@ class GamificationControllerLevel extends Backend
         }
 
         try {
-
             $itemId = $model->save($validData);
-            $redirectData["id"] = $itemId;
+            $redirectData['id'] = $itemId;
 
         } catch (Exception $e) {
-
-            JLog::add($e->getMessage());
+            JLog::add($e->getMessage(), JLog::ERROR, 'com_gamification');
             throw new Exception(JText::_('COM_GAMIFICATION_ERROR_SYSTEM'));
 
         }

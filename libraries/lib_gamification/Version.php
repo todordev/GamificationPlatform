@@ -3,7 +3,7 @@
  * @package      Gamification
  * @subpackage   Version
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2016 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
@@ -38,7 +38,7 @@ class Version
      *
      * @var integer
      */
-    public $devLevel = '0';
+    public $devLevel = '1';
 
     /**
      * Release Type
@@ -59,7 +59,7 @@ class Version
      *
      * @var string
      */
-    public $releaseDate = '31 August, 2015';
+    public $releaseDate = '10 July, 2016';
 
     /**
      * A link to license page.
@@ -73,7 +73,7 @@ class Version
      *
      * @var string
      */
-    public $copyright = '&copy; 2015 ITPrism. All rights reserved.';
+    public $copyright = '&copy; 2016 ITPrism. All rights reserved.';
 
     /**
      * URL to extension page.
@@ -101,7 +101,7 @@ class Version
      *
      * @var string
      */
-    public $requiredPrismVersion = '1.3';
+    public $requiredPrismVersion = '1.14';
 
     /**
      *  Build long format of the version text.

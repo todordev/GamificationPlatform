@@ -3,29 +3,29 @@
  * @package      Gamification Platform
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2016 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 $statuses = array(
     0 => array(
-        "task" => "notifications.read",
-        "text" => JText::_("COM_GAMIFICATION_NOT_READ"),
-        "active_title" => JText::_("COM_GAMIFICATION_MARK_AS_READ"),
-        "inactive_title" => JText::_("COM_GAMIFICATION_MARK_AS_NOT_READ"),
-        "tip" => true,
-        "active_class" => "unpublish",
-        "inactive_class" => "publish",
+        'task' => 'notifications.read',
+        'text' => JText::_('COM_GAMIFICATION_NOT_READ'),
+        'active_title' => JText::_('COM_GAMIFICATION_MARK_AS_READ'),
+        'inactive_title' => JText::_('COM_GAMIFICATION_MARK_AS_NOT_READ'),
+        'tip' => true,
+        'active_class' => 'unpublish',
+        'inactive_class' => 'publish',
     ),
 
     1 => array(
-        "task" => "notifications.notread",
-        "text" => JText::_("COM_GAMIFICATION_READ"),
-        "active_title" => JText::_("COM_GAMIFICATION_MARK_AS_NOT_READ"),
-        "inactive_title" => JText::_("COM_GAMIFICATION_MARK_AS_READ"),
-        "tip" => true,
-        "active_class" => "publish",
-        "inactive_class" => "unpublish",
+        'task' => 'notifications.notread',
+        'text' => JText::_('COM_GAMIFICATION_READ'),
+        'active_title' => JText::_('COM_GAMIFICATION_MARK_AS_NOT_READ'),
+        'inactive_title' => JText::_('COM_GAMIFICATION_MARK_AS_READ'),
+        'tip' => true,
+        'active_class' => 'publish',
+        'inactive_class' => 'unpublish',
     )
 );
 
@@ -41,11 +41,11 @@ defined('_JEXEC') or die;
             <?php echo JHtml::_('jgrid.state', $statuses, $item->status, $i);?>
         </td>
         <td class="title">
-            <a href="<?php echo JRoute::_("index.php?option=com_gamification&view=notification&layout=edit&id=" . (int)$item->id); ?>">
+            <a href="<?php echo JRoute::_('index.php?option=com_gamification&view=notification&layout=edit&id=' . (int)$item->id); ?>">
                 <?php echo JHtmlString::truncate(strip_tags($item->content), 64); ?>
             </a>
-            <?php echo JHtml::_('gamification.iconLink', $item->url, $item->title);?>
-            <?php echo JHtml::_('gamification.iconPicture', $item->image);?>
+            <?php echo JHtml::_('gamificationbackend.iconLink', $item->url, $item->title);?>
+            <?php echo JHtml::_('gamificationbackend.iconPicture', $item->image);?>
         </td>
         <td class="hidden-phone">
             <?php echo $this->escape($item->name); ?>

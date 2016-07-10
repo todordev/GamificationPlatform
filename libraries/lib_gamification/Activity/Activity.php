@@ -3,7 +3,7 @@
  * @package         Gamification
  * @subpackage      Activities
  * @author          Todor Iliev
- * @copyright       Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright       Copyright (C) 2016 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license         GNU General Public License version 3 or later; see LICENSE.txt
  */
 
@@ -24,7 +24,7 @@ class Activity extends Table
     /**
      * Activity ID.
      *
-     * @var integer
+     * @var int
      */
     protected $id;
 
@@ -47,31 +47,30 @@ class Activity extends Table
      *
      * @param int|array $keys
      * @param array $options
+     *
+     * @throws \RuntimeException
      */
-    public function load($keys, $options = array())
+    public function load($keys, array $options = array())
     {
-        // Create a new query object.
         $query = $this->db->getQuery(true);
 
         $query
-            ->select("a.id, a.title, a.content, a.image, a.url, a.created, a.user_id")
-            ->from($this->db->quoteName("#__gfy_activities", "a"));
+            ->select('a.id, a.title, a.content, a.image, a.url, a.created, a.user_id')
+            ->from($this->db->quoteName('#__gfy_activities', 'a'));
 
         // Prepare keys.
         if (is_array($keys)) {
             foreach ($keys as $column => $value) {
-                $query->where($this->db->quoteName("a.".$column) . " = " . $this->db->quote($value));
+                $query->where($this->db->quoteName('a.'.$column) . ' = ' . $this->db->quote($value));
             }
         } else {
-            $query->where("a.id = " . (int)$keys);
+            $query->where('a.id = ' . (int)$keys);
         }
 
         $this->db->setQuery($query);
         $result = (array)$this->db->loadAssoc();
 
-        if (!empty($result)) {
-            $this->bind($result);
-        }
+        $this->bind($result);
     }
 
     /**
@@ -79,22 +78,24 @@ class Activity extends Table
      *
      * <code>
      * $data = array(
-     *        "title"     => "......",
-     *        "content"   => "......",
-     *        "image"     => "picture.png",
-     *        "url"       => "http://itprism.com/",
-     *        "user_id"   => 1
+     *        'title'     => '......',
+     *        'content'   => '......',
+     *        'image'     => 'picture.png',
+     *        'url'       => 'http://itprism.com/',
+     *        'user_id'   => 1
      * );
      *
      * $activity   = new Gamification\Activity\Activity(\JFactory::getDbo());
      * $activity->bind($data);
      * $activity->store();
      * </code>
+     *
+     * @throws \InvalidArgumentException
      */
     public function store()
     {
         if (!$this->user_id) {
-            throw new \InvalidArgumentException("Invalid user id");
+            throw new \InvalidArgumentException('Invalid user ID');
         }
 
         if (!$this->id) {
@@ -108,19 +109,19 @@ class Activity extends Table
     {
         $title = (!$this->title) ? null : $this->db->quote($this->title);
         $image = (!$this->image) ? null : $this->db->quote($this->image);
-        $url = (!$this->url) ? null : $this->db->quote($this->url);
+        $url   = (!$this->url) ? null : $this->db->quote($this->url);
 
         // Create a new query object.
         $query = $this->db->getQuery(true);
 
         $query
-            ->update($this->db->quoteName("#__gfy_activities"))
-            ->set($this->db->quoteName("title") . " = " . $this->db->quote($title))
-            ->set($this->db->quoteName("content") . " = " . $this->db->quote($this->content))
-            ->set($this->db->quoteName("image") . " = " . $image)
-            ->set($this->db->quoteName("url") . " = " . $url)
-            ->set($this->db->quoteName("user_id") . " = " . (int)$this->user_id)
-            ->where($this->db->quoteName("id") . " = " . (int)$this->id);
+            ->update($this->db->quoteName('#__gfy_activities'))
+            ->set($this->db->quoteName('title') . ' = ' . $this->db->quote($title))
+            ->set($this->db->quoteName('content') . ' = ' . $this->db->quote($this->content))
+            ->set($this->db->quoteName('image') . ' = ' . $image)
+            ->set($this->db->quoteName('url') . ' = ' . $url)
+            ->set($this->db->quoteName('user_id') . ' = ' . (int)$this->user_id)
+            ->where($this->db->quoteName('id') . ' = ' . (int)$this->id);
 
         $this->db->setQuery($query);
         $this->db->execute();
@@ -138,21 +139,21 @@ class Activity extends Table
         $query = $this->db->getQuery(true);
 
         $query
-            ->insert($this->db->quoteName("#__gfy_activities"))
-            ->set($this->db->quoteName("content") . " = " . $this->db->quote($this->content))
-            ->set($this->db->quoteName("created") . " = " . $this->db->quote($this->created))
-            ->set($this->db->quoteName("user_id") . " = " . (int)$this->user_id);
+            ->insert($this->db->quoteName('#__gfy_activities'))
+            ->set($this->db->quoteName('content') . ' = ' . $this->db->quote($this->content))
+            ->set($this->db->quoteName('created') . ' = ' . $this->db->quote($this->created))
+            ->set($this->db->quoteName('user_id') . ' = ' . (int)$this->user_id);
 
-        if (!empty($this->title)) {
-            $query->set($this->db->quoteName("title") . " = " . $this->db->quote($this->title));
+        if ($this->title !== null and $this->title !== '') {
+            $query->set($this->db->quoteName('title') . ' = ' . $this->db->quote($this->title));
         }
 
-        if (!empty($this->image)) {
-            $query->set($this->db->quoteName("image") . " = " . $this->db->quote($this->image));
+        if ($this->image !== null and $this->image !== '') {
+            $query->set($this->db->quoteName('image') . ' = ' . $this->db->quote($this->image));
         }
 
-        if (!empty($this->url)) {
-            $query->set($this->db->quoteName("url") . " = " . $this->db->quote($this->url));
+        if ($this->url !== null and $this->url !== '') {
+            $query->set($this->db->quoteName('url') . ' = ' . $this->db->quote($this->url));
         }
 
         $this->db->setQuery($query);
@@ -196,7 +197,7 @@ class Activity extends Table
      *
      * <code>
      * $activity   = new Gamification\Activity\Activity(\JFactory::getDbo());
-     * $activity->setImage("http://mydomain.com/images/picture.png");
+     * $activity->setImage('http://mydomain.com/images/picture.png');
      * </code>
      *
      * @param string $image
@@ -211,7 +212,7 @@ class Activity extends Table
      *
      * <code>
      * $activity   = new Gamification\Activity\Activity(\JFactory::getDbo());
-     * $activity->setUrl("http://mydomain.com/");
+     * $activity->setUrl('http://mydomain.com/');
      * </code>
      *
      * @param string $url
@@ -243,8 +244,8 @@ class Activity extends Table
      *
      * <code>
      * $keys = array(
-     *     "user_id" => 1,
-     *     "created" => 2015-01-01
+     *     'user_id' => 1,
+     *     'created' => 2015-01-01
      * );
      *
      * $activity   = new Gamification\Activity\Activity(\JFactory::getDbo());

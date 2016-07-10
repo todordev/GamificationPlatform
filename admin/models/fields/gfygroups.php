@@ -3,13 +3,13 @@
  * @package      Gamification Platform
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2016 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 defined('JPATH_BASE') or die;
 
-jimport("Prism.init");
-jimport("Gamification.init");
+jimport('Prism.init');
+jimport('Gamification.init');
 
 JFormHelper::loadFieldClass('list');
 
@@ -41,7 +41,7 @@ class JFormFieldGfyGroups extends JFormFieldList
         $groups = new Gamification\Group\Groups(JFactory::getDbo());
         $groups->load();
 
-        $options = $groups->toOptions("id", "name");
+        $options = $groups->toOptions('id', 'name');
 
         // Merge any additional options in the XML definition.
         $options = array_merge(parent::getOptions(), $options);

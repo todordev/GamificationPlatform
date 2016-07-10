@@ -3,7 +3,7 @@
  * @package      Gamification Platform
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2016 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
@@ -49,7 +49,7 @@ class GamificationModelNotification extends JModelItem
 
         $storedId = $this->getStoreId($id);
 
-        if (!isset($this->item[$storedId])) {
+        if (!array_key_exists($storedId, $this->item)) {
 
             $this->item[$storedId] = null;
 
@@ -57,11 +57,10 @@ class GamificationModelNotification extends JModelItem
             $table = JTable::getInstance('Notification', 'GamificationTable');
             /** @var $table GamificationTableNotification */
 
-            $keys = array("id" => $id, "user_id" => $userId);
+            $keys = array('id' => $id, 'user_id' => $userId);
 
             // Attempt to load the row.
             if ($table->load($keys)) {
-
                 $properties = $table->getProperties();
                 $properties = ArrayHelper::toObject($properties);
 
@@ -70,6 +69,6 @@ class GamificationModelNotification extends JModelItem
 
         }
 
-        return (!isset($this->item[$storedId])) ? null : $this->item[$storedId];
+        return $this->item[$storedId];
     }
 }

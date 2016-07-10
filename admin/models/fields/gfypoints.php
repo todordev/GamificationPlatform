@@ -3,13 +3,13 @@
  * @package      Gamification Platform
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2016 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 defined('JPATH_BASE') or die;
 
-jimport("Prism.init");
-jimport("Gamification.init");
+jimport('Prism.init');
+jimport('Gamification.init');
 
 JFormHelper::loadFieldClass('list');
 
@@ -33,17 +33,19 @@ class JFormFieldGfyPoints extends JFormFieldList
     /**
      * Method to get the field options.
      *
+     * @throws  \RuntimeException
+     * @throws  \InvalidArgumentException
+     *
      * @return  array   The field option objects.
-     * @since   1.6
      */
     protected function getOptions()
     {
-        $pointsItems = new Gamification\Points\PointsItems(JFactory::getDbo());
+        $pointsItems = new Gamification\Points\PointsCollection(JFactory::getDbo());
         $pointsItems->load();
 
-        $options = $pointsItems->toOptions("id", "title", "abbr");
+        $options = $pointsItems->toOptions('id', 'title', 'abbr');
 
-        $displayRoot = (!empty($this->element["display_root"])) ? true : false;
+        $displayRoot = (!empty($this->element['display_root'])) ? true : false;
         if ($displayRoot) {
             array_unshift($options, JHtml::_('select.option', '', JText::_('COM_GAMIFICATION_SELECT_POINTS'), 'value', 'text'));
         }

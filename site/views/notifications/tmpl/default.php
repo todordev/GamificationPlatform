@@ -3,7 +3,7 @@
  * @package      Gamification
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2016 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
@@ -15,13 +15,13 @@ defined('_JEXEC') or die;?>
     <?php } ?>
 
     <?php foreach ($this->items as $item) {
-        $notReadClass = "";
+        $notReadClass = '';
         if (!$item->status) {
-            $notReadClass = "gfy-note-notread";
+            $notReadClass = 'gfy-note-notread';
         }
         ?>
         <div class="gfy-notification <?php echo $notReadClass; ?> row" id="js-gfy-note-element<?php echo $item->id; ?>">
-            <div class="col-xs-10">
+            <div class="col-md-10 col-xs-7">
                 <div class="media">
                     <?php if (!empty($item->image)) { ?>
                         <div class="media-left">
@@ -33,12 +33,12 @@ defined('_JEXEC') or die;?>
                     </div>
                 </div>
             </div>
-            <div class="col-xs-1">
-                <img src="<?php echo (!$item->status) ? "media/com_gamification/images/status_active.png" : "media/com_gamification/images/status_inactive.png"; ?>"/>
+            <div class="col-md-1 col-xs-1">
+                <img src="<?php echo (!$item->status) ? 'media/com_gamification/images/status_active.png' : 'media/com_gamification/images/status_inactive.png'; ?>"/>
             </div>
-            <div class="col-xs-1">
+            <div class="col-md-1 col-xs-3">
                 <button data-element-id="<?php echo (int)$item->id; ?>" class="btn btn-danger js-gfy-btn-remove-notification">
-                    <i class="glyphicon glyphicon-trash"></i>
+                    <i class="fa fa-trash"></i>
                 </button>
             </div>
         </div>

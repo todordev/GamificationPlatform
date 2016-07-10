@@ -9,7 +9,7 @@
                filter="trim"
                required="true"/>
 
-        <field name="points" type="text"
+        <field name="points_number" type="text"
                label="COM_GAMIFICATION_POINTS"
                description="COM_GAMIFICATION_LEVEL_POINTS_DESC"
                filter="int"

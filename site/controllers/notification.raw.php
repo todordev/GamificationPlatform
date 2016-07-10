@@ -3,7 +3,7 @@
  * @package      Gamification Platform
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2016 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
@@ -39,8 +39,8 @@ class GamificationControllerNotification extends JControllerLegacy
      */
     public function remove()
     {
-        $itemId = $this->input->getUint("id");
-        $userId = JFactory::getUser()->get("id");
+        $itemId = $this->input->getUint('id');
+        $userId = JFactory::getUser()->get('id');
 
         $response = new Prism\Response\Json();
 
@@ -56,13 +56,12 @@ class GamificationControllerNotification extends JControllerLegacy
         }
 
         try {
-
             $notification = new Gamification\Notification\Notification(JFactory::getDbo());
             $notification->load($itemId);
             $notification->remove();
 
         } catch (Exception $e) {
-            JLog::add($e->getMessage());
+            JLog::add($e->getMessage(), JLog::ERROR, 'com_gamification');
             throw new Exception(JText::_('COM_GAMIFICATION_ERROR_SYSTEM'));
         }
 

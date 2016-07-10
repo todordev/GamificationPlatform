@@ -1,27 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
     <fieldset>
-
-        <field name="title" type="text"
+        <field name="title" type="text" class="input-xxlarge"
                label="COM_GAMIFICATION_TITLE"
                description="COM_GAMIFICATION_RANK_TITLE_DESC"
-               size="40"
                filter="trim"
                required="true"/>
-
-        <field name="points" type="text"
-               label="COM_GAMIFICATION_POINTS"
-               description="COM_GAMIFICATION_RANK_POINTS_DESC"
-               filter="int"
-                />
-
-        <field name="points_id" type="gfypoints"
-               label="COM_GAMIFICATION_POINTS_TYPE"
-               description="COM_GAMIFICATION_RANK_POINTS_TYPE_DESC"
-               filter="int"
-                >
-            <option value="0">COM_GAMIFICATION_SELECT_POINTS_TYPE</option>
-        </field>
 
         <field name="image" type="file"
                label="COM_GAMIFICATION_IMAGE"
@@ -47,13 +31,7 @@
             <option value="0">JUNPUBLISHED</option>
         </field>
 
-        <field name="note" type="textarea"
-               label="COM_GAMIFICATION_NOTE"
-               description="COM_GAMIFICATION_RANK_NOTE_DESC"
-               filter="trim"
-                />
-
-        <field name="description" type="textarea"
+        <field name="description" type="textarea" class="input-xxlarge"
                label="COM_GAMIFICATION_DESCRIPTION"
                description="COM_GAMIFICATION_DESCRIPTION_DESC"
                filter="trim"
@@ -65,6 +43,33 @@
                readonly="true"
                default="0"
                 />
-
     </fieldset>
+
+    <fields label="JGLOBAL_LABEL_ADVANCED">
+        <field name="points_number" type="text"
+               label="COM_GAMIFICATION_POINTS"
+               description="COM_GAMIFICATION_FIELD_POINTS_DESC"
+               filter="int"
+        />
+
+        <field name="points_id" type="gfypoints"
+               label="COM_GAMIFICATION_POINTS_TYPE"
+               description="COM_GAMIFICATION_FIELD_POINTS_TYPE_DESC"
+               filter="int"
+        >
+            <option value="0">COM_GAMIFICATION_SELECT_POINTS_TYPE</option>
+        </field>
+
+        <field name="activity_text" type="textarea" class="input-xxlarge"
+               label="COM_GAMIFICATION_ACTIVITY_TEXT"
+               description="COM_GAMIFICATION_FIELD_ACTIVITY_TEXT_DESC"
+               filter="trim"
+        />
+
+        <field name="note" type="textarea" class="input-xxlarge"
+               label="COM_GAMIFICATION_NOTE"
+               description="COM_GAMIFICATION_FIELD_NOTE_DESC"
+               filter="trim"
+        />
+    </fields>
 </form>

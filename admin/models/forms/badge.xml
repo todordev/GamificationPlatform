@@ -1,44 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
     <fieldset>
-
-        <field name="title" type="text"
+        <field name="title" type="text" class="input-xxlarge"
                label="COM_GAMIFICATION_TITLE"
-               description="COM_GAMIFICATION_BADGE_TITLE_DESC"
-               size="40"
+               description="COM_GAMIFICATION_FIELD_TITLE_DESC"
                filter="trim"
                required="true"
                 />
 
-        <field name="points" type="text"
-               label="COM_GAMIFICATION_POINTS"
-               description="COM_GAMIFICATION_BADGE_POINTS_DESC"
-               filter="int"
-                />
-
-        <field name="points_id" type="gfypoints"
-               label="COM_GAMIFICATION_POINTS_TYPE"
-               description="COM_GAMIFICATION_BADGE_POINTS_TYPE_DESC"
-               filter="int"
-                >
-            <option value="0">COM_GAMIFICATION_SELECT_POINTS_TYPE</option>
-        </field>
-
         <field name="image" type="file"
                label="COM_GAMIFICATION_IMAGE"
-               description="COM_GAMIFICATION_BADGE_IMAGE_DESC"
-                />
-
-        <field name="title" type="text"
-               label="COM_GAMIFICATION_NOTE"
-               description="COM_GAMIFICATION_NOTE_DESC"
-               size="40"
-               filter="trim"
+               description="COM_GAMIFICATION_FIELD_IMAGE_DESC"
                 />
 
         <field name="group_id" type="gfygroups"
                label="COM_GAMIFICATION_GROUP"
-               description="COM_GAMIFICATION_BADGE_GROUP_DESC"
+               description="COM_GAMIFICATION_FIELD_GROUP_DESC"
                size="1"
                filter="intval"
                required="true"
@@ -55,17 +32,17 @@
             <option value="0">JUNPUBLISHED</option>
         </field>
 
-        <field name="description" type="textarea"
+        <field name="description" type="textarea" class="input-xxlarge"
                label="COM_GAMIFICATION_DESCRIPTION"
-               description="COM_GAMIFICATION_DESCRIPTION_DESC"
+               description="COM_GAMIFICATION_FIELD_DESCRIPTION_DESC"
                filter="trim"
                />
 
-        <field name="note" type="textarea"
-               label="COM_GAMIFICATION_NOTE"
-               description="COM_GAMIFICATION_NOTE_DESC"
+        <field name="activity_text" type="textarea" class="input-xxlarge"
+               label="COM_GAMIFICATION_ACTIVITY_TEXT"
+               description="COM_GAMIFICATION_FIELD_ACTIVITY_TEXT_DESC"
                filter="trim"
-                />
+        />
 
         <field name="id" type="text" class="readonly"
                label="JGLOBAL_FIELD_ID_LABEL"
@@ -73,6 +50,73 @@
                readonly="true"
                default="0"
                 />
-
     </fieldset>
+
+    <fields label="JGLOBAL_LABEL_ADVANCED">
+        <field name="points_number" type="text"
+               label="COM_GAMIFICATION_POINTS"
+               description="COM_GAMIFICATION_FIELD_POINTS_DESC"
+               filter="int"
+        />
+
+        <field name="points_id" type="gfypoints"
+               label="COM_GAMIFICATION_POINTS_TYPE"
+               description="COM_GAMIFICATION_FIELD_POINTS_TYPE_DESC"
+               filter="int"
+        >
+            <option value="0">COM_GAMIFICATION_SELECT_POINTS_TYPE</option>
+        </field>
+
+        <field name="activity_text" type="textarea" class="input-xxlarge"
+               label="COM_GAMIFICATION_ACTIVITY_TEXT"
+               description="COM_GAMIFICATION_FIELD_ACTIVITY_TEXT_DESC"
+               filter="trim"
+        />
+
+        <field name="note" type="textarea" class="input-xxlarge"
+               label="COM_GAMIFICATION_NOTE"
+               description="COM_GAMIFICATION_FIELD_NOTE_DESC"
+               filter="trim"
+        />
+    </fields>
+
+    <fields name="params" label="COM_GAMIFICATION_OPTIONS">
+        <field
+                name="url"
+                type="url"
+                validate="url"
+                filter="url"
+                relative="true"
+                label="COM_GAMIFICATION_FIELD_URL_LABEL"
+                description="COM_GAMIFICATION_FIELD_URL_DESC"
+                class="input-xxlarge"
+        />
+        
+        <field name="url_text"
+               type="text"
+               label="COM_GAMIFICATION_FIELD_URL_LINK_TEXT_LABEL"
+               description="COM_GAMIFICATION_FIELD_URL_LINK_TEXT_DESC"
+               class="input-xxlarge"
+        />
+        
+        <field
+                name="url_target"
+                type="list"
+                label="COM_GAMIFICATION_URL_FIELD_BROWSERNAV_LABEL"
+                description="COM_GAMIFICATION_URL_FIELD_BROWSERNAV_DESC"
+                default="0"
+                filter="options"
+        >
+            <option value="0">JBROWSERTARGET_PARENT</option>
+            <option value="1">JBROWSERTARGET_NEW</option>
+            <option value="2">JBROWSERTARGET_POPUP</option>
+        </field>
+    </fields>
+
+    <fields label="COM_GAMIFICATION_CUSTOM_DATA">
+        <field name="custom_data" type="gfycustomdata"
+               label="COM_GAMIFICATION_CUSTOM_DATA"
+               description="COM_GAMIFICATION_FIELD_CUSTOM_DATA_DESC"
+        />
+    </fields>
 </form>

@@ -3,7 +3,7 @@
  * @package      Gamification Platform
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2016 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
@@ -52,12 +52,12 @@ class GamificationModelNotifications extends JModelList
         $params = $app->getParams($this->option);
         $this->setState('params', $params);
 
-        $value = JFactory::getUser()->get("id");
+        $value = JFactory::getUser()->get('id');
         $this->setState('filter.user_id', $value);
 
         // Result limit that comes from notification bar after click on the bell.
-        $value = $app->input->getUint("rl");
-        if (!empty($value)) {
+        $value = $app->input->getUint('rl');
+        if ($value > 0) {
             $this->setState('list.limit', $value);
         }
     }
@@ -105,7 +105,7 @@ class GamificationModelNotifications extends JModelList
                 'a.id, a.content, a.image, a.url, a.created, a.status, a.user_id '
             )
         );
-        $query->from($db->quoteName('#__gfy_notifications', "a"));
+        $query->from($db->quoteName('#__gfy_notifications', 'a'));
 
         // Filter by receiver
         $userId = $this->getState('filter.user_id');

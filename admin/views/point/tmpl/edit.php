@@ -3,7 +3,7 @@
  * @package      Gamification Platform
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2016 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
@@ -15,12 +15,12 @@ defined('_JEXEC') or die;
         <form action="<?php echo JRoute::_('index.php?option=com_gamification'); ?>" method="post" name="adminForm" id="adminForm" class="form-validate form-horizontal">
 
             <fieldset class="adminform">
-                <?php echo $this->form->getControlGroup('title'); ?>
-                <?php echo $this->form->getControlGroup('group_id'); ?>
-                <?php echo $this->form->getControlGroup('abbr'); ?>
-                <?php echo $this->form->getControlGroup('published'); ?>
-                <?php echo $this->form->getControlGroup('note'); ?>
-                <?php echo $this->form->getControlGroup('id'); ?>
+                <?php echo $this->form->renderField('title'); ?>
+                <?php echo $this->form->renderField('group_id'); ?>
+                <?php echo $this->form->renderField('abbr'); ?>
+                <?php echo $this->form->renderField('published'); ?>
+                <?php echo $this->form->renderField('note'); ?>
+                <?php echo $this->form->renderField('id'); ?>
             </fieldset>
 
             <input type="hidden" name="task" value=""/>

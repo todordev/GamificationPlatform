@@ -3,7 +3,7 @@
  * @package      Gamification Platform
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2016 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
@@ -37,14 +37,10 @@ class GamificationViewGroups extends JViewLegacy
 
     protected $sidebar;
 
-    public function __construct($config)
-    {
-        parent::__construct($config);
-        $this->option = JFactory::getApplication()->input->get("option");
-    }
-
     public function display($tpl = null)
     {
+        $this->option     = JFactory::getApplication()->input->get('option');
+        
         $this->state      = $this->get('State');
         $this->items      = $this->get('Items');
         $this->pagination = $this->get('Pagination');
@@ -68,7 +64,7 @@ class GamificationViewGroups extends JViewLegacy
         // Prepare filters
         $this->listOrder = $this->escape($this->state->get('list.ordering'));
         $this->listDirn  = $this->escape($this->state->get('list.direction'));
-        $this->saveOrder = (strcmp($this->listOrder, 'a.ordering') != 0) ? false : true;
+        $this->saveOrder = (strcmp($this->listOrder, 'a.ordering') === 0);
 
         if ($this->saveOrder) {
             $this->saveOrderingUrl = 'index.php?option=' . $this->option . '&task=' . $this->getName() . '.saveOrderAjax&format=raw';
@@ -88,7 +84,6 @@ class GamificationViewGroups extends JViewLegacy
     {
         GamificationHelper::addSubmenu($this->getName());
         $this->sidebar = JHtmlSidebar::render();
-
     }
 
     /**
@@ -103,9 +98,9 @@ class GamificationViewGroups extends JViewLegacy
         JToolbarHelper::addNew('group.add');
         JToolbarHelper::editList('group.edit');
         JToolbarHelper::divider();
-        JToolbarHelper::deleteList(JText::_("COM_GAMIFICATION_DELETE_ITEMS_QUESTION"), "groups.delete");
+        JToolbarHelper::deleteList(JText::_('COM_GAMIFICATION_DELETE_ITEMS_QUESTION'), 'groups.delete');
         JToolbarHelper::divider();
-        JToolbarHelper::custom('groups.backToDashboard', "dashboard", "", JText::_("COM_GAMIFICATION_DASHBOARD"), false);
+        JToolbarHelper::custom('groups.backToDashboard', 'dashboard', '', JText::_('COM_GAMIFICATION_DASHBOARD'), false);
     }
 
     /**

@@ -3,7 +3,7 @@
  * @package      Gamification Platform
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2016 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
@@ -107,13 +107,13 @@ class GamificationModelNotifications extends JModelList
         }
 
         // Filter by search in title
-        $search = $this->getState('filter.search');
-        if (!empty($search)) {
+        $search = (string)$this->getState('filter.search');
+        if ($search !== '') {
             if (stripos($search, 'id:') === 0) {
                 $query->where('a.id = ' . (int)substr($search, 3));
             } else {
                 $escaped = $db->escape($search, true);
-                $quoted  = $db->quote("%" . $escaped . "%", false);
+                $quoted  = $db->quote('%' . $escaped . '%', false);
                 $query->where('b.name LIKE ' . $quoted);
             }
         }

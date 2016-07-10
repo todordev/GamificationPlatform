@@ -3,7 +3,7 @@
  * @package      Gamification Platform
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2016 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
@@ -24,25 +24,21 @@ class GamificationViewDashboard extends JViewLegacy
     protected $prismVersion;
     protected $prismVersionLowerMessage;
 
-    public function __construct($config)
-    {
-        parent::__construct($config);
-        $this->option = JFactory::getApplication()->input->get("option");
-    }
-
     public function display($tpl = null)
     {
+        $this->option = JFactory::getApplication()->input->get('option');
+        
         $this->version = new Gamification\Version();
 
         // Load Prism library version
-        if (!class_exists("Prism\\Version")) {
-            $this->prismVersion = JText::_("COM_GAMIFICATION_PRISM_LIBRARY_DOWNLOAD");
+        if (!class_exists('Prism\\Version')) {
+            $this->prismVersion = JText::_('COM_GAMIFICATION_PRISM_LIBRARY_DOWNLOAD');
         } else {
             $prismVersion       = new Prism\Version();
             $this->prismVersion = $prismVersion->getShortVersion();
 
-            if (version_compare($this->prismVersion, $this->version->requiredPrismVersion, "<")) {
-                $this->prismVersionLowerMessage = JText::_("COM_GAMIFICATION_PRISM_LIBRARY_LOWER_VERSION");
+            if (version_compare($this->prismVersion, $this->version->requiredPrismVersion, '<')) {
+                $this->prismVersionLowerMessage = JText::_('COM_GAMIFICATION_PRISM_LIBRARY_LOWER_VERSION');
             }
         }
 
@@ -71,7 +67,7 @@ class GamificationViewDashboard extends JViewLegacy
      */
     protected function addToolbar()
     {
-        JToolbarHelper::title(JText::_("COM_GAMIFICATION_DASHBOARD"));
+        JToolbarHelper::title(JText::_('COM_GAMIFICATION_DASHBOARD'));
 
         JToolbarHelper::preferences('com_gamification');
         JToolbarHelper::divider();

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fieldset>
+        <field name="title" type="text" class="input-xxlarge"
+               label="COM_GAMIFICATION_TITLE"
+               description="COM_GAMIFICATION_FIELD_TITLE_DESC"
+               filter="trim"
+               required="true"
+                />
+
+        <field name="group_id" type="gfygroups"
+               label="COM_GAMIFICATION_GROUP"
+               description="COM_GAMIFICATION_FIELD_GROUP_DESC"
+               size="1"
+               filter="intval"
+               required="true"
+                />
+
+        <field name="image" type="file"
+               label="COM_GAMIFICATION_IMAGE"
+               description="COM_GAMIFICATION_FIELD_IMAGE_DESC"
+        />
+
+        <field name="resize_image" type="checkbox"
+               label="COM_GAMIFICATION_RESIZE_IMAGE"
+               description="COM_GAMIFICATION_FIELD_RESIZE_IMAGE_DESC"
+        />
+
+        <field name="description" type="textarea" class="input-xxlarge"
+               label="COM_GAMIFICATION_DESCRIPTION"
+               description="COM_GAMIFICATION_FIELD_DESCRIPTION_DESC"
+               filter="trim"
+        />
+
+        <field name="published" type="list"
+               label="JSTATUS"
+               description="JFIELD_PUBLISHED_DESC"
+               size="1"
+               filter="intval"
+               default="1"
+                >
+            <option value="1">JPUBLISHED</option>
+            <option value="0">JUNPUBLISHED</option>
+        </field>
+
+        <field name="id" type="text" class="readonly"
+               label="JGLOBAL_FIELD_ID_LABEL"
+               description="JGLOBAL_FIELD_ID_DESC"
+               readonly="true"
+               default="0"
+                />
+    </fieldset>
+
+    <fields label="JGLOBAL_LABEL_ADVANCED">
+        <field name="points_number" type="text"
+               label="COM_GAMIFICATION_POINTS"
+               description="COM_GAMIFICATION_FIELD_POINTS_DESC"
+               filter="int"
+        />
+
+        <field name="points_id" type="gfypoints"
+               label="COM_GAMIFICATION_POINTS_TYPE"
+               description="COM_GAMIFICATION_FIELD_POINTS_TYPE_DESC"
+               filter="int"
+        >
+            <option value="0">COM_GAMIFICATION_SELECT_POINTS_TYPE</option>
+        </field>
+
+        <field name="number" type="text"
+               label="COM_GAMIFICATION_NUMBER"
+               description="COM_GAMIFICATION_FIELD_NUMBER_DESC"
+        />
+
+        <field name="activity_text" type="textarea" class="input-xxlarge"
+               label="COM_GAMIFICATION_ACTIVITY_TEXT"
+               description="COM_GAMIFICATION_FIELD_ACTIVITY_TEXT_DESC"
+               filter="trim"
+        />
+
+        <field name="note" type="textarea" class="input-xxlarge"
+               label="COM_GAMIFICATION_NOTE"
+               description="COM_GAMIFICATION_FIELD_NOTE_DESC"
+               filter="trim"
+        />
+    </fields>
+</form>

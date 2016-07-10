@@ -3,13 +3,13 @@
  * @package         Gamification
  * @subpackage      Groups
  * @author          Todor Iliev
- * @copyright       Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright       Copyright (C) 2016 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license         GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 namespace Gamification\Group;
 
-use Prism\Database\ArrayObject;
+use Prism\Database\Collection;
 
 defined('JPATH_PLATFORM') or die;
 
@@ -19,7 +19,7 @@ defined('JPATH_PLATFORM') or die;
  * @package         Gamification
  * @subpackage      Groups
  */
-class Groups extends ArrayObject
+class Groups extends Collection
 {
     /**
      * Load groups from database.
@@ -32,15 +32,17 @@ class Groups extends ArrayObject
      * </code>
      *
      * @param array $options  Options that will be used for filtering results.
+     *
+     * @throws \RuntimeException
      */
-    public function load($options = array())
+    public function load(array $options = array())
     {
         // Create a new query object.
         $query = $this->db->getQuery(true);
         $query
-            ->select("a.id, a.name")
-            ->from($this->db->quoteName("#__gfy_groups", "a"))
-            ->order("a.name ASC");
+            ->select('a.id, a.name')
+            ->from($this->db->quoteName('#__gfy_groups', 'a'))
+            ->order('a.name ASC');
 
         $this->db->setQuery($query);
         $this->items = (array)$this->db->loadAssocList();

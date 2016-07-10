@@ -3,11 +3,13 @@
  * @package         Gamification
  * @subpackage      Observers
  * @author          Todor Iliev
- * @copyright       Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright       Copyright (C) 2016 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license         GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 namespace Gamification\Observer;
+
+use Gamification\User\Points\Points;
 
 defined('JPATH_PLATFORM') or die;
 
@@ -22,7 +24,7 @@ abstract class PointsObserver implements \JObserverInterface
     /**
      * The observed object.
      *
-     * @var    object
+     * @var    \JObservableInterface
      * @since  3.1.2
      */
     protected $unit;
@@ -41,50 +43,58 @@ abstract class PointsObserver implements \JObserverInterface
     }
 
     /**
-     * Pre-processor for $object->increase($points, $options).
+     * Pre-processor for $object->increase($context, $value, $points, $options).
      *
-     * @param   \Gamification\User\Points   $points
-     * @param   array $options
+     * @param   string   $context
+     * @param   int      $value
+     * @param   Points   $points
+     * @param   array    $options
      *
      * @return  void
      */
-    public function onBeforePointsIncrease($points, $options = array())
+    public function onBeforePointsIncrease($context, $value, Points $points, array $options = array())
     {
     }
 
     /**
-     * Post-processor for $object->increase($points, $options).
+     * Post-processor for $object->increase($context, $value, $points, $options).
      *
-     * @param   \Gamification\User\Points   $points
-     * @param   array $options
+     * @param   string   $context
+     * @param   int      $value
+     * @param   Points   $points
+     * @param   array    $options
      *
      * @return  void
      */
-    public function onAfterPointsIncrease($points, $options = array())
+    public function onAfterPointsIncrease($context, $value, Points $points, array $options = array())
     {
     }
 
     /**
-     * Pre-processor for $object->decrease($points, $options).
+     * Pre-processor for $object->decrease($context, $value, $points, $options).
      *
-     * @param   \Gamification\User\Points   $points
-     * @param   array $options
+     * @param   string   $context
+     * @param   int      $value
+     * @param   Points   $points
+     * @param   array    $options
      *
      * @return  void
      */
-    public function onBeforePointsDecrease($points, $options = array())
+    public function onBeforePointsDecrease($context, $value, Points $points, array $options = array())
     {
     }
 
     /**
-     * Post-processor for $object->decrease($points, $options).
+     * Post-processor for $object->decrease($context, $value, $points, $options).
      *
-     * @param   \Gamification\User\Points   $points
-     * @param   array $options
+     * @param   string   $context
+     * @param   int      $value
+     * @param   Points   $points
+     * @param   array    $options
      *
      * @return  void
      */
-    public function onAfterPointsDecrease($points, $options = array())
+    public function onAfterPointsDecrease($context, $value, Points $points, array $options = array())
     {
     }
 }

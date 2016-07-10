@@ -3,7 +3,7 @@
  * @package      Gamification Platform
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2016 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
@@ -11,6 +11,9 @@
 defined('_JEXEC') or die;
 ?>
 <tr>
+    <th width="1%" class="nowrap center hidden-phone">
+        <?php echo JHtml::_('searchtools.sort', '', 'a.ordering', $this->listDirn, $this->listOrder, null, 'asc', 'JGRID_HEADING_ORDERING', 'icon-menu-2'); ?>
+    </th>
     <th width="1%" class="nowrap center hidden-phone">
         <?php echo JHtml::_('grid.checkall'); ?>
     </th>
@@ -21,10 +24,9 @@ defined('_JEXEC') or die;
         <?php echo JHtml::_('searchtools.sort', 'COM_GAMIFICATION_TITLE', 'a.title', $this->listDirn, $this->listOrder); ?>
     </th>
     <th width="20%" class="nowrap center hidden-phone">
-        <?php echo JHtml::_('searchtools.sort', 'COM_GAMIFICATION_POINTS', 'a.points', $this->listDirn, $this->listOrder); ?>
+        <?php echo JHtml::_('searchtools.sort', 'COM_GAMIFICATION_POINTS', 'a.points_number', $this->listDirn, $this->listOrder); ?>
     </th>
     <th width="3%" class="nowrap center hidden-phone">
         <?php echo JHtml::_('searchtools.sort', 'JGRID_HEADING_ID', 'a.id', $this->listDirn, $this->listOrder); ?>
     </th>
 </tr>
-	  

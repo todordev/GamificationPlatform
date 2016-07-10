@@ -3,7 +3,7 @@
  * @package      Gamification Platform
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2016 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
@@ -27,7 +27,7 @@ class GamificationModelRanks extends JModelList
                 'id', 'a.id',
                 'title', 'a.title',
                 'group_name', 'b.name',
-                'points', 'a.points',
+                'points_number', 'a.points_number',
                 'published', 'a.published'
             );
         }
@@ -37,7 +37,6 @@ class GamificationModelRanks extends JModelList
 
     protected function populateState($ordering = null, $direction = null)
     {
-
         // Load the component parameters.
         $params = JComponentHelper::getParams($this->option);
         $this->setState('params', $params);
@@ -52,8 +51,11 @@ class GamificationModelRanks extends JModelList
         $value = $this->getUserStateFromRequest($this->context . '.filter.group', 'filter_group', '', 'string');
         $this->setState('filter.group', $value);
 
+        $value = $this->getUserStateFromRequest($this->context . '.filter.points', 'filter_points', '', 'int');
+        $this->setState('filter.points', $value);
+
         // List state information.
-        parent::populateState('a.points', 'asc');
+        parent::populateState('a.points_number', 'asc');
     }
 
     /**
@@ -72,6 +74,8 @@ class GamificationModelRanks extends JModelList
     {
         $id .= ':' . $this->getState('filter.search');
         $id .= ':' . $this->getState('filter.state');
+        $id .= ':' . $this->getState('filter.group');
+        $id .= ':' . $this->getState('filter.points');
 
         return parent::getStoreId($id);
     }
@@ -79,14 +83,15 @@ class GamificationModelRanks extends JModelList
     /**
      * Build an SQL query to load the list data.
      *
+     * @throws \RuntimeException
+     *
      * @return  JDatabaseQuery
      * @since   1.6
      */
     protected function getListQuery()
     {
-
         $db = $this->getDbo();
-        /** @var $db JDatabaseMySQLi * */
+        /** @var $db JDatabaseDriver */
 
         // Create a new query object.
         $query = $db->getQuery(true);
@@ -95,19 +100,25 @@ class GamificationModelRanks extends JModelList
         $query->select(
             $this->getState(
                 'list.select',
-                'a.id, a.title, a.points, a.group_id, a.note, a.published, ' .
+                'a.id, a.title, a.points_number, a.group_id, a.note, a.published, ' .
                 'b.name AS group_name, ' .
                 'c.abbr AS points_type, c.title AS points_name'
             )
         );
         $query->from($db->quoteName('#__gfy_ranks', 'a'));
-        $query->innerJoin($db->quoteName('#__gfy_groups', 'b') . 'ON a.group_id = b.id');
+        $query->innerJoin($db->quoteName('#__gfy_groups', 'b') . ' ON a.group_id = b.id');
         $query->leftJoin($db->quoteName('#__gfy_points', 'c') . ' ON a.points_id = c.id');
 
         // Filter by state
-        $group = $this->getState('filter.group');
-        if (!empty($group)) {
-            $query->where('a.group_id = ' . (int)$group);
+        $groupId = (int)$this->getState('filter.group');
+        if ($groupId > 0) {
+            $query->where('a.group_id = ' . (int)$groupId);
+        }
+
+        // Filter by points.
+        $pointsId = (int)$this->getState('filter.points');
+        if ($pointsId > 0) {
+            $query->where('a.points_id = ' . (int)$pointsId);
         }
 
         // Filter by state
@@ -120,12 +131,12 @@ class GamificationModelRanks extends JModelList
 
         // Filter by search in title
         $search = $this->getState('filter.search');
-        if (!empty($search)) {
+        if ($search !== '') {
             if (stripos($search, 'id:') === 0) {
                 $query->where('a.id = ' . (int)substr($search, 3));
             } else {
                 $escaped = $db->escape($search, true);
-                $quoted  = $db->quote("%" . $escaped . "%", false);
+                $quoted  = $db->quote('%' . $escaped . '%', false);
                 $query->where('a.title LIKE ' . $quoted);
             }
         }
@@ -144,8 +155,8 @@ class GamificationModelRanks extends JModelList
 
         $orderString = $orderCol . ' ' . $orderDirn;
 
-        if (strcmp("b.name", $orderCol) == 0) {
-            $orderString .= ", a.points ASC";
+        if (strcmp('b.name', $orderCol) === 0) {
+            $orderString .= ', a.points_number ASC';
         }
 
         return $orderString;

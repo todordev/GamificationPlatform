@@ -2,10 +2,9 @@
 <form>
     <fieldset>
 
-        <field name="title" type="text"
+        <field name="title" type="text" class="input-xxlarge"
                label="COM_GAMIFICATION_TITLE"
                description="COM_GAMIFICATION_TITLE_DESC"
-               size="40"
                filter="trim"
                required="true"/>
 
@@ -34,9 +33,9 @@
             <option value="0">JUNPUBLISHED</option>
         </field>
 
-        <field name="note" type="textarea"
+        <field name="note" type="textarea" class="input-xxlarge"
                label="COM_GAMIFICATION_NOTE"
-               description="COM_GAMIFICATION_POINTS_NOTE_DESC"
+               description="COM_GAMIFICATION_FIELD_NOTE_DESC"
                filter="trim"
                 />
 

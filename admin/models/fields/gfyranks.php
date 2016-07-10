@@ -3,13 +3,13 @@
  * @package      Gamification Platform
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2016 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 defined('JPATH_BASE') or die;
 
-jimport("Prism.init");
-jimport("Gamification.init");
+jimport('Prism.init');
+jimport('Gamification.init');
 
 JFormHelper::loadFieldClass('list');
 
@@ -38,10 +38,10 @@ class JFormFieldGfyRanks extends JFormFieldList
      */
     protected function getOptions()
     {
-        $groups = new Gamification\Rank\Ranks(JFactory::getDbo());
-        $groups->load();
+        $items = new Gamification\Rank\Ranks(JFactory::getDbo());
+        $items->load();
 
-        $options = $groups->toOptions("id", "title");
+        $options = $items->toOptions('id', 'title');
 
         // Merge any additional options in the XML definition.
         $options = array_merge(parent::getOptions(), $options);

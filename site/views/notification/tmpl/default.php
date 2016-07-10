@@ -3,7 +3,7 @@
  * @package      Gamification
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2016 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
@@ -24,8 +24,8 @@ defined('_JEXEC') or die;?>
             <div class="media-body">
                 <p><?php echo $this->escape($this->item->content); ?></p>
                 <?php if (!empty($this->item->url)) {
-                    $title = (!empty($this->item->title)) ? JText::sprintf("COM_GAMIFICATION_LINK_TO_S", $this->item->title) : JText::_("COM_GAMIFICATION_LINK_TO_ITEM");
-                    echo JHtml::_("gamification.link", $this->item->url, $title, array("class" => "small"));
+                    $title = (!empty($this->item->title)) ? JText::sprintf('COM_GAMIFICATION_LINK_TO_S', $this->item->title) : JText::_('COM_GAMIFICATION_LINK_TO_ITEM');
+                    echo JHtml::_('gamification.link', $this->item->url, $title, array('class' => 'small'));
                 }?>
             </div>
         </div>

@@ -3,7 +3,7 @@
  * @package      Gamification\Notification
  * @subpackage   Validators
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2016 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
@@ -60,6 +60,8 @@ class Owner implements ValidatorInterface
      * }
      * </code>
      *
+     * @throws \RuntimeException
+     *
      * @return bool
      */
     public function isValid()
@@ -67,10 +69,10 @@ class Owner implements ValidatorInterface
         $query = $this->db->getQuery(true);
 
         $query
-            ->select("COUNT(*)")
-            ->from($this->db->quoteName("#__gfy_notifications", "a"))
-            ->where("a.id = " . (int)$this->id)
-            ->where("a.user_id = " . (int)$this->userId);
+            ->select('COUNT(*)')
+            ->from($this->db->quoteName('#__gfy_notifications', 'a'))
+            ->where('a.id = ' . (int)$this->id)
+            ->where('a.user_id = ' . (int)$this->userId);
 
         $this->db->setQuery($query, 0, 1);
         return (bool)$this->db->loadResult();

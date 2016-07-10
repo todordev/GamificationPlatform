@@ -3,7 +3,7 @@
  * @package      Gamification Platform
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2016 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
@@ -15,7 +15,7 @@ defined('_JEXEC') or die;
  */
 class GamificationHelper
 {
-    public static $extension = "com_gamification";
+    public static $extension = 'com_gamification';
 
     /**
      * Configure the Linkbar.
@@ -29,61 +29,85 @@ class GamificationHelper
         JHtmlSidebar::addEntry(
             JText::_('COM_GAMIFICATION_DASHBOARD'),
             'index.php?option=' . self::$extension . '&view=dashboard',
-            $vName == 'dashboard'
+            $vName === 'dashboard'
         );
 
         JHtmlSidebar::addEntry(
             JText::_('COM_GAMIFICATION_GROUPS'),
             'index.php?option=' . self::$extension . '&view=groups',
-            $vName == 'groups'
+            $vName === 'groups'
         );
 
         JHtmlSidebar::addEntry(
             JText::_('COM_GAMIFICATION_POINTS'),
             'index.php?option=' . self::$extension . '&view=points',
-            $vName == 'points'
+            $vName === 'points'
         );
 
         JHtmlSidebar::addEntry(
             JText::_('COM_GAMIFICATION_BADGES'),
             'index.php?option=' . self::$extension . '&view=badges',
-            $vName == 'badges'
+            $vName === 'badges'
         );
 
         JHtmlSidebar::addEntry(
             JText::_('COM_GAMIFICATION_RANKS'),
             'index.php?option=' . self::$extension . '&view=ranks',
-            $vName == 'ranks'
+            $vName === 'ranks'
         );
 
         JHtmlSidebar::addEntry(
             JText::_('COM_GAMIFICATION_LEVELS'),
             'index.php?option=' . self::$extension . '&view=levels',
-            $vName == 'levels'
+            $vName === 'levels'
         );
+
+        JHtmlSidebar::addEntry(
+            JText::_('COM_GAMIFICATION_REWARDS'),
+            'index.php?option=' . self::$extension . '&view=rewards',
+            $vName === 'rewards'
+        );
+
+        JHtmlSidebar::addEntry(
+            JText::_('COM_GAMIFICATION_ACHIEVEMENTS'),
+            'index.php?option=' . self::$extension . '&view=achievements',
+            $vName === 'achievements'
+        );
+
+        /*JHtmlSidebar::addEntry(
+            JText::_('COM_GAMIFICATION_CHALLENGES'),
+            'index.php?option=' . self::$extension . '&view=challenges',
+            $vName === 'challenges'
+        );*/
 
         JHtmlSidebar::addEntry(
             JText::_('COM_GAMIFICATION_PROFILES'),
             'index.php?option=' . self::$extension . '&view=profiles',
-            $vName == 'profiles'
+            $vName === 'profiles'
         );
 
         JHtmlSidebar::addEntry(
             JText::_('COM_GAMIFICATION_NOTIFICATIONS'),
             'index.php?option=' . self::$extension . '&view=notifications',
-            $vName == 'notifications'
+            $vName === 'notifications'
         );
 
         JHtmlSidebar::addEntry(
             JText::_('COM_GAMIFICATION_ACTIVITIES'),
             'index.php?option=' . self::$extension . '&view=activities',
-            $vName == 'activities'
+            $vName === 'activities'
         );
 
         JHtmlSidebar::addEntry(
+            JText::_('COM_GAMIFICATION_TOOLS'),
+            'index.php?option=' . self::$extension . '&view=tools',
+            $vName === 'tools'
+        );
+        
+        JHtmlSidebar::addEntry(
             JText::_('COM_GAMIFICATION_PLUGINS'),
             'index.php?option=com_plugins&view=plugins&filter_search=gamification',
-            $vName == 'plugins'
+            $vName === 'plugins'
         );
     }
 }

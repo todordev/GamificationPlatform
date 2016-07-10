@@ -3,7 +3,7 @@
  * @package      Gamification Platform
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2016 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
@@ -40,7 +40,7 @@ class GamificationModelNotification extends JModelAdmin
     {
         // Get the form.
         $form = $this->loadForm($this->option . '.notification', 'notification', array('control' => 'jform', 'load_data' => $loadData));
-        if (empty($form)) {
+        if (!$form) {
             return false;
         }
 
@@ -57,7 +57,7 @@ class GamificationModelNotification extends JModelAdmin
     {
         // Check the session for previously entered form data.
         $data = JFactory::getApplication()->getUserState($this->option . '.edit.notification.data', array());
-        if (empty($data)) {
+        if (!$data) {
             $data = $this->getItem();
         }
 
@@ -73,24 +73,24 @@ class GamificationModelNotification extends JModelAdmin
      */
     public function save($data)
     {
-        $id         = Joomla\Utilities\ArrayHelper::getValue($data, "id");
-        $content    = Joomla\Utilities\ArrayHelper::getValue($data, "content");
-        $url        = Joomla\Utilities\ArrayHelper::getValue($data, "url");
-        $image      = Joomla\Utilities\ArrayHelper::getValue($data, "image");
-        $status     = Joomla\Utilities\ArrayHelper::getValue($data, "status", 0, "int");
+        $id         = Joomla\Utilities\ArrayHelper::getValue($data, 'id');
+        $content    = Joomla\Utilities\ArrayHelper::getValue($data, 'content');
+        $url        = Joomla\Utilities\ArrayHelper::getValue($data, 'url');
+        $image      = Joomla\Utilities\ArrayHelper::getValue($data, 'image');
+        $status     = Joomla\Utilities\ArrayHelper::getValue($data, 'status', 0, 'int');
 
         // Load a record from the database
         $row = $this->getTable();
         $row->load($id);
 
-        $row->set("content", $content);
-        $row->set("url", (!$url) ? null : $url);
-        $row->set("image", (!$image) ? null : $image);
-        $row->set("status", $status);
+        $row->set('content', $content);
+        $row->set('url', (!$url) ? null : $url);
+        $row->set('image', (!$image) ? null : $image);
+        $row->set('status', $status);
 
         $row->store(true);
 
-        return $row->get("id");
+        return $row->get('id');
     }
 
     /**
@@ -101,15 +101,15 @@ class GamificationModelNotification extends JModelAdmin
      */
     public function read(array $ids, $value)
     {
-        if (!empty($ids)) {
+        if (count($ids) > 0) {
             $db = $this->getDbo();
 
             $query = $db->getQuery(true);
 
             $query
-                ->update($db->quoteName("#__gfy_notifications"))
-                ->set($db->quoteName("status") . "=" . (int)$value)
-                ->where($db->quoteName("id") . " IN (" . implode(",", $ids) . ")");
+                ->update($db->quoteName('#__gfy_notifications'))
+                ->set($db->quoteName('status') . '=' . (int)$value)
+                ->where($db->quoteName('id') . ' IN (' . implode(',', $ids) . ')');
 
             $db->setQuery($query);
             $db->execute();

@@ -3,15 +3,18 @@
  * @package      Gamification
  * @subpackage   Observers
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2016 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 namespace Gamification\Observer\User;
 
 use Joomla\Utilities\ArrayHelper;
+use Joomla\Registry\Registry;
+use Gamification\User\Rank\RankPointsSeeker;
+use Gamification\User\Rank\RankManager;
 use Gamification\Observer\PointsObserver;
-use Gamification\User\Points;
+use Gamification\User\Points\Points;
 use Gamification\Helper;
 
 defined('JPATH_PLATFORM') or die;
@@ -35,7 +38,7 @@ class Ranking extends PointsObserver
      *
      * @var array
      */
-    protected $allowedContext = array("com_user.registration", "com_content.article");
+    protected $allowedContext = array('com_user.registration', 'com_content.read.article');
 
     /**
      * The pattern for this table's TypeAlias
@@ -46,25 +49,26 @@ class Ranking extends PointsObserver
     protected $typeAliasPattern = null;
 
     protected $sendNotification = false;
-    protected $storeActivity    = false;
+    protected $storeActivity = false;
 
     /**
      * Creates the associated observer instance and attaches it to the $observableObject
-     * $typeAlias can be of the form "{variableName}.type", automatically replacing {variableName} with table-instance variables variableName
+     * $typeAlias can be of the form '{variableName}.type', automatically replacing {variableName} with table-instance variables variableName
      *
      * @param   \JObservableInterface $observableObject The subject object to be observed
-     * @param   array                $params           ( 'typeAlias' => $typeAlias )
+     * @param   array                 $params           ( 'typeAlias' => $typeAlias )
      *
+     * @throws \InvalidArgumentException
      * @return  self
      *
      * @since   3.1.2
      */
     public static function createObserver(\JObservableInterface $observableObject, $params = array())
     {
-        $observer = new self($observableObject);
+        $observer                   = new self($observableObject);
         $observer->typeAliasPattern = ArrayHelper::getValue($params, 'typeAlias');
-        $observer->sendNotification = ArrayHelper::getValue($params, 'send_notification', false, "bool");
-        $observer->storeActivity    = ArrayHelper::getValue($params, 'store_activity', false, "bool");
+        $observer->sendNotification = ArrayHelper::getValue($params, 'send_notification', false, 'bool');
+        $observer->storeActivity    = ArrayHelper::getValue($params, 'store_activity', false, 'bool');
 
         return $observer;
     }
@@ -72,65 +76,61 @@ class Ranking extends PointsObserver
     /**
      * Pre-processor for $table->store($data)
      *
-     * @param   Points $userPoints
+     * @param   string $context
+     * @param   int $value
+     * @param   Points $points
      * @param   array $options
+     *
+     * @throws \InvalidArgumentException
+     * @throws \RuntimeException
+     * @throws \UnexpectedValueException
      *
      * @return  void
      */
-    public function onAfterPointsIncrease($userPoints, $options = array())
+    public function onAfterPointsIncrease($context, $value, Points $points, array $options = array())
     {
-        // Get the context.
-        $alias = (isset($options["context"])) ? $options["context"] : "";
-
         // Check for allowed context.
-        if (!in_array($alias, $this->allowedContext)) {
+        if (!in_array($context, $this->allowedContext, true)) {
             return;
         }
 
-        $keys = array(
-            "user_id"  => $userPoints->getUserId(),
-            "group_id" => $userPoints->getGroupId()
-        );
+        $rankSeeker = new RankPointsSeeker(\JFactory::getDbo());
+        $rankSeeker->setUserPoints($points);
 
-        // Get user rank.
-        $rank = new Points\Rank(\JFactory::getDbo());
-        $rank->load($keys);
+        $newRank = $rankSeeker->find();
 
-        $rank->setUserPoints($userPoints);
+        if ($newRank !== null) {
+            $rankManager = new RankManager(\JFactory::getDbo());
+            $rankManager->setRank($newRank);
 
-        if (!$rank->getId()) { // Create a rank record
-            $rank->startRanking($keys);
-        } else { // Give new rank.
+            $userRank = $rankManager->give($context, $points->getUserId(), $options);
 
-            if ($rank->giveRank($options) and ($this->storeActivity or $this->sendNotification)) {
+            if ($userRank !== null and ($this->storeActivity or $this->sendNotification)) {
+                $params = \JComponentHelper::getParams('com_gamification');
+                $user   = \JFactory::getUser($points->getUserId());
 
-                $params = \JComponentHelper::getParams("com_gamification");
+                $communityOptions = new Registry(array(
+                    'platform' => '',
+                    'user_id' => $user->get('id'),
+                    'context_id' => $user->get('id'),
+                    'app' => 'gamification.rank'
+                ));
 
-                $user = \JFactory::getUser($userPoints->getUserId());
-
-                $optionsActivitiesNotifications = array(
-                    "social_platform" => "",
-                    "user_id" => $user->get("id"),
-                    "context_id" => $user->get("id"),
-                    "app" => "gamification.rank"
-                );
-
-                $activityService = $params->get("integration_activities");
+                $activityService = $params->get('integration_activities');
                 if ($this->storeActivity and $activityService) {
-                    $optionsActivitiesNotifications["social_platform"] = $activityService;
+                    $communityOptions['platform'] = $activityService;
 
-                    $message = \JText::sprintf("LIB_GAMIFICATION_RANKING_REACH_NEW_RANK", $user->get("name"), $rank->getTitle());
-                    Helper::storeActivity($message, $optionsActivitiesNotifications);
+                    $message = \JText::sprintf('LIB_GAMIFICATION_RANKING_REACH_NEW_RANK', $user->get('name'), $userRank->getRank()->getTitle());
+                    Helper::storeActivity($message, $communityOptions);
                 }
 
-                $notificationService = $params->get("integration_notifications");
+                $notificationService = $params->get('integration_notifications');
                 if ($this->sendNotification and $notificationService) {
-                    $optionsActivitiesNotifications["social_platform"] = $notificationService;
+                    $communityOptions['platform'] = $notificationService;
 
-                    $message = \JText::sprintf("LIB_GAMIFICATION_RANKING_NOTIFICATION", $rank->getTitle());
-                    Helper::sendNotification($message, $optionsActivitiesNotifications);
+                    $message = \JText::sprintf('LIB_GAMIFICATION_RANKING_NOTIFICATION', $userRank->getRank()->getTitle());
+                    Helper::sendNotification($message, $communityOptions);
                 }
-
             }
         }
     }

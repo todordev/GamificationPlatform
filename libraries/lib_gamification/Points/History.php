@@ -3,7 +3,7 @@
  * @package         Gamification
  * @subpackage      Points
  * @author          Todor Iliev
- * @copyright       Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright       Copyright (C) 2016 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license         GNU General Public License version 3 or later; see LICENSE.txt
  */
 
@@ -26,6 +26,7 @@ class History extends Table
     protected $points_id;
     protected $points;
     protected $hash;
+    protected $context;
     protected $record_date;
 
     /**
@@ -39,36 +40,36 @@ class History extends Table
      * );
      *
      * $pointsHistory     = new Gamification\Points\History(\JFactory::getDbo());
-     * $pointsHistory->load($pointsId);
+     * $pointsHistory->load($keys);
      * </code>
      *
      * @param int|array $keys
      * @param array $options
+     *
+     * @throws \RuntimeException
      */
-    public function load($keys, $options = array())
+    public function load($keys, array $options = array())
     {
         // Create a new query object.
         $query = $this->db->getQuery(true);
 
         $query
-            ->select("a.id, a.user_id, a.points_id, a.points, a.hash, a.record_date")
-            ->from($this->db->quoteName("#__gfy_points_history", "a"));
+            ->select('a.id, a.user_id, a.points_id, a.points, a.context, a.hash, a.record_date')
+            ->from($this->db->quoteName('#__gfy_points_history', 'a'));
 
         // Prepare keys.
         if (is_array($keys)) {
             foreach ($keys as $column => $value) {
-                $query->where($this->db->quoteName("a.".$column) . " = " . $this->db->quote($value));
+                $query->where($this->db->quoteName('a.'.$column) . ' = ' . $this->db->quote($value));
             }
         } else {
-            $query->where("a.id = " . (int)$keys);
+            $query->where('a.id = ' . (int)$keys);
         }
 
         $this->db->setQuery($query);
         $result = (array)$this->db->loadAssoc();
 
-        if (!empty($result)) {
-            $this->bind($result);
-        }
+        $this->bind($result);
     }
 
     /**
@@ -77,10 +78,11 @@ class History extends Table
      * <code>
      * $pointsId = 1;
      * $data = array(
-     *        "user_id"   => "Points",
-     *        "points_id" => $pointsId,
-     *        "points"    => 100,
-     *        "hash"      => md5($ip . $userId . $pointsId . $itemId)
+     *        'user_id'   => 'Points',
+     *        'points_id' => $pointsId,
+     *        'points'    => 100,
+     *        'context'   => 'com_users.registration',
+     *        'hash'      => md5($ip . $userId . $pointsId . $itemId)
      * );
      *
      * $pointsHistory   = new Gamification\Points\History(\JFactory::getDbo());
@@ -104,13 +106,14 @@ class History extends Table
         $query = $this->db->getQuery(true);
 
         $query
-            ->update($this->db->quoteName("#__gfy_points_history"))
-            ->set($this->db->quoteName("user_id") . "  = " . (int)$this->user_id)
-            ->set($this->db->quoteName("points_id") . "  = " . (int)$this->points_id)
-            ->set($this->db->quoteName("points") . "  = " . (int)$this->points)
-            ->set($this->db->quoteName("hash") . "  = " . $this->db->quote($this->hash))
-            ->set($this->db->quoteName("record_date") . "  = " . $this->db->quote($this->record_date))
-            ->where($this->db->quoteName("id") . "  = " . (int)$this->id);
+            ->update($this->db->quoteName('#__gfy_points_history'))
+            ->set($this->db->quoteName('user_id') . '  = ' . (int)$this->user_id)
+            ->set($this->db->quoteName('points_id') . '  = ' . (int)$this->points_id)
+            ->set($this->db->quoteName('points') . '  = ' . (int)$this->points)
+            ->set($this->db->quoteName('context') . '  = ' . $this->db->quote($this->context))
+            ->set($this->db->quoteName('hash') . '  = ' . $this->db->quote($this->hash))
+            ->set($this->db->quoteName('record_date') . '  = ' . $this->db->quote($this->record_date))
+            ->where($this->db->quoteName('id') . '  = ' . (int)$this->id);
 
         $this->db->setQuery($query);
         $this->db->execute();
@@ -122,11 +125,12 @@ class History extends Table
         $query = $this->db->getQuery(true);
 
         $query
-            ->insert($this->db->quoteName("#__gfy_points_history"))
-            ->set($this->db->quoteName("user_id") . "  = " . (int)$this->user_id)
-            ->set($this->db->quoteName("points_id") . "  = " . (int)$this->points_id)
-            ->set($this->db->quoteName("points") . "  = " . (int)$this->points)
-            ->set($this->db->quoteName("hash") . "  = " . $this->db->quote($this->hash));
+            ->insert($this->db->quoteName('#__gfy_points_history'))
+            ->set($this->db->quoteName('user_id') . '  = ' . (int)$this->user_id)
+            ->set($this->db->quoteName('points_id') . '  = ' . (int)$this->points_id)
+            ->set($this->db->quoteName('points') . '  = ' . (int)$this->points)
+            ->set($this->db->quoteName('context') . '  = ' . $this->db->quote($this->context))
+            ->set($this->db->quoteName('hash') . '  = ' . $this->db->quote($this->hash));
 
         $this->db->setQuery($query);
         $this->db->execute();
@@ -139,10 +143,10 @@ class History extends Table
      *
      * <code>
      * $id = 1;
-     * 
+     *
      * $pointsHistory     = new Gamification\Points\History(\JFactory::getDbo());
      * $pointsHistory->load($id);
-     * 
+     *
      * if (!$pointsHistory->getId()) {
      * ....
      * }
@@ -152,7 +156,7 @@ class History extends Table
      */
     public function getId()
     {
-        return $this->id;
+        return (int)$this->id;
     }
 
     /**
@@ -160,7 +164,7 @@ class History extends Table
      *
      * <code>
      * $keys = array(
-     *    "hash" => md5($ip . $userId . $itemId)
+     *    'hash' => md5($ip . $userId . $itemId)
      * );
      *
      * $pointsHistory  = new Gamification\Points\History(\JFactory::getDbo());
@@ -173,7 +177,7 @@ class History extends Table
      */
     public function getUserId()
     {
-        return $this->user_id;
+        return (int)$this->user_id;
     }
 
     /**
@@ -181,7 +185,7 @@ class History extends Table
      *
      * <code>
      * $keys = array(
-     *    "hash" => md5($ip . $userId . $itemId)
+     *    'hash' => md5($ip . $userId . $itemId)
      * );
      *
      * $pointsHistory  = new Gamification\Points\History(\JFactory::getDbo());
@@ -198,11 +202,30 @@ class History extends Table
     }
 
     /**
+     * Return the context of the record.
+     *
+     * <code>
+     * $id = 1;
+     *
+     * $pointsHistory  = new Gamification\Points\History(\JFactory::getDbo());
+     * $pointsHistory->load($id);
+     *
+     * echo $pointsHistory->getContext();
+     * </code>
+     *
+     * @return string
+     */
+    public function getContext()
+    {
+        return $this->context;
+    }
+    
+    /**
      * Return the unique string used to identify the connection between user and objects.
      *
      * <code>
      * $keys = array(
-     *    "hash" => md5($ip . $userId . $itemId)
+     *    'hash' => md5($ip . $userId . $itemId)
      * );
      *
      * $pointsHistory  = new Gamification\Points\History(\JFactory::getDbo());
@@ -217,12 +240,13 @@ class History extends Table
     {
         return $this->hash;
     }
+    
     /**
      * Return the date when the record has been created.
      *
      * <code>
      * $keys = array(
-     *    "hash" => md5($ip . $userId . $itemId)
+     *    'hash' => md5($ip . $userId . $itemId)
      * );
      *
      * $pointsHistory  = new Gamification\Points\History(\JFactory::getDbo());
@@ -243,7 +267,9 @@ class History extends Table
      *
      * <code>
      * $keys = array(
-     *    "hash" => md5($ip . $userId . $itemId)
+     *    'user_id' => 1,
+     *    'points_id' => 2,
+     *    'hash' => md5($ip . $userId . $itemId)
      * );
      *
      * $pointsHistory     = new Gamification\Points\Points(\JFactory::getDbo());
@@ -254,6 +280,8 @@ class History extends Table
      *
      * @param int|array $keys
      *
+     * @throws \RuntimeException
+     *
      * @return bool
      */
     public function isExists($keys)
@@ -262,16 +290,16 @@ class History extends Table
         $query = $this->db->getQuery(true);
 
         $query
-            ->select("COUNT(*)")
-            ->from($this->db->quoteName("#__gfy_points_history", "a"));
+            ->select('COUNT(*)')
+            ->from($this->db->quoteName('#__gfy_points_history', 'a'));
 
         // Prepare keys.
         if (is_array($keys)) {
             foreach ($keys as $column => $value) {
-                $query->where($this->db->quoteName("a.".$column) . " = " . $this->db->quote($value));
+                $query->where($this->db->quoteName('a.'.$column) . ' = ' . $this->db->quote($value));
             }
         } else {
-            $query->where("a.id = " . (int)$keys);
+            $query->where('a.id = ' . (int)$keys);
         }
 
         $this->db->setQuery($query, 0, 1);
@@ -309,6 +337,16 @@ class History extends Table
         $this->points_id = $pointsId;
     }
 
+    /**
+     * Set the context of the record.
+     *
+     * @param string $context
+     */
+    public function setContext($context)
+    {
+        $this->context = $context;
+    }
+    
     /**
      * Set the hash, generated to provide connection between the object and the user.
      *

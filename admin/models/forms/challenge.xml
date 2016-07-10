@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fieldset>
+        <field name="title" type="text" class="input-xxlarge"
+               label="COM_GAMIFICATION_TITLE"
+               description="COM_GAMIFICATION_BADGE_TITLE_DESC"
+               filter="trim"
+               required="true"
+                />
+
+        <field name="image" type="file"
+               label="COM_GAMIFICATION_IMAGE"
+               description="COM_GAMIFICATION_BADGE_IMAGE_DESC"
+                />
+
+        <field name="note" type="textarea"
+               label="COM_GAMIFICATION_NOTE"
+               description="COM_GAMIFICATION_NOTE_DESC"
+               filter="trim"
+                />
+
+        <field name="group_id" type="gfygroups"
+               label="COM_GAMIFICATION_GROUP"
+               description="COM_GAMIFICATION_BADGE_GROUP_DESC"
+               size="1"
+               filter="intval"
+               required="true"
+                />
+
+        <field name="published" type="list"
+               label="JSTATUS"
+               description="JFIELD_PUBLISHED_DESC"
+               size="1"
+               filter="intval"
+               default="1"
+                >
+            <option value="1">JPUBLISHED</option>
+            <option value="0">JUNPUBLISHED</option>
+        </field>
+
+        <field name="description" type="textarea"
+               label="COM_GAMIFICATION_DESCRIPTION"
+               description="COM_GAMIFICATION_DESCRIPTION_DESC"
+               filter="trim"
+               />
+
+        <field name="id" type="text" class="readonly"
+               label="JGLOBAL_FIELD_ID_LABEL"
+               description="JGLOBAL_FIELD_ID_DESC"
+               readonly="true"
+               default="0"
+                />
+    </fieldset>
+</form>

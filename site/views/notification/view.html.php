@@ -3,7 +3,7 @@
  * @package      Gamification
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2016 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
@@ -35,19 +35,15 @@ class GamificationViewNotification extends JViewLegacy
 
     protected $pageclass_sfx;
 
-    public function __construct($config)
-    {
-        parent::__construct($config);
-        $this->option = JFactory::getApplication()->input->get("option");
-    }
-
     public function display($tpl = null)
     {
+        $this->option = JFactory::getApplication()->input->get('option');
+        
         $app = JFactory::getApplication();
         /** @var $app JApplicationSite */
 
-        $itemId = $app->input->getUint("id");
-        $userId = JFactory::getUser()->get("id");
+        $itemId = $app->input->getUint('id');
+        $userId = JFactory::getUser()->get('id');
 
         $model = $this->getModel();
 
@@ -57,7 +53,7 @@ class GamificationViewNotification extends JViewLegacy
         $this->params = $this->state->get('params');
 
         $notification = new Gamification\Notification\Notification(JFactory::getDbo());
-        $notification->load(array("id" => $itemId, "user_id" => $userId));
+        $notification->load(array('id' => $itemId, 'user_id' => $userId));
 
         if ($notification->getId() and !$notification->isRead()) {
             $notification->updateStatus(Prism\Constants::READ);
@@ -89,11 +85,11 @@ class GamificationViewNotification extends JViewLegacy
 
         // Meta keywords
         if ($this->params->get('menu-meta_keywords')) {
-            $this->document->setMetadata('keywords', $this->params->get('menu-meta_keywords'));
+            $this->document->setMetaData('keywords', $this->params->get('menu-meta_keywords'));
         }
 
         if ($this->params->get('robots')) {
-            $this->document->setMetadata('robots', $this->params->get('robots'));
+            $this->document->setMetaData('robots', $this->params->get('robots'));
         }
     }
 
@@ -113,7 +109,6 @@ class GamificationViewNotification extends JViewLegacy
         } else {
             $this->params->def('page_heading', JText::_('COM_GAMIFICATION_NOTIFICATION_DEFAULT_PAGE_TITLE'));
         }
-
     }
 
     private function prepearePageTitle()
@@ -127,9 +122,9 @@ class GamificationViewNotification extends JViewLegacy
         // Add title before or after Site Name
         if (!$title) {
             $title = $app->get('sitename');
-        } elseif ($app->get('sitename_pagetitles', 0) == 1) {
+        } elseif ((int)$app->get('sitename_pagetitles', 0) === 1) {
             $title = JText::sprintf('JPAGETITLE', $app->get('sitename'), $title);
-        } elseif ($app->get('sitename_pagetitles', 0) == 2) {
+        } elseif ((int)$app->get('sitename_pagetitles', 0) === 2) {
             $title = JText::sprintf('JPAGETITLE', $title, $app->get('sitename'));
         }
 

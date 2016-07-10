@@ -2,14 +2,13 @@
 <form>
     <fieldset>
 
-        <field name="name" type="text"
-               size="40"
+        <field name="name" type="text" class="input-xxlarge"
                label="COM_GAMIFICATION_NAME"
                description="COM_GAMIFICATION_GROUP_NAME_DESC"
                filter="trim"
                required="true"/>
 
-        <field name="note" type="textarea"
+        <field name="note" type="textarea" class="input-xxlarge"
                label="COM_GAMIFICATION_NOTE"
                description="COM_GAMIFICATION_GROUP_NOTE_DESC"
                filter="trim"

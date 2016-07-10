@@ -3,7 +3,7 @@
  * @package      Gamification Platform
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2016 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
@@ -40,7 +40,7 @@ class GamificationModelPoint extends JModelAdmin
     {
         // Get the form.
         $form = $this->loadForm($this->option . '.point', 'point', array('control' => 'jform', 'load_data' => $loadData));
-        if (empty($form)) {
+        if (!$form) {
             return false;
         }
 
@@ -57,7 +57,7 @@ class GamificationModelPoint extends JModelAdmin
     {
         // Check the session for previously entered form data.
         $data = JFactory::getApplication()->getUserState($this->option . '.edit.point.data', array());
-        if (empty($data)) {
+        if (!$data) {
             $data = $this->getItem();
         }
 
@@ -73,13 +73,13 @@ class GamificationModelPoint extends JModelAdmin
      */
     public function save($data)
     {
-        $id        = Joomla\Utilities\ArrayHelper::getValue($data, "id");
-        $title     = Joomla\Utilities\ArrayHelper::getValue($data, "title");
-        $abbr      = Joomla\Utilities\ArrayHelper::getValue($data, "abbr");
-        $groupId   = Joomla\Utilities\ArrayHelper::getValue($data, "group_id");
-        $published = Joomla\Utilities\ArrayHelper::getValue($data, "published");
+        $id        = Joomla\Utilities\ArrayHelper::getValue($data, 'id');
+        $title     = Joomla\Utilities\ArrayHelper::getValue($data, 'title');
+        $abbr      = Joomla\Utilities\ArrayHelper::getValue($data, 'abbr');
+        $groupId   = Joomla\Utilities\ArrayHelper::getValue($data, 'group_id');
+        $published = Joomla\Utilities\ArrayHelper::getValue($data, 'published');
 
-        $note = Joomla\Utilities\ArrayHelper::getValue($data, "note");
+        $note = Joomla\Utilities\ArrayHelper::getValue($data, 'note');
         if (!$note) {
             $note = null;
         }
@@ -88,14 +88,14 @@ class GamificationModelPoint extends JModelAdmin
         $row = $this->getTable();
         $row->load($id);
 
-        $row->set("title", $title);
-        $row->set("abbr", $abbr);
-        $row->set("group_id", $groupId);
-        $row->set("published", $published);
-        $row->set("note", $note);
+        $row->set('title', $title);
+        $row->set('abbr', $abbr);
+        $row->set('group_id', $groupId);
+        $row->set('published', $published);
+        $row->set('note', $note);
 
         $row->store(true);
 
-        return $row->get("id");
+        return $row->get('id');
     }
 }

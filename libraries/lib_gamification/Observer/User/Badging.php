@@ -3,15 +3,18 @@
  * @package      Gamification
  * @subpackage   Observers
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2016 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 namespace Gamification\Observer\User;
 
 use Joomla\Utilities\ArrayHelper;
+use Joomla\Registry\Registry;
+use Gamification\User\Badge\BadgePointsSeeker;
 use Gamification\Observer\PointsObserver;
-use Gamification\User\Points;
+use Gamification\User\Badge\BadgeManager;
+use Gamification\User\Points\Points;
 use Gamification\Helper;
 
 defined('JPATH_PLATFORM') or die;
@@ -35,7 +38,7 @@ class Badging extends PointsObserver
      *
      * @var array
      */
-    protected $allowedContext = array("com_user.registration", "com_content.article");
+    protected $allowedContext = array('com_user.registration', 'com_content.read.article');
 
     /**
      * The pattern for this table's TypeAlias
@@ -43,18 +46,19 @@ class Badging extends PointsObserver
      * @var    string
      * @since  3.1.2
      */
-    protected $typeAliasPattern = null;
+    protected $typeAliasPattern;
 
     protected $sendNotification = false;
     protected $storeActivity    = false;
 
     /**
      * Creates the associated observer instance and attaches it to the $observableObject
-     * $typeAlias can be of the form "{variableName}.type", automatically replacing {variableName} with table-instance variables variableName
+     * $typeAlias can be of the form '{variableName}.type', automatically replacing {variableName} with table-instance variables variableName
      *
      * @param   \JObservableInterface $observableObject The subject object to be observed
      * @param   array                $params           ( 'typeAlias' => $typeAlias )
      *
+     * @throws  \InvalidArgumentException
      * @return  self
      *
      * @since   3.1.2
@@ -63,8 +67,8 @@ class Badging extends PointsObserver
     {
         $observer = new self($observableObject);
         $observer->typeAliasPattern = ArrayHelper::getValue($params, 'typeAlias');
-        $observer->sendNotification = ArrayHelper::getValue($params, 'send_notification', false, "bool");
-        $observer->storeActivity    = ArrayHelper::getValue($params, 'store_activity', false, "bool");
+        $observer->sendNotification = ArrayHelper::getValue($params, 'send_notification', false, 'bool');
+        $observer->storeActivity    = ArrayHelper::getValue($params, 'store_activity', false, 'bool');
 
         return $observer;
     }
@@ -72,58 +76,59 @@ class Badging extends PointsObserver
     /**
      * Pre-processor for $table->store($data)
      *
-     * @param   Points $userPoints
-     * @param   array $options
+     * @param   string   $context
+     * @param   int      $value
+     * @param   Points   $points
+     * @param   array    $options
+     *
+     * @throws  \RuntimeException
      *
      * @return  void
      */
-    public function onAfterPointsIncrease($userPoints, $options = array())
+    public function onAfterPointsIncrease($context, $value, Points $points, array $options = array())
     {
-        // Get the context.
-        $alias = (isset($options["context"])) ? $options["context"] : "";
-
         // Check for allowed context.
-        if (!in_array($alias, $this->allowedContext)) {
+        if (!in_array($context, $this->allowedContext, true)) {
             return;
         }
 
-        // Load all badges.
-        $keys  = array(
-            "user_id" => $userPoints->getUserId(),
-            "group_id" => $userPoints->getGroupId(),
-        );
+        $badgeSeeker = new BadgePointsSeeker(\JFactory::getDbo());
+        $badgeSeeker->setUserPoints($points);
 
-        $badge = new Points\Badge(\JFactory::getDbo());
+        $newBadge = $badgeSeeker->find();
 
-        $badge->setUserPoints($userPoints);
+        if ($newBadge !== null) {
+            $badgeManager = new BadgeManager(\JFactory::getDbo());
+            $badgeManager->setBadge($newBadge);
 
-        if ($badge->giveBadge($options) and ($this->storeActivity or $this->sendNotification)) { // Give a badge.
+            $userBadge = $badgeManager->give($context, $points->getUserId(), $options);
 
-            $params = \JComponentHelper::getParams("com_gamification");
+            if ($userBadge !== null and ($this->storeActivity or $this->sendNotification)) { // Give a badge.
+                $params = \JComponentHelper::getParams('com_gamification');
+                $user   = \JFactory::getUser($points->getUserId());
 
-            $user = \JFactory::getUser($userPoints->getUserId());
+                $communityOptions = new Registry(array(
+                    'platform' => '',
+                    'user_id' => $user->get('id'),
+                    'context_id' => $user->get('id'),
+                    'app' => 'gamification.badge'
+                ));
 
-            $optionsActivitiesNotifications = array(
-                "social_platform" => "",
-                "user_id" => $user->get("id"),
-                "context_id" => $user->get("id"),
-                "app" => "gamification.badge"
-            );
+                $activityService = $params->get('integration_activities');
+                if ($this->storeActivity and $activityService) {
+                    $communityOptions['platform'] = $activityService;
 
-            $activityService = $params->get("integration_activities");
-            if ($this->storeActivity and $activityService) {
-                $optionsActivitiesNotifications["social_platform"] = $activityService;
+                    $message = \JText::sprintf('LIB_GAMIFICATION_BADGING_RECEIVE_NEW_BADGE', $user->get('name'), $newBadge->getTitle());
+                    Helper::storeActivity($message, $communityOptions);
+                }
 
-                $message = \JText::sprintf("LIB_GAMIFICATION_BADGING_RECEIVE_NEW_BADGE", $user->get("name"), $badge->getTitle());
-                Helper::storeActivity($message, $optionsActivitiesNotifications);
-            }
+                $notificationService = $params->get('integration_notifications');
+                if ($this->sendNotification and $notificationService) {
+                    $communityOptions['platform'] = $notificationService;
 
-            $notificationService = $params->get("integration_notifications");
-            if ($this->sendNotification and $notificationService) {
-                $optionsActivitiesNotifications["social_platform"] = $notificationService;
-
-                $message = \JText::sprintf("LIB_GAMIFICATION_BADGING_NOTIFICATION", $badge->getTitle());
-                Helper::sendNotification($message, $optionsActivitiesNotifications);
+                    $message = \JText::sprintf('LIB_GAMIFICATION_BADGING_NOTIFICATION', $newBadge->getTitle());
+                    Helper::sendNotification($message, $communityOptions);
+                }
             }
         }
     }

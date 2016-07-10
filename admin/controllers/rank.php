@@ -3,7 +3,7 @@
  * @package      Gamification Platform
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2016 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
@@ -30,7 +30,7 @@ class GamificationControllerRank extends Backend
         $params = JComponentHelper::getParams($this->option);
 
         // Extension parameters
-        $model->imagesFolder = JPath::clean(JPATH_SITE . DIRECTORY_SEPARATOR . $params->get("images_directory", "images/gamification"));
+        $model->imagesFolder = JPath::clean(JPATH_SITE . DIRECTORY_SEPARATOR . $params->get('images_directory', 'images/gamification'));
 
         return $model;
     }
@@ -41,13 +41,13 @@ class GamificationControllerRank extends Backend
 
         $data = $this->input->post->get('jform', array(), 'array');
         $file = $this->input->files->get('jform', array(), 'array');
-        $file = ArrayHelper::getValue($file, "image");
+        $file = ArrayHelper::getValue($file, 'image');
 
-        $itemId = ArrayHelper::getValue($data, "id");
+        $itemId = ArrayHelper::getValue($data, 'id');
 
         $redirectOptions = array(
-            "task" => $this->getTask(),
-            "id"   => $itemId
+            'task' => $this->getTask(),
+            'id'   => $itemId
         );
 
         $model = $this->getModel();
@@ -57,7 +57,7 @@ class GamificationControllerRank extends Backend
         /** @var $form JForm */
 
         if (!$form) {
-            throw new Exception(JText::_("COM_GAMIFICATION_ERROR_FORM_CANNOT_BE_LOADED"), 500);
+            throw new Exception(JText::_('COM_GAMIFICATION_ERROR_FORM_CANNOT_BE_LOADED'), 500);
         }
 
         // Validate the form
@@ -71,26 +71,22 @@ class GamificationControllerRank extends Backend
         }
 
         try {
-
             // Upload picture
             if (!empty($file['name'])) {
-
                 $imageName = $model->uploadImage($file);
-                if (!empty($imageName)) {
-                    $validData["image"] = $imageName;
+                if ($imageName !== null and $imageName !== '') {
+                    $validData['image'] = $imageName;
                 }
 
             }
 
             $itemId = $model->save($validData);
 
-            $redirectOptions["id"] = $itemId;
+            $redirectOptions['id'] = $itemId;
 
         } catch (Exception $e) {
-
-            JLog::add($e->getMessage());
+            JLog::add($e->getMessage(), JLog::ERROR, 'com_gamification');
             throw new Exception(JText::_('COM_GAMIFICATION_ERROR_SYSTEM'));
-
         }
 
         $this->displayMessage(JText::_('COM_GAMIFICATION_RANK_SAVED'), $redirectOptions);
@@ -99,14 +95,14 @@ class GamificationControllerRank extends Backend
 
     public function removeImage()
     {
-        JSession::checkToken("get") or jexit(JText::_('JINVALID_TOKEN'));
+        JSession::checkToken('get') or jexit(JText::_('JINVALID_TOKEN'));
 
         $itemId = $this->input->get->get('id', 0, 'int');
 
         $redirectOptions = array(
-            "view"   => "rank",
-            "layout" => "edit",
-            "id"     => $itemId
+            'view'   => 'rank',
+            'layout' => 'edit',
+            'id'     => $itemId
         );
 
         $model = $this->getModel();
@@ -114,20 +110,15 @@ class GamificationControllerRank extends Backend
 
         // Check for errors
         if (!$itemId) {
-            $this->displayNotice(JText::_("COM_GAMIFICATION_INVALID_ITEM"), $redirectOptions);
+            $this->displayNotice(JText::_('COM_GAMIFICATION_INVALID_ITEM'), $redirectOptions);
 
             return;
         }
 
         try {
-
-            jimport("joomla.filesystem.file");
-            jimport("joomla.filesystem.path");
-
             $model->removeImage($itemId);
-
         } catch (Exception $e) {
-            JLog::add($e->getMessage());
+            JLog::add($e->getMessage(), JLog::ERROR, 'com_gamification');
             throw new Exception(JText::_('COM_GAMIFICATION_ERROR_SYSTEM'));
         }
 
