@@ -28,10 +28,12 @@ This repository contains code that you should use to create a package. You will 
 * Download or clone [Gamification Platform distribution](https://github.com/ITPrism/GamificationDistribution).
 * Download or clone the code from this repository.
 * Rename the file __build/example.txt__ to __build/antconfig.txt__.
-* Edit the file __build/antconfig.txt__. Enter name and version of your package. Enter the folder where the source code is (Social Community distribution). Enter the folder where the source code of the package will be stored (the folder where you have saved this repository).
+* Edit the file __build/antconfig.txt__. Enter name and version of your package. Enter the path to the folder of Gamification Platform distribution. Enter the path to the folder where the source code of the package will be stored (the folder where you have saved this repository).
 * Save the file __build/antconfig.txt__.
 * Open a console and go in folder __build__.
 * Type `ant` and click enter. The system will copy all files from distribution to the folder where you are going to build an installable package.
+
+`ant`
 
 ##Contribute
 If you would like to contribute to the project you should use Gamification Platform distribution. That repository provides Joomla CMS and Gamification Platform - installed and configured for development.
