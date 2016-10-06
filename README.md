@@ -1,6 +1,6 @@
 Gamification Platform for Joomla! 
 ==========================
-( Version 2.1 )
+( Version 2.1.1 )
 - - -
 
 Gamification Platform is a Joomla! extension that provides functionality, API and resources which can be used to gamify many Joomla! extensions.

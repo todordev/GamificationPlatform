@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="component" version="3.5" method="upgrade">
+<extension type="component" version="3.6" method="upgrade">
     <name>COM_GAMIFICATION</name>
     <author>Todor Iliev</author>
     <authorEmail>todor@itprism.com</authorEmail>
     <authorUrl>http://itprism.com</authorUrl>
     <copyright>Copyright (C) 2016 Todor Iliev ( ITPrism.com )</copyright>
     <license>http://www.gnu.org/licenses/gpl-3.0.en.html GNU/GPLv3</license>
-    <version>2.1</version>
-    <creationDate>10 July, 2016</creationDate>
+    <version>2.1.1</version>
+    <creationDate>06 October, 2016</creationDate>
     <description><![CDATA[
     <p><a href="http://itprism.com/free-joomla-extensions/ecommerce-gamification/game-mechanics-platform" target="_blank">Gamification Platform</a> is an extension that provides functionality, resources and API that can be used to gamify Joomla! extensions and websites.</p>
     <p><a href="http://itprism.com/" target="_blank">Subscribe for the newsletter</a> to receive <strong>gifts</strong>, <strong>discount codes</strong>, information about <strong>updates</strong> and information about <strong>new ITPrism extensions</strong>.</p>

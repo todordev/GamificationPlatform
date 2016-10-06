@@ -1,6 +1,9 @@
 Gamification Platform Changelog
 ==========================
 
+###v2.1.1
+* Fixed library path. [issue #13](https://github.com/ITPrism/GamificationPlatform/issues/13).
+
 ###v2.1
 * Added achievements and rewards.
 * Fixed an issue that causes an error on PHP 7.
